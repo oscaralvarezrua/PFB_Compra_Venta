@@ -7,7 +7,7 @@ const initDB = async () => {
     let pool = await getPool();
 
     console.log("Borrando Tablas...");
-    await pool.query(`DROP TABLE IF EXISTS user;`);
+    await pool.query(`DROP TABLE IF EXISTS product,category,user;`);
 
     console.log("Creando Tablas...");
 
@@ -18,14 +18,46 @@ const initDB = async () => {
         username VARCHAR (20) NOT NULL UNIQUE,
         email VARCHAR (50) NOT NULL UNIQUE,
         password VARCHAR (100) NOT NULL,
+        phone VARCHAR (30) NOT NULL UNIQUE,
+        biography TEXT,
+        avatar VARCHAR (200),
         created_at TIMESTAMP DEFAULT NOW(),
         updated_at TIMESTAMP ON UPDATE NOW()
         )
         `);
 
+    //Crear tabla de Categorías
+    await pool.query(`
+      CREATE TABLE IF NOT EXISTS category(
+      id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+      name VARCHAR(50) NOT NULL UNIQUE,
+      description TEXT,
+      created_at TIMESTAMP DEFAULT NOW(),
+      updated_at TIMESTAMP ON UPDATE NOW()
+      )
+      `);
+
+    //Crear Tabla de Productos
+    await pool.query(`
+        CREATE TABLE IF NOT EXISTS product(
+        id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+        name VARCHAR (50) NOT NULL,
+        description TEXT,
+        price DECIMAL(10, 2),
+        user_id INT UNSIGNED,
+        category_id INT UNSIGNED,
+        created_at TIMESTAMP DEFAULT NOW(),
+        updated_at TIMESTAMP ON UPDATE NOW(),
+        FOREIGN KEY (user_id) REFERENCES user(id) ON DELETE CASCADE,
+        FOREIGN KEY (category_id) REFERENCES category(id) ON DELETE SET NULL
+        )
+        `);
+
+    //Crear Tabla de Compras
+
     console.log("Tablas creadas correctamente");
   } catch (e) {
-    console.error("Error al crear las tablas");
+    console.error("Error al crear las tablas", e);
     //Cerrar proceso
     process.exit();
   }
