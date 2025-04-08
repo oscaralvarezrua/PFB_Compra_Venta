@@ -20,9 +20,13 @@ Dependencias Instaladas:
 Carpetas creadas:
 -src y dentro:
 
-- db (base de datos)
+- db (base de datos) Dentro he creado getPool.js y initDB.js
 - controllers (Funciones controladoras. Funciones para procesar las solicitudes del cliente y devolver respuestas res.send)
-- middlewares ()
+- middlewares (Ubicar los middlewares)
+- models (Funciones que realizan peticiones a la base de datos para leer, crear, editar o eliminar información)
+- routes (Archivos de enrutamiento)
+- services (Funciones relacionadas entre si)
+- utils (Funciones o herramientas que se pueden reutilizar en todo el proyecto)
 
 Archivos creados:
 
