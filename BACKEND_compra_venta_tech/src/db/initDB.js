@@ -19,6 +19,7 @@ const initDB = async () => {
         email VARCHAR (50) NOT NULL UNIQUE,
         password VARCHAR (100) NOT NULL,
         phone VARCHAR (30) NOT NULL UNIQUE,
+        validation_code VARCHAR (150),
         biography TEXT,
         avatar VARCHAR (200),
         created_at TIMESTAMP DEFAULT NOW(),
@@ -44,6 +45,8 @@ const initDB = async () => {
         name VARCHAR (50) NOT NULL,
         description TEXT,
         price DECIMAL(10, 2),
+        photo VARCHAR (255),
+        locality VARCHAR (100),
         user_id INT UNSIGNED NOT NULL,
         category_id INT UNSIGNED NOT NULL,
         created_at TIMESTAMP DEFAULT NOW(),
@@ -58,12 +61,13 @@ const initDB = async () => {
       CREATE TABLE IF NOT EXISTS transaction(
       id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
       status ENUM("accepted", "cancelled", "pending"),
-      user_id INT UNSIGNED NOT NULL,
-      category_id INT UNSIGNED NOT NULL,
+      comment TINYTEXT,
+      ratings ENUM ("1","2","3","4","5"), 
+      user_id INT UNSIGNED,
       product_id INT UNSIGNED NOT NULL,
       created_at TIMESTAMP DEFAULT NOW(),
       update_at TIMESTAMP DEFAULT NOW(),
-      FOREIGN KEY (user_id) REFERENCES user(id) ON DELETE CASCADE,
+      FOREIGN KEY (user_id) REFERENCES user(id) ON DELETE SET NULL,
       FOREIGN KEY (product_id) REFERENCES product(id) ON DELETE CASCADE
       )
       `);
