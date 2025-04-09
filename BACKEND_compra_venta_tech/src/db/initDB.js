@@ -7,7 +7,7 @@ const initDB = async () => {
     let pool = await getPool();
 
     console.log("Borrando Tablas...");
-    await pool.query(`DROP TABLE IF EXISTS product,category,user;`);
+    await pool.query(`DROP TABLE IF EXISTS transaction,product,category,user;`);
 
     console.log("Creando Tablas...");
 
@@ -44,16 +44,29 @@ const initDB = async () => {
         name VARCHAR (50) NOT NULL,
         description TEXT,
         price DECIMAL(10, 2),
-        user_id INT UNSIGNED,
-        category_id INT UNSIGNED,
+        user_id INT UNSIGNED NOT NULL,
+        category_id INT UNSIGNED NOT NULL,
         created_at TIMESTAMP DEFAULT NOW(),
         updated_at TIMESTAMP ON UPDATE NOW(),
         FOREIGN KEY (user_id) REFERENCES user(id) ON DELETE CASCADE,
-        FOREIGN KEY (category_id) REFERENCES category(id) ON DELETE SET NULL
+        FOREIGN KEY (category_id) REFERENCES category(id) ON DELETE CASCADE
         )
         `);
 
-    //Crear Tabla de Compras
+    //Crear Tabla de Transacciones (compras y ventas)
+    await pool.query(`
+      CREATE TABLE IF NOT EXISTS transaction(
+      id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+      status ENUM("accepted", "cancelled", "pending"),
+      user_id INT UNSIGNED NOT NULL,
+      category_id INT UNSIGNED NOT NULL,
+      product_id INT UNSIGNED NOT NULL,
+      created_at TIMESTAMP DEFAULT NOW(),
+      update_at TIMESTAMP DEFAULT NOW(),
+      FOREIGN KEY (user_id) REFERENCES user(id) ON DELETE CASCADE,
+      FOREIGN KEY (product_id) REFERENCES product(id) ON DELETE CASCADE
+      )
+      `);
 
     console.log("Tablas creadas correctamente");
   } catch (e) {
