@@ -32,7 +32,6 @@ const initDB = async () => {
       CREATE TABLE IF NOT EXISTS category(
       id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
       name VARCHAR(50) NOT NULL UNIQUE,
-      description TEXT,
       created_at TIMESTAMP DEFAULT NOW(),
       updated_at TIMESTAMP ON UPDATE NOW()
       )
@@ -47,6 +46,7 @@ const initDB = async () => {
         price DECIMAL(10, 2),
         photo VARCHAR (255),
         locality VARCHAR (100),
+        is_available BOOLEAN DEFAULT true,
         user_id INT UNSIGNED NOT NULL,
         category_id INT UNSIGNED NOT NULL,
         created_at TIMESTAMP DEFAULT NOW(),
