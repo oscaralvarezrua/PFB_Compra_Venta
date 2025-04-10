@@ -75,8 +75,8 @@ const initDB = async () => {
     console.log("Tablas creadas correctamente");
   } catch (e) {
     console.error("Error al crear las tablas", e);
-    //Cerrar proceso
-    process.exit();
   }
+  //Cerrar proceso
+  process.exit();
 };
 initDB();
