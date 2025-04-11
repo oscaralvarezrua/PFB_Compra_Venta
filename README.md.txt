@@ -1,1 +1,1 @@
-Prueba github
+Wireframe: https://www.figma.com/design/x3ZWzL3tMeNgQ6Z9GGvHuf/CV-Tech.?node-id=10-142&t=yRtYTE8PuWsMYYH1-1

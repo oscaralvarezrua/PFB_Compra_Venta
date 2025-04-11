@@ -43,4 +43,3 @@ Archivos creados:
 - .gitignore
 - readme.md
 - prettierrc.json
-- hola soy gabe
