@@ -3,10 +3,12 @@ import express from "express";
 import {
   error404Controller,
   errorController,
-} from "./src/middelwares/errorControllers.js";
+} from "./src/middlewares/errorControllers.js";
 import morgan from "morgan";
 import cors from "cors";
 import fileUpload from "express-fileupload";
+import userRoutes from "./src/routes/userRoutes.js";
+
 // Importamos las variables de entorno necesarias.
 const { API_PORT, UPLOADS_DIR } = process.env;
 
@@ -27,6 +29,8 @@ app.use(fileUpload());
 // Middleware que indica a Express cuál es el directorio de ficheros estáticos.
 app.use(express.static(UPLOADS_DIR));
 
+app.use("/users", userRoutes);
+
 //Ruta de prueba con postman
 app.get("/", (req, res) => {
   res.send("Todo OK!!!");
@@ -39,5 +43,5 @@ app.use(error404Controller);
 app.use(errorController);
 
 app.listen(API_PORT, () => {
-  console.log("El servidor está escuchando en el puerto 3000");
+  console.log(`El servidor está escuchando en el puerto ${API_PORT}`);
 });
