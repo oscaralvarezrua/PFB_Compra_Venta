@@ -1,12 +1,14 @@
 //Interactuar con la base de datos
 
 import getPool from "../db/getPool.js";
-import generateError from '../utils/helpers.js';
+import { generateError } from "../utils/helpers.js";
 
 // Modelo para obtener la lista de usuarios
 export async function getUserListModel() {
   const pool = await getPool();
-  const [users] = await pool.query("SELECT id, username, email, avatar FROM user");
+  const [users] = await pool.query(
+    "SELECT id, username, email, avatar FROM user"
+  );
   return users;
 }
 
@@ -14,7 +16,10 @@ export async function getUserListModel() {
 export async function getUserDetailModel(userId) {
   const pool = await getPool();
 
-  const [user] = await pool.query("SELECT id, username, email, biography, avatar FROM user WHERE id = ?", [userId]);
+  const [user] = await pool.query(
+    "SELECT id, username, email, biography, avatar FROM user WHERE id = ?",
+    [userId]
+  );
   if (user.length === 0) {
     throw generateError("Usuario no encontrado", 404);
   }
