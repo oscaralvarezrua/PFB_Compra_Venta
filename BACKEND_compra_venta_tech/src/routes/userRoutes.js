@@ -1,7 +1,7 @@
 //Rutas relacionadas con la información del usuario
 
 import express from "express";
-import { getUserListController, getUserDetailController } from "../controllers/userControllers.js";
+import { getUserListController, getUserDetailController, rateSellerController } from "../controllers/userControllers.js";
 
 const router = express.Router();
 
@@ -12,3 +12,6 @@ router.get("/", getUserListController);
 router.get("/:id", getUserDetailController);
 
 export default router;
+
+// Valorar al vendedor
+router.post("/rate/:transactionId", rateSellerController);
