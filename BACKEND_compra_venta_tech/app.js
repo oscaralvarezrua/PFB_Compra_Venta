@@ -14,15 +14,13 @@ import productRoutes from "./src/routes/productRoutes.js";
 const { API_PORT, UPLOADS_DIR } = process.env;
 
 const app = express();
+app.use(express.json()); //! NO TOCAR ESTA LINEA :)
 
 // Middleware que evita problemas de conexión entre cliente y servidor.
 app.use(cors());
 
 // Middleware que muestra por consola info sobre la petición entrante.
 app.use(morgan("dev"));
-
-// Middleware que permite leer un body en formato JSON.
-app.use(express.json());
 
 // Middleware que permite leer un body en formato "form-data" (para archivos).
 app.use(fileUpload());

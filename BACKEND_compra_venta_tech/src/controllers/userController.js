@@ -1,15 +1,8 @@
-import {
-  createUser,
-  getUserByEmail,
-  getUserByUsername,
-  getUserByValidationCode,
-  trustPass,
-  getUserListModel,
-  getUserDetailModel,
-  rateSellerModel,
-} from "../models/userModels.js";
+
+import { createUser, getUserByEmail, getUserByUsername, getUserByValidationCode, trustPass, getUserListModel, getUserDetailModel, rateSellerModel, updatePass, getUserInf } from "../models/userModels.js";
 import Joi from "joi";
 import jwt from "jsonwebtoken";
+import { generateError } from "../utils/helpers.js";
 
 //Validación del usuario registrado (schema)
 const userSchema = Joi.object({
@@ -36,14 +29,10 @@ const userSchema = Joi.object({
   password: Joi.string()
     .min(10)
     .required()
-    .pattern(
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\w\d\s])[a-zA-Z\d^\w\d\s]{10,}$/
-    )
+    .pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\w\d\s]).{10,}$/)
     .messages({
-      "string.pattern.base":
-        "La contraseña debe contener una minuscula, una mayuscula y un número.",
-      "string.min":
-        "Nombre de usuario demasiado corto, debe tener al menos 10 caracteres.",
+      "string.pattern.base": "La contraseña debe contener una minuscula, una mayuscula, un número y un caracter especial.",
+      "string.min": "La contraseña es demasiado corta, debe tener al menos 10 caracteres.",
       "any.required": "El campo contraseña es obligatorio.",
     }),
 
@@ -171,7 +160,7 @@ const loginSchema = Joi.object({
 const userLogin = async (req, res, next) => {
   try {
     //Comprobamos los datos de entrada
-    const { error, valor } = loginSchema.validate(req.body);
+    const { error, value } = loginSchema.validate(req.body);
 
     if (error) {
       return res.status(400).json({
@@ -180,7 +169,7 @@ const userLogin = async (req, res, next) => {
       });
     }
 
-    const { email, password } = valor;
+    const { email, password } = value;
 
     //Obtener el usuario por email
     const user = await getUserByEmail(email);
@@ -233,7 +222,69 @@ const userLogin = async (req, res, next) => {
   }
 };
 
-export { userContoler, userValidation, userLogin };
+const changePassSchema = Joi.object({
+  currentPassword: Joi.string().required().messages({
+    "any.required": "Por favor indique la contraseña actual.",
+  }),
+
+  newPassword: Joi.string()
+    .min(10)
+    .required()
+    .pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\w\d\s]).{10,}$/)
+    .messages({
+      "string.pattern.base": "La contraseña debe contener una minuscula, una mayuscula y un número.",
+      "string.min": "La contraseña es demasiado corta, debe tener al menos 10 caracteres.",
+      "any.required": "El campo contraseña es obligatorio.",
+    }),
+});
+
+const changePass = async (req, res, next) => {
+  try {
+    const { error, value } = changePassSchema.validate(req.body);
+
+    if (error) {
+      return res.status(400).json({
+        status: "error",
+        message: error.details[0].message,
+      });
+    }
+
+    const { currentPassword, newPassword } = value;
+    const userId = req.user.id;
+    const isValid = await trustPass(currentPassword, req.user.password);
+
+    if (!isValid) {
+      return res.status(401).json({
+        status: "error",
+        message: "La contraseña actual no es correcta",
+      });
+    }
+
+    await updatePass(userId, newPassword);
+    res.status(200).json({
+      status: "success",
+      message: "La contraseña se actualizó correctamente",
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+const getUserInfo = async (req, res, next) => {
+  try {
+    const userId = req.user.id;
+    const userInfo = await getUserInf(userId);
+
+    res.status(200).json({
+      status: "success",
+      data: userInfo,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export { userContoler, userValidation, userLogin, changePass, getUserInfo };
 
 // Controlador para listar usuarios
 export async function getUserListController(req, res, next) {
