@@ -99,6 +99,7 @@ export { createUser, getUserByEmail, getUserByUsername, trustPass, userValidatio
 export async function getUserListModel() {
   const pool = await getPool();
   const [users] = await pool.query("SELECT id, username, email, avatar FROM user");
+
   return users;
 }
 
@@ -107,6 +108,7 @@ export async function getUserDetailModel(userId) {
   const pool = await getPool();
 
   const [user] = await pool.query("SELECT id, username, email, biography, avatar FROM user WHERE id = ?", [userId]);
+
   if (user.length === 0) {
     throw generateError("Usuario no encontrado", 404);
   }
@@ -151,6 +153,7 @@ export async function rateSellerModel(transactionId, userId, ratings, comment) {
   const pool = await getPool();
 
   // 1. Verificamos que la transacción exista, sea del usuario y esté aceptada
+
   const [result] = await pool.query(`SELECT * FROM transaction WHERE id = ? AND user_id = ? AND status = 'aceptada'`, [transactionId, userId]);
 
   if (result.length === 0) {
@@ -167,5 +170,6 @@ export async function rateSellerModel(transactionId, userId, ratings, comment) {
   }
 
   // 3. Actualizamos con la valoración y comentario
+
   await pool.query(`UPDATE transaction SET ratings = ?, comment = ? WHERE id = ?`, [ratings, comment, transactionId]);
 }

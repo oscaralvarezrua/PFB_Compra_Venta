@@ -43,15 +43,6 @@ app.listen(API_PORT, () => {
   console.log(`El servidor está escuchando en el puerto ${API_PORT}`);
 });
 
-//Ruta de prueba con postman
-app.get("/", (req, res) => {
-  res.send("Todo OK!!!");
-});
-
-app.listen(3000, () => {
-  console.log("El servidor está escuchando en el puerto 3000");
-});
-
 //Parse del JSON
 app.use(express.json());
 
