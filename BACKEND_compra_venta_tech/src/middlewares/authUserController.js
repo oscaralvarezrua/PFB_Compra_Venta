@@ -1,7 +1,8 @@
 //Autenticación y autorización
 
 import jwt from "jsonwebtoken";
-import generateError from "../utils/helpers.js";
+import { generateError } from "../utils/helpers.js";
+import { getUserById } from "../models/userModels.js";
 
 const authUserController = async (req, res, next) => {
   try {
@@ -13,11 +14,23 @@ const authUserController = async (req, res, next) => {
       generateError("Falta la cabecera de autorización", 401);
     }
 
+    if (!authorization.startsWith("Bearer ")) {
+      generateError("Formato token no valido", 401);
+    }
+
+    const token = authorization.split(" ")[1];
+
     try {
       // Desencriptamos el token.
-      const tokenInfo = jwt.verify(authorization, process.env.SECRET);
+      const tokenInfo = jwt.verify(token, process.env.JWT_SECRET);
 
-      req.user = tokenInfo;
+      const user = await getUserById(tokenInfo.id);
+
+      if (!user) {
+        generateError("Usuario no encontrado", 401);
+      }
+
+      req.user = user;
 
       // Pasamos el control al siguiente middleware.
       next();

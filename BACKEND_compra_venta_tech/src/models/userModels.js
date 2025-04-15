@@ -93,7 +93,77 @@ const getUserByValidationCode = async (validationCode) => {
   }
 };
 
-export { createUser, getUserByEmail, getUserByUsername, trustPass, userValidation, getUserByValidationCode };
+//Obtener usuario por su id
+const getUserById = async (id) => {
+  try {
+    const pool = await getPool();
+
+    const [user] = await pool.query(`SELECT * FROM user WHERE id = ?`, [id]);
+    return user[0];
+  } catch (error) {
+    console.error("Error obteniendo el usuario: ", error);
+    throw new Error("Usuario no encontrado");
+  }
+};
+
+//Cambiar la pass
+const updatePass = async (userId, newPass) => {
+  try {
+    const pool = await getPool();
+
+    const encriptedPass = await bcrypt.hash(newPass, 10);
+
+    await pool.query(`UPDATE user SET password = ?, updated_at = NOW() WHERE id = ?`, [encriptedPass, userId]);
+  } catch (error) {
+    console.error("Error cambiando la contraseña: ", error);
+    throw new Error("Contraseña no cambiada");
+  }
+};
+
+const getUserInf = async (userId) => {
+  try {
+    const pool = await getPool();
+
+    const [user] = await pool.query(
+      `SELECT
+        id,
+        username,
+        email,
+        phone,
+        biography,
+        avatar,
+        created_at,
+        updated_at
+      FROM user
+      WHERE id = ?`,
+      [userId]
+    );
+
+    if (!user[0]) {
+      generateError("Usuario no encontrado", 401);
+    }
+
+    const [stats] = await pool.query(
+      `SELECT
+        (SELECT COUNT(*) FROM product WHERE user_id = ?) as total_products,
+        (SELECT COUNT(*) FROM transaction WHERE user_id = ? AND status = 'acepted') as total_purchases,
+        (SELECT COUNT(*) FROM transaction t JOIN product p ON t.product_id = p.id WHERE p.user_id = ? AND t.status = 'acepted') as total_sales
+      FROM user
+      WHERE id = ?`,
+      [userId, userId, userId, userId]
+    );
+
+    return {
+      ...user[0],
+      stats: stats[0],
+    };
+  } catch (error) {
+    console.error("Error consultando la información del usuario: ", error);
+    throw new Error("No se ha podido obtener la información de este usuario");
+  }
+};
+
+export { createUser, getUserByEmail, getUserByUsername, trustPass, userValidation, getUserByValidationCode, getUserById, updatePass, getUserInf };
 
 // Modelo para obtener la lista de usuarios
 export async function getUserListModel() {
