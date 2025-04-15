@@ -22,11 +22,37 @@ export async function getProductById(productId) {
 
   const [result] = await pool.query(
     `
-    SELECT * FROM product WHERE id = ?`,
+    SELECT 
+      p.id,
+      p.name,
+      p.description,
+      p.price,
+      p.photo,
+      p.locality,
+      p.is_available,
+      p.is_accepted,
+      p.created_at,
+      p.updated_at,
+
+      c.id AS category_id,
+      c.name AS category_name,
+
+      u.id AS seller_id,
+      u.username AS seller_username,
+      u.email AS seller_email,
+      u.avatar AS seller_avatar,
+      u.phone AS seller_phone
+    FROM product p
+    JOIN category c ON p.category_id = c.id
+    JOIN user u ON p.user_id = u.id
+    WHERE p.id = ?
+    `,
     [productId]
   );
+
   if (result.length === 0) {
     throw generateError("Ese producto no existe", 404);
   }
+
   return result[0];
 }
