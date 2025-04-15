@@ -1,9 +1,6 @@
 //Importar dependencias
 import express from "express";
-import {
-  error404Controller,
-  errorController,
-} from "./src/middlewares/errorControllers.js";
+import { error404Controller, errorController } from "./src/middlewares/errorControllers.js";
 import morgan from "morgan";
 import cors from "cors";
 import fileUpload from "express-fileupload";
@@ -45,3 +42,9 @@ app.use(errorController);
 app.listen(API_PORT, () => {
   console.log(`El servidor está escuchando en el puerto ${API_PORT}`);
 });
+
+//Parse del JSON
+app.use(express.json());
+
+//Rutas de usuario
+app.use("/users", userRoutes);

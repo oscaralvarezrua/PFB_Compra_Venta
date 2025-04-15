@@ -1,14 +1,105 @@
 //Interactuar con la base de datos
 
 import getPool from "../db/getPool.js";
+import bcrypt from "bcryptjs";
 import { generateError } from "../utils/helpers.js";
+
+//Crea nuevos usuarios
+const createUser = async (username, email, password, phone, biography = null, avatar = null) => {
+  try {
+    const pool = await getPool();
+
+    //Encriptar la contraseña
+    const encriptedPass = await bcrypt.hash(password, 10);
+
+    //Guardar el usuario en la BBDD
+    const [result] = await pool.query(
+      `INSERT INTO user (username, email, password, phone, biography, avatar)
+            VALUES (?, ?, ?, ?, ?, ?)`,
+      [username, email, encriptedPass, phone, biography, avatar]
+    );
+
+    return result.insertID;
+  } catch (error) {
+    console.error("Error creando el usuario: ", error);
+    throw new Error("Error al crear el usuario");
+  }
+};
+
+//Obtener usuario por email
+const getUserByEmail = async (email) => {
+  try {
+    const pool = await getPool();
+
+    const [user] = await pool.query(`SELECT * FROM user WHERE email = ?`, [email]);
+
+    return user[0];
+  } catch (error) {
+    console.error("Error buscando el usuario por email: ", error);
+    throw new Error("No se ha encontrado el usuario"); //! Da información de que no hay ningún usuario con ese email
+  }
+};
+
+//Obtener usuario por username
+const getUserByUsername = async (username) => {
+  try {
+    const pool = await getPool();
+
+    const [user] = await pool.query(`SELECT * FROM user WHERE username = ?`, [username]);
+
+    return user[0];
+  } catch (error) {
+    console.error("Error buscando el usuario por username: ", error);
+    throw new Error("No se ha encontrado el usuario"); //! Da información de que no hay ningún usuario con ese username
+  }
+};
+
+//Verifica la contraseña
+const trustPass = async (password, encriptedPass) => {
+  return await bcrypt.compare(password, encriptedPass);
+};
+
+//Validacion de usuario
+const userValidation = async (email, validationCode) => {
+  try {
+    const pool = await getPool();
+
+    //Encontrar y validar
+    const [result] = await pool.query(
+      `UPDATE user
+      SET validation_code = NULL,
+      updated_at = NOW()
+      WHERE validation_code = ?`,
+      [validationCode]
+    );
+    return result.affectedRows > 0;
+  } catch (error) {
+    console.error("Error validando el usuario: ", error);
+    throw new Error("Usuario inválido");
+  }
+};
+
+//Obtener usuraio por código de validación
+const getUserByValidationCode = async (validationCode) => {
+  try {
+    const pool = await getPool();
+
+    const [user] = await pool.query(`SELECT * FROM user WHERE validation_code = ?`, [validationCode]);
+
+    return user[0];
+  } catch (error) {
+    console.error("Error obteniendo el usuario: ", error);
+    throw new Error("Usuario no encontrado");
+  }
+};
+
+export { createUser, getUserByEmail, getUserByUsername, trustPass, userValidation, getUserByValidationCode };
 
 // Modelo para obtener la lista de usuarios
 export async function getUserListModel() {
   const pool = await getPool();
-  const [users] = await pool.query(
-    "SELECT id, username, email, avatar FROM user"
-  );
+  const [users] = await pool.query("SELECT id, username, email, avatar FROM user");
+
   return users;
 }
 
@@ -16,10 +107,8 @@ export async function getUserListModel() {
 export async function getUserDetailModel(userId) {
   const pool = await getPool();
 
-  const [user] = await pool.query(
-    "SELECT id, username, email, biography, avatar FROM user WHERE id = ?",
-    [userId]
-  );
+  const [user] = await pool.query("SELECT id, username, email, biography, avatar FROM user WHERE id = ?", [userId]);
+
   if (user.length === 0) {
     throw generateError("Usuario no encontrado", 404);
   }
@@ -64,10 +153,8 @@ export async function rateSellerModel(transactionId, userId, ratings, comment) {
   const pool = await getPool();
 
   // 1. Verificamos que la transacción exista, sea del usuario y esté aceptada
-  const [result] = await pool.query(
-    `SELECT * FROM transaction WHERE id = ? AND user_id = ? AND status = 'aceptada'`,
-    [transactionId, userId]
-  );
+
+  const [result] = await pool.query(`SELECT * FROM transaction WHERE id = ? AND user_id = ? AND status = 'aceptada'`, [transactionId, userId]);
 
   if (result.length === 0) {
     const error = new Error("Transacción no válida o aún no aceptada.");
@@ -83,9 +170,6 @@ export async function rateSellerModel(transactionId, userId, ratings, comment) {
   }
 
   // 3. Actualizamos con la valoración y comentario
-  await pool.query(
-    `UPDATE transaction SET ratings = ?, comment = ? WHERE id = ?`,
-    [ratings, comment, transactionId]
-  );
-}
 
+  await pool.query(`UPDATE transaction SET ratings = ?, comment = ? WHERE id = ?`, [ratings, comment, transactionId]);
+}
