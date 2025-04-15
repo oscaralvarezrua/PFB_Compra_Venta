@@ -1,3 +1,4 @@
+
 import { createUser, getUserByEmail, getUserByUsername, getUserByValidationCode, trustPass, getUserListModel, getUserDetailModel, rateSellerModel, updatePass, getUserInf } from "../models/userModels.js";
 import Joi from "joi";
 import jwt from "jsonwebtoken";
@@ -11,9 +12,12 @@ const userSchema = Joi.object({
     .required()
     .pattern(/^[a-zA-Z0-9_]+$/)
     .messages({
-      "string.pattern.base": "El username solo puede contener letras, números y barra baja.",
-      "string.min": "Nombre de usuario demasiado corto, debe tener al menos 5 caracteres.",
-      "string.max": "Nombre de usuario demasiado largo, debe tener como maximo 25 caracteres.",
+      "string.pattern.base":
+        "El username solo puede contener letras, números y barra baja.",
+      "string.min":
+        "Nombre de usuario demasiado corto, debe tener al menos 5 caracteres.",
+      "string.max":
+        "Nombre de usuario demasiado largo, debe tener como maximo 25 caracteres.",
       "any.required": "El campo nombre es obligatorio.",
     }),
 
@@ -83,7 +87,14 @@ const userContoler = async (req, res, next) => {
     }
 
     //Guardar usuario en la bbdd
-    const userBbdd = await createUser(username, email, password, phone, biography, avatar);
+    const userBbdd = await createUser(
+      username,
+      email,
+      password,
+      phone,
+      biography,
+      avatar
+    );
 
     res.status(201).json({
       status: "success",
@@ -189,7 +200,9 @@ const userLogin = async (req, res, next) => {
     }
 
     //Generar Token
-    const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: "1h" });
+    const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
+      expiresIn: "1h",
+    });
 
     res.status(200).json({
       status: "success",

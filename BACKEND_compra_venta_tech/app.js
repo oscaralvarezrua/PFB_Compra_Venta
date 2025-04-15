@@ -1,10 +1,18 @@
 //Importar dependencias
 import express from "express";
-import { error404Controller, errorController } from "./src/middlewares/errorControllers.js";
+import {
+  error404Controller,
+  errorController,
+} from "./src/middlewares/errorControllers.js";
 import morgan from "morgan";
 import cors from "cors";
 import fileUpload from "express-fileupload";
 import userRoutes from "./src/routes/userRoutes.js";
+import productRoutes from "./src/routes/productRoutes.js";
+import {
+  getUserListController,
+  userLogin,
+} from "./src/controllers/userController.js";
 
 // Importamos las variables de entorno necesarias.
 const { API_PORT, UPLOADS_DIR } = process.env;
@@ -24,12 +32,11 @@ app.use(fileUpload());
 // Middleware que indica a Express cuál es el directorio de ficheros estáticos.
 app.use(express.static(UPLOADS_DIR));
 
+//Rutas a postman
+app.use("/", getUserListController);
+app.use("/Login", userLogin);
 app.use("/users", userRoutes);
-
-//Ruta de prueba con postman
-app.get("/", (req, res) => {
-  res.send("Todo OK!!!");
-});
+app.use("/products", productRoutes);
 
 //Middleware al que entra si no parado en un endpoint
 app.use(error404Controller);
@@ -41,7 +48,6 @@ app.listen(API_PORT, () => {
   console.log(`El servidor está escuchando en el puerto ${API_PORT}`);
 });
 
-//Parse del JSON
 
 //Rutas de usuario
 app.use("/users", userRoutes);
