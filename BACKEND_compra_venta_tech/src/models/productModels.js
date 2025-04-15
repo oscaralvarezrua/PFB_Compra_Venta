@@ -56,3 +56,23 @@ export async function getProductById(productId) {
 
   return result[0];
 }
+
+//Creamos Función para la publicación de un producto
+export async function publishProduct(
+  name,
+  description,
+  price,
+  phone,
+  locality,
+  categoryid,
+  userid
+) {
+  const pool = await getPool();
+  const [result] = await pool.query(
+    `
+    INSERT INTO product (name, description, price, photo, locality, category_id, user_id)
+    VALUES (?,?,?,?,?,?,?)
+    `[(name, description, price, phone, locality, categoryid, userid)]
+  );
+  return result.insertId;
+}
