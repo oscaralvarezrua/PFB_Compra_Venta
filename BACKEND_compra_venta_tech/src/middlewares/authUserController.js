@@ -1,7 +1,7 @@
 //Autenticación y autorización
 
 import jwt from "jsonwebtoken";
-import generateError from "../utils/helpers.js";
+import { generateError } from "../utils/helpers.js";
 
 const authUserController = async (req, res, next) => {
   try {
