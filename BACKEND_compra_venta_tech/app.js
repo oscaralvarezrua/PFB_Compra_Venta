@@ -18,15 +18,13 @@ import {
 const { API_PORT, UPLOADS_DIR } = process.env;
 
 const app = express();
+app.use(express.json()); //! NO TOCAR ESTA LINEA :)
 
 // Middleware que evita problemas de conexión entre cliente y servidor.
 app.use(cors());
 
 // Middleware que muestra por consola info sobre la petición entrante.
 app.use(morgan("dev"));
-
-// Middleware que permite leer un body en formato JSON.
-app.use(express.json());
 
 // Middleware que permite leer un body en formato "form-data" (para archivos).
 app.use(fileUpload());
@@ -50,5 +48,6 @@ app.listen(API_PORT, () => {
   console.log(`El servidor está escuchando en el puerto ${API_PORT}`);
 });
 
-//Parse del JSON
-app.use(express.json());
+
+//Rutas de usuario
+app.use("/users", userRoutes);
