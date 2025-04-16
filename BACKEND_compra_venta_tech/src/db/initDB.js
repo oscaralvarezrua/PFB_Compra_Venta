@@ -22,6 +22,7 @@ const initDB = async () => {
         validation_code VARCHAR (150),
         biography TEXT,
         avatar VARCHAR (200),
+        role ENUM ("user", "admin") DEFAULT "user",
         created_at TIMESTAMP DEFAULT NOW(),
         updated_at TIMESTAMP ON UPDATE NOW()
         )
@@ -47,6 +48,7 @@ const initDB = async () => {
         photo VARCHAR (255),
         locality VARCHAR (100),
         is_available BOOLEAN DEFAULT true,
+        is_accepted BOOLEAN DEFAULT false,
         user_id INT UNSIGNED NOT NULL,
         category_id INT UNSIGNED NOT NULL,
         created_at TIMESTAMP DEFAULT NOW(),
@@ -60,7 +62,7 @@ const initDB = async () => {
     await pool.query(`
       CREATE TABLE IF NOT EXISTS transaction(
       id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
-      status ENUM("accepted", "cancelled", "pending"),
+      status ENUM("acepted", "cancelled", "pending"),
       comment TINYTEXT,
       ratings ENUM ("1","2","3","4","5"), 
       user_id INT UNSIGNED,
