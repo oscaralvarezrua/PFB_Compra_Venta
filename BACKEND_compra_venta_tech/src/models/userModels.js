@@ -5,7 +5,7 @@ import bcrypt from "bcryptjs";
 import { generateError } from "../utils/helpers.js";
 
 //Crea nuevos usuarios
-const createUser = async (username, email, password, phone, biography = null, avatar = null) => {
+const createUser = async (username, email, password, phone, biography = null, avatar = null, validationCode) => {
   try {
     const pool = await getPool();
 
@@ -14,12 +14,16 @@ const createUser = async (username, email, password, phone, biography = null, av
 
     //Guardar el usuario en la BBDD
     const [result] = await pool.query(
-      `INSERT INTO user (username, email, password, phone, biography, avatar)
-            VALUES (?, ?, ?, ?, ?, ?)`,
-      [username, email, encriptedPass, phone, biography, avatar]
+      `INSERT INTO user (username, email, password, phone, biography, avatar, validation_code)
+            VALUES (?, ?, ?, ?, ?, ?, ?)`,
+      [username, email, encriptedPass, phone, biography, avatar, validationCode]
     );
 
-    return result.insertID;
+    if (!result.insertId) {
+      throw new Error("No se pudo crear el usuario");
+    }
+
+    return result.insertId;
   } catch (error) {
     console.error("Error creando el usuario: ", error);
     throw new Error("Error al crear el usuario");
