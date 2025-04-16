@@ -51,7 +51,7 @@ app.get('/categorias', async (req, res) => {
   try {
     res.json(categorias);
   } catch (err) {
-    res.status(500).json({ message: 'Erro ao buscar categorias' });
+    res.status(500).json({ message: 'Error al buscar categorias' });
   }
 });
 
@@ -62,12 +62,12 @@ app.get('/categorias/:id', async (req, res) => {
     const categoria = categorias.find(c => c.id === id);
 
     if (!categoria) {
-      return res.status(404).json({ message: 'Categoria não encontrada' });
+      return res.status(404).json({ message: 'Categoria no encontrada' });
     }
 
     res.json(categoria);
   } catch (err) {
-    res.status(500).json({ message: 'Erro ao buscar a categoria' });
+    res.status(500).json({ message: 'Error al buscar la categoria' });
   }
 });
 
@@ -76,15 +76,15 @@ app.post('/categorias', async (req, res) => {
   try {
     const { name } = req.body;
 
-    const novaCategoria = {
+    const nuevaCategoria = {
       id: categorias.length + 1,
       name
     };
 
-    categorias.push(novaCategoria);
-    res.status(201).json(novaCategoria);
+    categorias.push(nuevaCategoria);
+    res.status(201).json(nuevaCategoria);
   } catch (err) {
-    res.status(500).json({ message: 'Erro ao criar categoria' });
+    res.status(500).json({ message: 'Error al crear categoria' });
   }
 });
 
@@ -96,27 +96,126 @@ app.put('/categorias/:id', async (req, res) => {
 
     const categoria = categorias.find(c => c.id === id);
     if (!categoria) {
-      return res.status(404).json({ message: 'Categoria não encontrada' });
+      return res.status(404).json({ message: 'Categoria no encontrada' });
     }
 
     categoria.name = name;
     res.json(categoria);
   } catch (err) {
-    res.status(500).json({ message: 'Erro ao atualizar categoria' });
+    res.status(500).json({ message: 'Error al actualizar categoria' });
   }
 });
 
-// DELETE - Remover categoria
+// DELETE - Borrar categoria
 app.delete('/categorias/:id', async (req, res) => {
   try {
     const id = parseInt(req.params.id);
 
     categorias = categorias.filter(c => c.id !== id);
-    res.json({ message: 'Categoria removida com sucesso' });
+    res.json({ message: 'Categoria removida con sucesso' });
   } catch (err) {
-    res.status(500).json({ message: 'Erro ao remover categoria' });
+    res.status(500).json({ message: 'Error al borrar categoria' });
   }
 });
+
+    // Lista de articulos
+// Simulando um "banco de dados" de articulos
+let articulos = [
+  {
+    id: 1,
+    nombre: 'Notebook Dell',
+    descripcion: 'Notebook com 16GB RAM e SSD 512GB',
+    precio: 3500,
+    categoriaId: 1
+  },
+  {
+    id: 2,
+    nombre: 'iPhone 13',
+    descripcion: 'Celular Apple com câmera dupla e 128GB',
+    precio: 4500,
+    categoriaId: 2
+  }
+];
+
+// GET - Listar todos los articulos
+app.get('/articulos', async (req, res) => {
+  try {
+    res.json(articulos);
+  } catch (err) {
+    res.status(500).json({ message: 'Error al buscar los articulos' });
+  }
+});
+
+// GET - Buscar um articulos por ID
+app.get('/articulos/:id', async (req, res) => {
+  try {
+    const id = parseInt(req.params.id);
+    const articulo = articulos.find(a => a.id === id);
+
+    if (!articulo) {
+      return res.status(404).json({ message: 'Articulo no encontrado' });
+    }
+
+    res.json(articulo);
+  } catch (err) {
+    res.status(500).json({ message: 'Error al buscar el articulo' });
+  }
+});
+
+// POST - Crear nuevo articulo
+app.post('/articulos', async (req, res) => {
+  try {
+    const { nombre, descripcion, precio, categoriaId } = req.body;
+
+    const nuevoArticulo = {
+      id: articulos.length + 1,
+      nombre,
+      descripcion,
+      precio,
+      categoriaId
+    };
+
+    articulos.push(nuevoArticulo);
+    res.status(201).json(nuevoArticulo);
+  } catch (err) {
+    res.status(500).json({ message: 'Error al crear articulo' });
+  }
+});
+
+// PUT - Atualizar um artigo
+app.put('/articulos/:id', async (req, res) => {
+  try {
+    const id = parseInt(req.params.id);
+    const { nombre, descripcion, precio, categoriaId } = req.body;
+
+    const articulo = articulos.find(a => a.id === id);
+    if (!articulo) {
+      return res.status(404).json({ message: 'Articulo no encontrado' });
+    }
+
+    articulo.nombre = nombre;
+    articulo.descripcion = descripcion;
+    articulo.precio = precio;
+    articulo.categoriaId = categoriaId;
+
+    res.json(articulo);
+  } catch (err) {
+    res.status(500).json({ message: 'Erroe al actualizar el articulo' });
+  }
+});
+
+// DELETE - Borrar articulos
+app.delete('/articulos/:id', async (req, res) => {
+  try {
+    const id = parseInt(req.params.id);
+    articulos = articulos.filter(a => a.id !== id);
+    res.json({ message: 'Articulo borrado con suceso' });
+  } catch (err) {
+    res.status(500).json({ message: 'Error al borrar el articulo' });
+  }
+});
+
+
 
 app.listen(3000, () => {
   console.log("El servidor está escuchando en el puerto 3000");
