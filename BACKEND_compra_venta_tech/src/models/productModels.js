@@ -62,17 +62,23 @@ export async function publishProduct(
   name,
   description,
   price,
-  phone,
+  photoURL,
   locality,
-  categoryid,
-  userid
+  userid,
+  categoryid
 ) {
-  const pool = await getPool();
-  const [result] = await pool.query(
-    `
-    INSERT INTO product (name, description, price, photo, locality, category_id, user_id)
+  try {
+    const pool = await getPool();
+    const [result] = await pool.query(
+      `
+    INSERT INTO product (name, description, price, photo, locality, user_id, category_id)
     VALUES (?,?,?,?,?,?,?)
-    `[(name, description, price, phone, locality, categoryid, userid)]
-  );
-  return result.insertId;
+    `,
+      [name, description, price, photoURL, locality, userid, categoryid]
+    );
+    return result.insertId;
+  } catch (error) {
+    console.error("Error creando el producto: ", error);
+    throw new Error("Error al crear el producto");
+  }
 }

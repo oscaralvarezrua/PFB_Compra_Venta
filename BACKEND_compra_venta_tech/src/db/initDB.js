@@ -38,15 +38,35 @@ const initDB = async () => {
       )
       `);
 
+    //Iniciar todas las categorias disponibles
+    await pool.query(`
+  INSERT IGNORE INTO category (name) VALUES
+  ('Ordenadores de sobremesa'),
+  ('Laptops / Portátiles'),
+  ('Tabletas'),
+  ('Smartphones'),
+  ('Accesorios para computadoras'),
+  ('Teclados'),
+  ('Ratones'),
+  ('Monitores'),
+  ('Auriculares / Headsets'),
+  ('Cámaras y cámaras de seguridad'),
+  ('Dispositivos de almacenamiento'),
+  ('Impresoras y escáneres'),
+  ('Componentes de PC'),
+  ('Dispositivos inteligentes (smart home)'),
+  ('Electrónica de consumo')
+`);
+
     //Crear Tabla de Productos
     await pool.query(`
         CREATE TABLE IF NOT EXISTS product(
         id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
         name VARCHAR (50) NOT NULL,
         description TEXT,
-        price DECIMAL(10, 2),
-        photo VARCHAR (255),
-        locality VARCHAR (100),
+        price DECIMAL(10, 2) NOT NULL,
+        photo VARCHAR (255) NOT NULL,
+        locality VARCHAR (100) NOT NULL,
         is_available BOOLEAN DEFAULT true,
         is_accepted BOOLEAN DEFAULT false,
         user_id INT UNSIGNED NOT NULL,
@@ -65,11 +85,11 @@ const initDB = async () => {
       status ENUM("acepted", "cancelled", "pending"),
       comment TINYTEXT,
       ratings ENUM ("1","2","3","4","5"), 
-      user_id INT UNSIGNED,
+      user_id INT UNSIGNED NOT NULL,
       product_id INT UNSIGNED NOT NULL,
       created_at TIMESTAMP DEFAULT NOW(),
       update_at TIMESTAMP DEFAULT NOW(),
-      FOREIGN KEY (user_id) REFERENCES user(id) ON DELETE SET NULL,
+      FOREIGN KEY (user_id) REFERENCES user(id) ,
       FOREIGN KEY (product_id) REFERENCES product(id) ON DELETE CASCADE
       )
       `);
