@@ -1,4 +1,3 @@
-
 import { createUser, getUserByEmail, getUserByUsername, getUserByValidationCode, trustPass, getUserListModel, getUserDetailModel, rateSellerModel, updatePass, getUserInf } from "../models/userModels.js";
 import Joi from "joi";
 import jwt from "jsonwebtoken";
@@ -12,12 +11,9 @@ const userSchema = Joi.object({
     .required()
     .pattern(/^[a-zA-Z0-9_]+$/)
     .messages({
-      "string.pattern.base":
-        "El username solo puede contener letras, números y barra baja.",
-      "string.min":
-        "Nombre de usuario demasiado corto, debe tener al menos 5 caracteres.",
-      "string.max":
-        "Nombre de usuario demasiado largo, debe tener como maximo 25 caracteres.",
+      "string.pattern.base": "El username solo puede contener letras, números y barra baja.",
+      "string.min": "Nombre de usuario demasiado corto, debe tener al menos 5 caracteres.",
+      "string.max": "Nombre de usuario demasiado largo, debe tener como maximo 25 caracteres.",
       "any.required": "El campo nombre es obligatorio.",
     }),
 
@@ -54,7 +50,7 @@ const userSchema = Joi.object({
 const userContoler = async (req, res, next) => {
   try {
     //Validamos los datos introducidos por el usuario
-    const { error, valor } = userSchema.validate(req.body);
+    const { error, value } = userSchema.validate(req.body);
 
     if (error) {
       const errorMessage = error.details[0].message;
@@ -64,7 +60,7 @@ const userContoler = async (req, res, next) => {
       });
     }
 
-    const { username, email, password, phone, biography, avatar } = valor;
+    const { username, email, password, phone, biography, avatar } = value;
 
     //Verificar si ya hay una cuenta con ese email
     const verifyEmail = await getUserByEmail(email);
@@ -87,14 +83,7 @@ const userContoler = async (req, res, next) => {
     }
 
     //Guardar usuario en la bbdd
-    const userBbdd = await createUser(
-      username,
-      email,
-      password,
-      phone,
-      biography,
-      avatar
-    );
+    const userBbdd = await createUser(username, email, password, phone, biography, avatar);
 
     res.status(201).json({
       status: "success",
