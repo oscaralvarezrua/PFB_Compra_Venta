@@ -1,9 +1,6 @@
 //Importar dependencias
 import express from "express";
-import {
-  error404Controller,
-  errorController,
-} from "./src/middlewares/errorControllers.js";
+import { error404Controller, errorController } from "./src/middlewares/errorControllers.js";
 import morgan from "morgan";
 import cors from "cors";
 import fileUpload from "express-fileupload";
