@@ -5,8 +5,12 @@ import checkAdmin from "../middlewares/checkAdmin.js";
 import acceptProductController from "../controllers/acceptProductController.js";
 import getProductDetails from "../controllers/getDetailProductController.js";
 import publishProductController from "../controllers/publishProductController.js";
+import getFilteredProductsController from "../controllers/getFilteredProductsController.js";
 
 const router = express.Router();
+
+//Ruta para filtros
+router.get("/", getFilteredProductsController);
 
 // Ruta para aceptar producto
 router.put(
