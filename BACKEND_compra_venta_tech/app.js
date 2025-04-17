@@ -1,9 +1,6 @@
 //Importar dependencias
 import express from "express";
-import {
-  error404Controller,
-  errorController,
-} from "./src/middlewares/errorControllers.js";
+import { error404Controller, errorController } from "./src/middlewares/errorControllers.js";
 import morgan from "morgan";
 import cors from "cors";
 import fileUpload from "express-fileupload";
@@ -215,6 +212,15 @@ app.delete("/articulos/:id", async (req, res) => {
   } catch (err) {
     res.status(500).json({ message: "Error al borrar el articulo" });
   }
+});
+
+// Middleware de manejo de errores
+app.use((err, req, res, next) => {
+  console.error(err);
+  res.status(500).json({
+    status: "error",
+    message: err.message || "Error interno del servidor",
+  });
 });
 
 app.listen(API_PORT, () => {

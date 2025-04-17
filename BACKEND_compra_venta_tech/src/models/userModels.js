@@ -58,6 +58,20 @@ const getUserByUsername = async (username) => {
   }
 };
 
+//Obtener usuario por telefono
+const getUserByPhone = async (phone) => {
+  try {
+    const pool = await getPool();
+
+    const [user] = await pool.query(`SELECT * FROM user WHERE phone = ?`, [phone]);
+
+    return user[0];
+  } catch (error) {
+    console.error("Error buscando el usuario por telefono: ", error);
+    throw new Error("No se ha encontrado el usuario"); //! Da información de que no hay ningún usuario con ese username
+  }
+};
+
 //Verifica la contraseña
 const trustPass = async (password, encriptedPass) => {
   return await bcrypt.compare(password, encriptedPass);
@@ -73,8 +87,8 @@ const userValidation = async (email, validationCode) => {
       `UPDATE user
       SET validation_code = NULL,
       updated_at = NOW()
-      WHERE validation_code = ?`,
-      [validationCode]
+      WHERE email = ? AND validation_code = ?`,
+      [email, validationCode]
     );
     return result.affectedRows > 0;
   } catch (error) {
@@ -167,7 +181,7 @@ const getUserInf = async (userId) => {
   }
 };
 
-export { createUser, getUserByEmail, getUserByUsername, trustPass, userValidation, getUserByValidationCode, getUserById, updatePass, getUserInf };
+export { createUser, getUserByEmail, getUserByUsername, trustPass, userValidation, getUserByValidationCode, getUserById, updatePass, getUserInf, getUserByPhone };
 
 // Modelo para obtener la lista de usuarios
 export async function getUserListModel() {

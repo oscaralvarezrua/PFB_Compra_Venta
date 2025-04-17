@@ -1,7 +1,9 @@
-import { createUser, getUserByEmail, getUserByUsername, getUserByValidationCode, trustPass, getUserListModel, getUserDetailModel, rateSellerModel, updatePass, getUserInf } from "../models/userModels.js";
+import { createUser, getUserByEmail, getUserByUsername, getUserByPhone, getUserByValidationCode, trustPass, getUserListModel, getUserDetailModel, rateSellerModel, updatePass, getUserInf, userValidation } from "../models/userModels.js";
 import Joi from "joi";
 import jwt from "jsonwebtoken";
-import { generateError } from "../utils/helpers.js";
+import crypto from "crypto";
+import { sendValidationEmail } from "../utils/emailConfig.js";
+//import { generateError } from "../utils/helpers.js";
 
 //Validación del usuario registrado (schema)
 const userSchema = Joi.object({
@@ -82,12 +84,33 @@ const userContoler = async (req, res, next) => {
       });
     }
 
+    //Verificar si ya hay una cuenta con ese usuario
+    const verifyPhone = await getUserByPhone(phone);
+
+    if (verifyPhone) {
+      return res.status(409).json({
+        status: "error",
+        message: "El telefono no está disponible", //! Da información de que ese correo tiene una cuenta
+      });
+    }
+
+    // Generar código de validación
+    const validationCode = crypto.randomBytes(40).toString("hex");
+
     //Guardar usuario en la bbdd
-    const userBbdd = await createUser(username, email, password, phone, biography, avatar);
+    const userBbdd = await createUser(username, email, password, phone, biography, avatar, validationCode);
+
+    // Enviar correo de validación
+    try {
+      await sendValidationEmail(email, username, validationCode);
+    } catch (emailError) {
+      console.error("Error al enviar el correo de validación:", emailError);
+      //! No devolvemos el error al usuario para no exponer problemas del servidor
+    }
 
     res.status(201).json({
       status: "success",
-      message: "Cuenta creada creada! :)",
+      message: "Cuenta creada creada! Por favor revisa el correo para validarla :)",
       data: {
         id: userBbdd,
         username,
@@ -95,16 +118,17 @@ const userContoler = async (req, res, next) => {
       },
     });
   } catch (error) {
-    next(error); //! comprobar si hay midleware que lo controle
+    next(error);
   }
 };
 
 //Controlar la validacion del usuario
-const userValidation = async (req, res, next) => {
+const validateUserController = async (req, res) => {
+  // Quitamos next si no lo vamos a usar
   try {
     const { validationCode } = req.params;
 
-    //Comprueba que hay ese codigo de validacion
+    // Comprueba que hay ese código de validación
     const user = await getUserByValidationCode(validationCode);
 
     if (!user) {
@@ -114,8 +138,8 @@ const userValidation = async (req, res, next) => {
       });
     }
 
-    //Comprobar el usuario
-    const isValid = await userValidation(validationCode);
+    // Validar el usuario usando la función del modelo
+    const isValid = await userValidation(user.email, validationCode);
 
     if (!isValid) {
       return res.status(400).json({
@@ -124,12 +148,16 @@ const userValidation = async (req, res, next) => {
       });
     }
 
-    res.status(200).json({
+    return res.status(200).json({
       status: "success",
       message: "Se ha validado el usuario",
     });
   } catch (error) {
-    next(error); //! comprobar si hay midleware que lo controle
+    console.error("Error en la validación:", error);
+    return res.status(500).json({
+      status: "error",
+      message: "Error interno del servidor",
+    });
   }
 };
 
@@ -273,7 +301,7 @@ const getUserInfo = async (req, res, next) => {
   }
 };
 
-export { userContoler, userValidation, userLogin, changePass, getUserInfo };
+export { userContoler, validateUserController, userLogin, changePass, getUserInfo };
 
 // Controlador para listar usuarios
 export async function getUserListController(req, res, next) {
