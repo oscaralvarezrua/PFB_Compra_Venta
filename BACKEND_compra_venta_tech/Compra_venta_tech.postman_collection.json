@@ -45,7 +45,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"email\": \"usuario@ejemplo.com\",\r\n    \"password\": \"pruebaContraseña2@\"\r\n}",
+							"raw": "{\r\n    \"email\": \"usuario@ejemplo.com\",\r\n    \"password\": \"pruebaContraseña2@\",\r\n\r\n    \"passwordAdmin\": \"contraseñaAdmin20\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -53,7 +53,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:3000/users/login",
+							"raw": "http://localhost:3000/users/login/admin",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -61,7 +61,8 @@
 							"port": "3000",
 							"path": [
 								"users",
-								"login"
+								"login",
+								"admin"
 							]
 						}
 					},
@@ -254,12 +255,12 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost: 3000/products",
+							"raw": "http://localhost:3000/products",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": " 3000",
+							"port": "3000",
 							"path": [
 								"products"
 							]
@@ -273,7 +274,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:3000/products/:1",
+							"raw": "http://localhost:3000/products/1",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -281,7 +282,7 @@
 							"port": "3000",
 							"path": [
 								"products",
-								":1"
+								"1"
 							],
 							"variable": [
 								{
@@ -354,7 +355,7 @@
 						"method": "PATCH",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:3000/products/:id/sold",
+							"raw": "http://localhost:3000/products/id/sold",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -362,7 +363,7 @@
 							"port": "3000",
 							"path": [
 								"products",
-								":id",
+								"id",
 								"sold"
 							],
 							"variable": [
@@ -376,12 +377,24 @@
 					"response": []
 				},
 				{
-					"name": "Eliminar artículo",
-					"request": {
-						"method": "GET",
-						"header": []
-					},
-					"response": []
+					 "name": "Eliminar artículo",
+ 					 "request": {
+   					 	"method": "DELETE",
+    					 	"header": [],
+    						"url": {
+      							"raw": "http://localhost:3000/products/1",
+      							"protocol": "http",
+     							 "host": [
+       								 "localhost"
+     							 ],
+      							"port": "3000",
+     							 "path": [
+        							"products",
+        							"1"
+      							]
+    						}
+  				},
+  					"response": []
 				}
 			]
 		},
@@ -417,22 +430,25 @@
 					"request": {
 						"method": "PATCH",
 						"header": [],
+						 "body": {
+      							"mode": "raw",
+      							"raw": "{\n  \"status\": \"cancelled\"\n}"
+    						},
 						"url": {
-							"raw": "http://localhost:3000/products/:id/sold",
+							"raw": "http://localhost:3000/transactions/:id",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "3000",
 							"path": [
-								"products",
-								":id",
-								"sold"
+								"transactions",
+								":id"
 							],
 							"variable": [
 								{
 									"key": "id",
-									"value": ""
+									"value": "1"
 								}
 							]
 						}
@@ -456,7 +472,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n         \"comment\": \"Quiero comprar su producto\",\n         \"buyerId\": \"1\",\n         \"productId\": \"2\"\n         \"productName\": \"laptop\"\n       \n}",
+							"raw": "{\n  \"productId\": \"28\",\n  \"productName\": \"pantalla\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
