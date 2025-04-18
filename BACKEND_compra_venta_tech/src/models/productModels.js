@@ -134,13 +134,36 @@ export async function setProductAsSoldModel(productId) {
   }
 }
 
-export async function updateProductbyId(productId) {
-  try {
-    const pool = await getPool();
+//Función para actualizar un producto
+export async function updateProductModel(
+  productId,
+  name,
+  description,
+  price,
+  locality,
+  category_id
+) {
+  const pool = await getPool();
 
-    const [result] = await pool.query(
-      "UPDATE product SET name = ?, description = ?, price = ?, photo = ?,locality = ?, is_available = ?, is_accepted = ?, user_id = ?, category_id = ? WHERE id = ?",
-      [productId]
-    );
-  } catch (error) {}
+  const [result] = await pool.query(
+    `
+    UPDATE product
+    SET name = ?, description = ?, price = ?, locality = ?, category_id = ?, updated_at = NOW()
+    WHERE id = ?
+    `,
+    [name, description, price, locality, category_id, productId]
+  );
+
+  if (result.affectedRows === 0) {
+    throw generateError("Producto no encontrado", 404);
+  }
+
+  return {
+    id: productId,
+    name,
+    description,
+    price,
+    locality,
+    category_id,
+  };
 }
