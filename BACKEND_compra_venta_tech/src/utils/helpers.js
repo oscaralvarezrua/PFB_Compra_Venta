@@ -1,12 +1,4 @@
-import nodemailer from "nodemailer";
-const {
-  UPLOADS_DIR,
-  SMTP_HOST,
-  SMTP_USER,
-  SMTP_PASSWORD,
-  SMTP_PORT,
-  FRONTEND_URL,
-} = process.env;
+const { UPLOADS_DIR } = process.env;
 import path from "path";
 import { v4 as uuidv4 } from "uuid";
 
@@ -34,46 +26,4 @@ export async function savePhoto(photo) {
   await photo.mv(uploadPath);
 
   return photoName;
-}
-
-const transport = nodemailer.createTransport({
-  host: SMTP_HOST,
-  port: SMTP_PORT,
-  secure: false,
-  auth: {
-    user: SMTP_USER,
-    pass: SMTP_PASSWORD,
-  },
-});
-
-export async function sendMail(email, subject, text, html) {
-  let options = {
-    from: SMTP_USER,
-    to: email,
-    subject,
-    text,
-    html,
-  };
-
-  try {
-    await transport.sendMail(options);
-  } catch (e) {
-    console.error("Error real al enviar el email:", e);
-    throw generateError("Error al enviar el email", 500);
-  }
-}
-
-export async function sendTransactionRequest(
-  sellerEmail,
-  buyerUser,
-  productName,
-  transactionId
-) {
-  let subject = "Nueva petición de compra";
-  let text = `El usuario ${buyerUser} quiere comprar tu producto ${productName}.\nHaz click en el siguiente enlace para aceptar o rechazar la transacción:\n${FRONTEND_URL}/request?transactionId=${transactionId}`;
-  let html = `
-  <a href="${FRONTEND_URL}/request?transactionId=${transactionId}">Haz click aquí para aceptar o rechazar la transacción</a>
-  
-  `;
-  await sendMail(sellerEmail, subject, text, html);
 }

@@ -82,7 +82,7 @@ const initDB = async () => {
     await pool.query(`
       CREATE TABLE IF NOT EXISTS transaction(
       id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
-      status ENUM("acepted", "cancelled", "pending"),
+      status ENUM("accepted", "cancelled", "pending"),
       comment TINYTEXT,
       ratings ENUM ("1","2","3","4","5"), 
       user_id INT UNSIGNED NOT NULL,
