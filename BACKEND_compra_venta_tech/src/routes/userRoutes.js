@@ -1,7 +1,17 @@
 //Rutas relacionadas con la información del usuario
 
 import express from "express";
-import { userContoler, validateUserController, userLogin, getUserListController, getUserDetailController, rateSellerController, changePass, getUserInfo } from "../controllers/userController.js";
+import {
+  userContoler,
+  validateUserController,
+  userLogin,
+  getUserListController,
+  getUserDetailController,
+  rateSellerController,
+  changePass,
+  getUserInfo,
+  adminLogin,
+} from "../controllers/userController.js";
 import authUserController from "../middlewares/authUserController.js";
 
 const router = express.Router();
@@ -14,6 +24,9 @@ router.get("/validate/:validationCode", validateUserController);
 
 //Login de usuarios
 router.post("/login", userLogin);
+
+//Login de administradores
+router.post("/login/admin", adminLogin);
 
 // Lista de usuarios
 router.get("/", getUserListController);

@@ -18,10 +18,11 @@ export async function acceptProduct(productId) {
 
 //Creamos función para obtener los detalles de un producto
 export async function getProductById(productId) {
-  const pool = await getPool();
+  try {
+    const pool = await getPool();
 
-  const [result] = await pool.query(
-    `
+    const [result] = await pool.query(
+      `
     SELECT 
       p.id,
       p.name,
@@ -47,14 +48,18 @@ export async function getProductById(productId) {
     JOIN user u ON p.user_id = u.id
     WHERE p.id = ?
     `,
-    [productId]
-  );
+      [productId]
+    );
 
-  if (result.length === 0) {
-    throw generateError("Ese producto no existe", 404);
+    if (result.length === 0) {
+      throw generateError("Ese producto no existe", 404);
+    }
+
+    return result[0];
+  } catch (error) {
+    console.error("Producto no encontrado: ", error);
+    throw new Error("Producto no encontrado");
   }
-
-  return result[0];
 }
 
 //Creamos Función para la publicación de un producto
@@ -81,4 +86,61 @@ export async function publishProduct(
     console.error("Error creando el producto: ", error);
     throw new Error("Error al crear el producto");
   }
+}
+export async function getAcceptProductListModel() {
+  try {
+    const pool = await getPool();
+    const [result] = await pool.query(
+      `
+    SELECT * FROM product p WHERE p.is_accepted = true;
+    `
+    );
+    return result;
+  } catch (error) {
+    console.error("Error obteniedno Productos: ", error);
+    throw new Error("Error al obtener Productos");
+  }
+}
+
+export async function deleteProductModel(productId) {
+  try {
+    const pool = await getPool();
+
+    const [result] = await pool.query("DELETE FROM product WHERE id = ?", [
+      productId,
+    ]);
+
+    return result;
+  } catch (error) {
+    console.error("Error al borrar producto: ", error);
+    throw new Error("Error al borrar producto");
+  }
+}
+
+export async function setProductAsSoldModel(productId) {
+  try {
+    const pool = await getPool();
+
+    const [result] = await pool.query(
+      "UPDATE product SET is_available = false WHERE id = ?",
+      [productId]
+    );
+    console.log(productId);
+
+    return result[0];
+  } catch (e) {
+    console.error("Error al encontrar usuario: ", e);
+    throw generateError("Error al encontrar usuario", 404);
+  }
+}
+
+export async function updateProductbyId(productId) {
+  try {
+    const pool = await getPool();
+
+    const [result] = await pool.query(
+      "UPDATE product SET name = ?, description = ?, price = ?, photo = ?,locality = ?, is_available = ?, is_accepted = ?, user_id = ?, category_id = ? WHERE id = ?",
+      [productId]
+    );
+  } catch (error) {}
 }
