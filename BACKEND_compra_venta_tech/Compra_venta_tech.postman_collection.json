@@ -391,7 +391,7 @@
             "header": [],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"productId\": \"28\",\n  \"productName\": \"ordenador\"\n}",
+              "raw": "{\n  \"productId\": \"28\",\n  \"productName\": \"teclado\"\n}",
               "options": {
                 "raw": {
                   "language": "json"
