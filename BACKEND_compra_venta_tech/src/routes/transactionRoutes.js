@@ -10,7 +10,7 @@ import express from "express";
 
 const router = express.Router();
 
-// Registro de usuarios
+// Iniciar una transacción
 router.post("/", authUserController, initTransactionController);
 
 //obtener lista solicitudes de compra
