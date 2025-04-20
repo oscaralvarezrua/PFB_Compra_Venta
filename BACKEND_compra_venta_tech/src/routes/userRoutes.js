@@ -10,8 +10,8 @@ import {
   rateSellerController,
   changePass,
   getUserInfo,
-  adminLogin,
 } from "../controllers/userController.js";
+import { adminLogin } from "../controllers/loginAdminController.js";
 import authUserController from "../middlewares/authUserController.js";
 
 const router = express.Router();
