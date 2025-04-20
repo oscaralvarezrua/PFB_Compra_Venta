@@ -1,6 +1,7 @@
 const { UPLOADS_DIR } = process.env;
 import path from "path";
 import { v4 as uuidv4 } from "uuid";
+import fs from "fs/promises";
 
 //Funciones reutilizables
 export function generateError(msg, code) {
@@ -26,4 +27,18 @@ export async function savePhoto(photo) {
   await photo.mv(uploadPath);
 
   return photoName;
+}
+
+export async function deletePhoto(photoName) {
+  try {
+    const photoPath = path.resolve(UPLOADS_DIR, photoName);
+    await fs.unlink(photoPath);
+  } catch (err) {
+    // Si el archivo no existe, puedes ignorar el error o lanzar uno personalizado
+    if (err.code === "ENOENT") {
+      throw generateError("La foto no existe.", 404);
+    } else {
+      throw generateError("Error al borrar la foto.", 500);
+    }
+  }
 }

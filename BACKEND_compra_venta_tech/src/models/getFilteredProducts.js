@@ -6,6 +6,12 @@ export async function getFilteredProducts(filters) {
   let query = `SELECT * FROM product WHERE is_accepted = true`;
   const values = [];
 
+  // Filtro por nombre (si está presente)
+  if (filters.name) {
+    query += ` AND name LIKE ?`;
+    values.push(`%${filters.name}%`);
+  }
+
   if (filters.category_id) {
     query += ` AND category_id = ?`;
     values.push(filters.category_id);

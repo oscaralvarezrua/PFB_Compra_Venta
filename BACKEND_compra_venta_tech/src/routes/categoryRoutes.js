@@ -1,25 +1,16 @@
 import express from "express";
+import getCategoryListController from "../controllers/getCategoryListController.js";
 
 const router = express.Router();
 
-// Simulando un "banco de dados"
-let categorias = [
-  { id: 1, name: "Notebooks" },
-  { id: 2, name: "Smartphones" },
-  { id: 3, name: "Acessórios" },
-];
-
 // GET - Listar todas las categorias
-router.get("/", async (req, res) => {
-  try {
-    res.json(categorias);
-  } catch (err) {
-    console.error(err);
+router.get("/", getCategoryListController);
 
-    res.status(500).json({ message: "Error al buscar categorias" });
-  }
-});
+export default router;
 
+//En principio las categorias ya vendrán dadas desde el principio y solo se tendrán que listar
+
+/*
 // GET - Buscar una categoria por ID
 router.get("/:id", async (req, res) => {
   try {
@@ -89,5 +80,4 @@ router.delete("/:id", async (req, res) => {
 
     res.status(500).json({ message: "Error al borrar categoria" });
   }
-});
-export default router;
+});*/

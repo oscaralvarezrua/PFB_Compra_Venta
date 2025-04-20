@@ -1,5 +1,9 @@
-import { publishProduct } from "../models/productModels.js";
-import { generateError, savePhoto } from "../utils/helpers.js";
+import {
+  getProductById,
+  publishProduct,
+  updateProductModel,
+} from "../models/productModels.js";
+import { generateError, savePhoto, deletePhoto } from "../utils/helpers.js";
 import Joi from "joi";
 
 //Validación de la publicación del producto (schema)
@@ -29,7 +33,7 @@ const productSchema = Joi.object({
 });
 
 //Creamos función controladora para la publicación de un nuevo artículo
-export default async function publishProductController(req, res, next) {
+export async function publishProductController(req, res, next) {
   try {
     const { error, value } = productSchema.validate(req.body);
 
@@ -42,9 +46,10 @@ export default async function publishProductController(req, res, next) {
     }
 
     const userid = req.user.id;
+    const photo = req.files.photo;
     const { name, description, price, locality, category_id } = value;
 
-    if (!name || !price || !locality || !category_id) {
+    if (!name || !price || !locality || !category_id || !photo) {
       throw generateError("Faltan campos obligatorios", 400);
     }
     //aseguramos que el archivo es una imagen
@@ -54,7 +59,6 @@ export default async function publishProductController(req, res, next) {
         message: "No se ha subido ninguna foto.",
       });
     }
-    const photo = req.files.photo;
 
     const photoUrl = await savePhoto(photo);
 
@@ -81,5 +85,64 @@ export default async function publishProductController(req, res, next) {
     });
   } catch (e) {
     next(e);
+  }
+}
+
+export async function updateProductController(req, res, next) {
+  try {
+    const { error, value } = productSchema.validate(req.body);
+
+    if (error) {
+      const errorMessage = error.details[0].message;
+      return res.status(400).json({
+        status: "error",
+        message: errorMessage,
+      });
+    }
+    const productId = req.params.id;
+    const photo = req.files.photo;
+    const { name, description, price, locality, category_id } = value;
+
+    if (!name || !price || !locality || !category_id || !photo) {
+      throw generateError("Faltan campos obligatorios", 400);
+    }
+    //aseguramos que el archivo es una imagen
+    if (!req.files || !req.files.photo) {
+      return res.status(400).json({
+        status: "error",
+        message: "No se ha subido ninguna foto.",
+      });
+    }
+
+    //obtenemos el producto actual
+    const actualProduct = await getProductById(productId);
+
+    if (actualProduct.photo) {
+      await deletePhoto(actualProduct.photo);
+    }
+
+    //guardamos la nueva foto
+    const photoUrl = await savePhoto(photo);
+
+    const updatedProduct = await updateProductModel(
+      productId,
+      name,
+      description,
+      price,
+      locality,
+      photoUrl,
+      category_id
+    );
+
+    res.send({
+      status: "ok",
+      message: "El producto actualizado correctamente",
+      data: {
+        id: productId,
+        updatedProduct,
+      },
+    });
+  } catch (err) {
+    next(err);
   }
 }

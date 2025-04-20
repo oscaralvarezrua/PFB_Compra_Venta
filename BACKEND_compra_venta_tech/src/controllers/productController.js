@@ -3,21 +3,33 @@ import {
   getProductById,
   deleteProductModel,
   setProductAsSoldModel,
+  getPendingProductListModel,
 } from "../models/productModels.js";
+import { deletePhoto } from "../utils/helpers.js";
 
 export async function getAcceptProductListController(req, res, next) {
-  /*async (req, res) => {
-  try {
-    res.json(articulos);
-  } catch (err) {
-    console.error(err);
-
-    res.status(500).json({ message: "Error al buscar los articulos" });
-  }
-} */
-
   try {
     const products = await getAcceptProductListModel();
+
+    if (!products) {
+      return res.status(404).send({
+        status: "Error",
+        message: "Productos no encontrados",
+      });
+    }
+    res.send({
+      status: "OK",
+      data: products,
+    });
+  } catch (e) {
+    next(e);
+  }
+}
+
+//productos pendientes de Aceptar por el Administrador
+export async function getPendingProductListController(req, res, next) {
+  try {
+    const products = await getPendingProductListModel();
 
     if (!products) {
       return res.status(404).send({
@@ -58,6 +70,14 @@ export async function getProductDetails(req, res, next) {
 export async function deleteProductController(req, res, next) {
   try {
     const productId = parseInt(req.params.id);
+
+    //borramos la foto de Public
+    const actualProduct = await getProductById(productId);
+
+    if (actualProduct.photo) {
+      await deletePhoto(actualProduct.photo);
+    }
+
     const product = await deleteProductModel(productId);
 
     if (!product) {
