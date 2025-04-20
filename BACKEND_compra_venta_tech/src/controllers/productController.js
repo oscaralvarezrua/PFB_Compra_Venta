@@ -7,29 +7,17 @@ import {
 } from "../models/productModels.js";
 import { deletePhoto } from "../utils/helpers.js";
 
-export async function getAcceptProductListController(req, res, next) {
+export async function getProductListController(req, res, next) {
   try {
-    const products = await getAcceptProductListModel();
+    let products = [];
 
-    if (!products) {
-      return res.status(404).send({
-        status: "Error",
-        message: "Productos no encontrados",
-      });
+    //Si es un Administrador visualizamos productos pendientes.
+    if (req.user?.role === "admin") {
+      products = await getPendingProductListModel();
+    } else {
+      //Si es un Usuario visualizamos productos aceptados
+      products = await getAcceptProductListModel();
     }
-    res.send({
-      status: "OK",
-      data: products,
-    });
-  } catch (e) {
-    next(e);
-  }
-}
-
-//productos pendientes de Aceptar por el Administrador
-export async function getPendingProductListController(req, res, next) {
-  try {
-    const products = await getPendingProductListModel();
 
     if (!products) {
       return res.status(404).send({

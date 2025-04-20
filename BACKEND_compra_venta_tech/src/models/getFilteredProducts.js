@@ -1,9 +1,14 @@
 import getPool from "../db/getPool.js";
 
-export async function getFilteredProducts(filters) {
+export async function getFilteredProducts(filters, isAdmin) {
   const pool = await getPool();
+  let query = "";
+  if (isAdmin) {
+    query = `SELECT * FROM product WHERE is_accepted = false`;
+  } else {
+    query = `SELECT * FROM product WHERE is_accepted = true AND is_available = true`;
+  }
 
-  let query = `SELECT * FROM product WHERE is_accepted = true`;
   const values = [];
 
   // Filtro por nombre (si está presente)

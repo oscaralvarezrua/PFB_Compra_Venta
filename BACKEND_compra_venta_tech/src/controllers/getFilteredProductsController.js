@@ -3,8 +3,6 @@ import { getFilteredProducts } from "../models/getFilteredProducts.js";
 //Funcion controladora para obtener detalles de los productos
 export async function getFilteredProductsController(req, res, next) {
   try {
-    console.log("Entramos aqui");
-
     const filters = {
       name: req.query.name,
       category_id: req.query.category_id,
@@ -13,8 +11,12 @@ export async function getFilteredProductsController(req, res, next) {
       order_by: req.query.order_by,
       order_direction: req.query.order_direction,
     };
+    let isAdmin = false;
+    if (req.user?.role === "admin") {
+      isAdmin = true;
+    }
 
-    const products = await getFilteredProducts(filters);
+    const products = await getFilteredProducts(filters, isAdmin);
 
     res.json({ status: "success", data: products });
   } catch (err) {

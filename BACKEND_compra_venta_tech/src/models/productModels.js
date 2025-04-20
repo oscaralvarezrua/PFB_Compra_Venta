@@ -92,7 +92,7 @@ export async function getAcceptProductListModel() {
     const pool = await getPool();
     const [result] = await pool.query(
       `
-    SELECT * FROM product p WHERE p.is_accepted = true;
+    SELECT * FROM product p WHERE p.is_accepted = true AND p.is_available = true;
     `
     );
     return result;

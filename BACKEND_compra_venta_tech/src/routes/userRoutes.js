@@ -11,7 +11,6 @@ import {
   changePass,
   getUserInfo,
 } from "../controllers/userController.js";
-import { adminLogin } from "../controllers/loginAdminController.js";
 import authUserController from "../middlewares/authUserController.js";
 
 const router = express.Router();
@@ -24,9 +23,6 @@ router.get("/validate/:validationCode", validateUserController);
 
 //Login de usuarios
 router.post("/login", userLogin);
-
-//Login de administradores
-router.post("/login/admin", adminLogin);
 
 // Lista de usuarios
 router.get("/", getUserListController);

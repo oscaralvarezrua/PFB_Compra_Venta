@@ -5,16 +5,16 @@ import checkAdmin from "../middlewares/checkAdmin.js";
 import acceptProductController from "../controllers/acceptProductController.js";
 import {
   getProductDetails,
-  getAcceptProductListController,
+  getProductListController,
   deleteProductController,
   setProtucdAsSoldController,
-  getPendingProductListController,
 } from "../controllers/productController.js";
 import {
   publishProductController,
   updateProductController,
 } from "../controllers/publish&updateProductController.js";
 import { getFilteredProductsController } from "../controllers/getFilteredProductsController.js";
+import checkOptionalAuth from "../middlewares/checkOptionalAuth.js";
 
 const router = express.Router();
 
@@ -30,7 +30,10 @@ router.put(
 router.put("/:id", authUserController, updateProductController);
 
 //Ruta para filtros de búsqueda
-router.get("/search", getFilteredProductsController);
+router.get("/search", checkOptionalAuth, getFilteredProductsController);
+
+// Ruta para visualizar Lista de productos aceptados
+router.get("/", checkOptionalAuth, getProductListController);
 
 //Ruta para detalle de producto
 router.get("/:id", getProductDetails);
@@ -40,12 +43,6 @@ router.post("/", authUserController, publishProductController);
 
 //Ruta para Marcar como vendido un producto
 router.patch("/:id/sold", authUserController, setProtucdAsSoldController);
-
-// Ruta para visualizar Lista de productos aceptados
-router.get("/", getAcceptProductListController);
-
-// Ruta para visualizar Lista de productos pendientes (Admin)
-router.get("/pending", checkAdmin, getPendingProductListController);
 
 //Ruta para eliminar producto
 router.delete("/:id", authUserController, deleteProductController);
