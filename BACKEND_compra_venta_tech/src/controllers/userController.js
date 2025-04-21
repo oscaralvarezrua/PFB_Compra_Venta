@@ -11,11 +11,14 @@ import {
   updatePass,
   getUserInf,
   userValidation,
+  getUserById,
+  updateUserModel,
 } from "../models/userModels.js";
 import Joi from "joi";
 import jwt from "jsonwebtoken";
 import crypto from "crypto";
 import { sendValidationEmail } from "../utils/emailConfig.js";
+import { savePhoto, deletePhoto } from "../utils/helpers.js";
 
 //import { generateError } from "../utils/helpers.js";
 
@@ -62,8 +65,34 @@ const userSchema = Joi.object({
     }),
 
   biography: Joi.string().allow("").max(500).optional(),
+});
 
-  avatar: Joi.string().allow("").optional(""),
+//Validación de datos que se pueden actualizar del Usuario
+const UpdateUserSchema = Joi.object({
+  username: Joi.string()
+    .min(5)
+    .max(25)
+    .required()
+    .pattern(/^[a-zA-Z0-9_]+$/)
+    .messages({
+      "string.pattern.base":
+        "El username solo puede contener letras, números y barra baja.",
+      "string.min":
+        "Nombre de usuario demasiado corto, debe tener al menos 5 caracteres.",
+      "string.max":
+        "Nombre de usuario demasiado largo, debe tener como maximo 25 caracteres.",
+      "any.required": "El campo nombre es obligatorio.",
+    }),
+
+  phone: Joi.string()
+    .pattern(/^[0-9]{9,15}$/) //? ^(?=.*[^\w\d\s][0-9\+\-\(\)\])  se puede cambiar por este para permitir simbolos y dar más juego para poner +34 por ejemplo
+    .required()
+    .messages({
+      "string.pattern.base": "El teléfono debe contener solo números",
+      "any.required": "El campo telefono es obligatorio.",
+    }),
+
+  biography: Joi.string().allow("").max(500).optional(),
 });
 
 //Control el registro de usuario
@@ -72,6 +101,7 @@ const userContoler = async (req, res, next) => {
   try {
     //Validamos los datos introducidos por el usuario
     const { error, value } = userSchema.validate(req.body);
+    const avatar = req.files.photo;
 
     if (error) {
       const errorMessage = error.details[0].message;
@@ -81,7 +111,7 @@ const userContoler = async (req, res, next) => {
       });
     }
 
-    const { username, email, password, phone, biography, avatar } = value;
+    const { username, email, password, phone, biography } = value;
 
     //Verificar si ya hay una cuenta con ese email
     const verifyEmail = await getUserByEmail(email);
@@ -103,7 +133,7 @@ const userContoler = async (req, res, next) => {
       });
     }
 
-    //Verificar si ya hay una cuenta con ese usuario
+    //Verificar si ya hay una cuenta con ese teléfono
     const verifyPhone = await getUserByPhone(phone);
 
     if (verifyPhone) {
@@ -111,6 +141,10 @@ const userContoler = async (req, res, next) => {
         status: "error",
         message: "El telefono no está disponible", //! Da información de que ese correo tiene una cuenta
       });
+    }
+    let avatarUrl = "";
+    if (avatar) {
+      avatarUrl = await savePhoto(avatar);
     }
 
     // Generar código de validación
@@ -123,7 +157,7 @@ const userContoler = async (req, res, next) => {
       password,
       phone,
       biography,
-      avatar,
+      avatarUrl,
       validationCode
     );
 
@@ -145,6 +179,87 @@ const userContoler = async (req, res, next) => {
         email,
       },
     });
+  } catch (error) {
+    next(error);
+  }
+};
+
+//Actualizar usuario
+const updateUserContoler = async (req, res, next) => {
+  try {
+    //Validamos los datos introducidos por el usuario
+    const { error, value } = UpdateUserSchema.validate(req.body);
+
+    if (error) {
+      const errorMessage = error.details[0].message;
+      return res.status(400).json({
+        status: "error",
+        message: errorMessage,
+      });
+    }
+
+    const oldDataUser = await getUserById(req.user.id);
+
+    const { username, phone, biography } = value;
+    const avatar = req.files?.avatar;
+
+    if (
+      username != oldDataUser.username ||
+      phone != oldDataUser.phone ||
+      biography != oldDataUser.biography
+    ) {
+      if (username != oldDataUser.username) {
+        //Verificar si ya hay una cuenta con ese usuario
+        const verifyUsername = await getUserByUsername(username);
+        if (verifyUsername) {
+          return res.status(409).json({
+            status: "error",
+            message: "El username no está disponible", //! Da información de que ese correo tiene una cuenta
+          });
+        }
+      }
+
+      if (phone != oldDataUser.phone) {
+        //Verificar si ya hay una cuenta con ese teléfono
+        const verifyPhone = await getUserByPhone(phone);
+        if (verifyPhone) {
+          return res.status(409).json({
+            status: "error",
+            message: "El telefono no está disponible", //! Da información de que ese correo tiene una cuenta
+          });
+        }
+      }
+
+      //modificamos imagen del avatar
+      let newAvatarUrl = null;
+
+      if (avatar) {
+        await deletePhoto(oldDataUser.avatar);
+        newAvatarUrl = await savePhoto(avatar);
+      }
+
+      //Guardar usuario en la bbdd
+      const userBbdd = await updateUserModel(
+        username,
+        phone,
+        biography,
+        newAvatarUrl,
+        req.user.id
+      );
+
+      res.status(201).json({
+        status: "success",
+        message: "Datos del usuario actualizados correctamente",
+        data: {
+          userBbdd,
+        },
+      });
+    } else {
+      res.status(201).json({
+        status: "Nothing happened",
+        message: "Los Datos del usuario no han cambiado",
+      });
+    }
   } catch (error) {
     next(error);
   }
@@ -337,6 +452,7 @@ export {
   userLogin,
   changePass,
   getUserInfo,
+  updateUserContoler,
 };
 
 // Controlador para listar usuarios

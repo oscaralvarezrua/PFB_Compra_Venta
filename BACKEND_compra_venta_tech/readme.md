@@ -65,29 +65,37 @@ Usuario:
 
 POST /users/register Registro de usuario
 
+POST /users/update Actualizar de usuario
+
+GET users/validate/:validationCode Validación de usuario
+
 POST /users/login Login de usuario
+
+GET /users Lista de usuarios
+
+GET /users/info Información de usuarios
+
+POST users/rate/:transactionId Valorar Vendedor
+
+PUT /users/password Cambio de contraseña
 
 GET users/:id Info de usuario
 
-GET /users Lista de usuarios
-
-POST /users/password Cambio de contraseña
-
-GET /users Lista de usuarios
-
-POST users/rate/:transactionId Rating Vendedor
-
-POST /users/validate/:validationCode Validar usuario
-
 Productos:
+
+GET /products/search Búsqueda de productos con filtros
 
 GET /products: Lista de artículos
 
 POST /products: Publicación de artículo
 
-GET /products/:id: Detalle de artículo
+PUT /products/:id Actualizar producto
 
 PATCH /products/:id/sold: Marcar como vendido
+
+DELETE /products/:id Eliminar un producto
+
+GET /products/:id: Detalle de artículo
 
 Categorías:
 
@@ -99,9 +107,8 @@ POST /transactions: Solicitud de compra
 
 GET /transactions: Lista de solicitudes (según rol)
 
-Admin:
+PATCH /products/:id Aceptar publicación de artículo (admin)
 
-PATCH /products/:id/approve: Aceptar publicación de artículo (admin)
 
 
 

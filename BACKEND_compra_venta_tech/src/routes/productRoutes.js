@@ -26,25 +26,25 @@ router.put(
   acceptProductController
 );
 
-//Ruta para actualizar un producto
-router.put("/:id", authUserController, updateProductController);
-
 //Ruta para filtros de búsqueda
 router.get("/search", checkOptionalAuth, getFilteredProductsController);
 
 // Ruta para visualizar Lista de productos aceptados
 router.get("/", checkOptionalAuth, getProductListController);
 
-//Ruta para detalle de producto
-router.get("/:id", getProductDetails);
-
 //Ruta para publicar un nuevo producto
 router.post("/", authUserController, publishProductController);
+
+//Ruta para actualizar un producto
+router.put("/:id", authUserController, updateProductController);
 
 //Ruta para Marcar como vendido un producto
 router.patch("/:id/sold", authUserController, setProtucdAsSoldController);
 
 //Ruta para eliminar producto
 router.delete("/:id", authUserController, deleteProductController);
+
+//Ruta para detalle de producto
+router.get("/:id", getProductDetails);
 
 export default router;

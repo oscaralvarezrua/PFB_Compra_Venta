@@ -10,6 +10,7 @@ import {
   rateSellerController,
   changePass,
   getUserInfo,
+  updateUserContoler,
 } from "../controllers/userController.js";
 import authUserController from "../middlewares/authUserController.js";
 
@@ -17,6 +18,9 @@ const router = express.Router();
 
 // Registro de usuarios
 router.post("/register", userContoler);
+
+// Actualizar usuario
+router.post("/update", authUserController, updateUserContoler);
 
 // Validacion de usuarios
 router.get("/validate/:validationCode", validateUserController);
@@ -30,13 +34,13 @@ router.get("/", getUserListController);
 // Obtener info usuario
 router.get("/info", authUserController, getUserInfo);
 
-// Detalle de usuario con histórico
-router.get("/:id", getUserDetailController);
-
 // Valorar al vendedor
 router.post("/rate/:transactionId", rateSellerController);
 
 // Cambio pass
 router.put("/password", authUserController, changePass);
+
+// Detalle de usuario con histórico
+router.get("/:id", getUserDetailController);
 
 export default router;

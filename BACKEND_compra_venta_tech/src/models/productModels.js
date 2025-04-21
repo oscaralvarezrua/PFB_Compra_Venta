@@ -65,7 +65,7 @@ export async function getProductById(productId) {
 //Creamos Función para la publicación de un producto
 export async function publishProduct(
   name,
-  description,
+  description = null,
   price,
   photoURL,
   locality,
