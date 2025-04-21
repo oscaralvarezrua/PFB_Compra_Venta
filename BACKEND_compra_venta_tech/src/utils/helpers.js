@@ -36,7 +36,7 @@ export async function deletePhoto(photoName) {
   } catch (err) {
     // Si el archivo no existe, puedes ignorar el error o lanzar uno personalizado
     if (err.code === "ENOENT") {
-      throw generateError("La foto no existe.", 404);
+      console.warn("La foto no existe.");
     } else {
       throw generateError("Error al borrar la foto.", 500);
     }
