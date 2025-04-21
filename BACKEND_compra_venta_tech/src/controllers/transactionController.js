@@ -3,10 +3,11 @@ import {
   getTransaction,
   createTransaction,
   getSellerEmail,
-  getTransactionListModel,
+  getSalesTransactionsModel,
   getSellerID,
   setTransactionStateModel,
   isAvailable,
+  getBuyTransactionsModel,
 } from "../models/transactionModels.js";
 
 export async function initTransactionController(req, res, next) {
@@ -72,12 +73,27 @@ export async function initTransactionController(req, res, next) {
 
 export async function getTransactionList(req, res, next) {
   try {
-    const transactions = await getTransactionListModel(req.user.id);
+    const { type, status } = req.query; // tipo: 'sales' o 'buys'; status: 'pending', 'accepted' o 'cancelled'
+    let transactions;
 
-    if (transactions.affectedRows === 0) {
-      return res.status(404).send({
-        status: "Error",
-        message: "Transacciones no encontradas",
+    switch (type) {
+      case "sales":
+        transactions = await getSalesTransactionsModel(req.user.id, status);
+        break;
+      case "buys":
+        transactions = await getBuyTransactionsModel(req.user.id, status);
+        break;
+      default:
+        return res.status(400).json({
+          status: "error",
+          message: "Parámetro 'type' debe ser 'sales' o 'buys'",
+        });
+    }
+
+    if (transactions.length === 0) {
+      return res.status(404).json({
+        status: "error",
+        message: "No se encontraron transacciones",
       });
     }
     res.send({

@@ -48,7 +48,7 @@ const initDB = async () => {
       ('Accesorios para ordenadores'),
       ('Teclados'),
       ('Ratones'),
-      ('Monitores'),
+      ('Monitores y televisores'),
       ('Auriculares / Headsets'),
       ('Cámaras y cámaras de seguridad'),
       ('Dispositivos de almacenamiento'),
@@ -61,6 +61,7 @@ const initDB = async () => {
       ('Cables y adaptadores'),
       ('Redes y routers'),
       ('Equipos de sonido')
+      ('Otros')
 `);
 
     //Crear Tabla de Productos
