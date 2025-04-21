@@ -7,7 +7,8 @@ export async function getFilteredProductsController(req, res, next) {
       name: req.query.name,
       category_id: req.query.category_id,
       locality: req.query.locality,
-      is_available: req.query.is_available,
+      min_price: req.query.min_price,
+      max_price: req.query.max_price,
       order_by: req.query.order_by,
       order_direction: req.query.order_direction,
     };
