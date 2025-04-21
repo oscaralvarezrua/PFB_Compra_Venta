@@ -55,14 +55,32 @@ WHERE p.id = ?`,
   }
 }
 
-async function getTransactionListModel(userId) {
+async function getSalesTransactionsModel(userId, status) {
   try {
     const pool = await getPool();
+    console.log(userId, status);
 
     const [result] = await pool.query(
-      `SELECT * FROM transaction t JOIN product p WHERE t.product_id = p.id AND p.user_id = ? `,
-      [userId]
+      `SELECT   t.id AS transaction_id,
+        t.status,
+        t.comment,
+        t.ratings,
+        t.user_id AS buyer_id,
+        t.product_id,
+        t.created_at AS transaction_created_at,
+        t.update_at AS transaction_updated_at,
+        p.name,
+        p.description,
+        p.price,
+        p.photo,
+        p.locality,
+        p.is_available,
+        p.is_accepted,
+        p.category_id,
+      p.updated_at AS product_updated_at FROM transaction t JOIN product p ON t.product_id = p.id WHERE t.status = ? AND p.user_id = ? `,
+      [status, userId]
     );
+    console.log(result);
 
     return result;
   } catch (e) {
@@ -70,6 +88,40 @@ async function getTransactionListModel(userId) {
     throw generateError("Error al mostrar lista de transacciones", 404);
   }
 }
+
+async function getBuyTransactionsModel(userId, status) {
+  try {
+    const pool = await getPool();
+
+    const [result] = await pool.query(
+      `SELECT   t.id AS transaction_id,
+        t.status,
+        t.comment,
+        t.ratings,
+        t.product_id,
+        t.created_at AS transaction_created_at,
+        t.update_at AS transaction_updated_at,
+        p.user_id AS seller_id,
+        p.name,
+        p.description,
+        p.price,
+        p.photo,
+        p.locality,
+        p.is_available,
+        p.is_accepted,
+        p.category_id,
+    p.updated_at AS product_updated_at FROM transaction t JOIN product p ON t.product_id = p.id WHERE t.status = ? AND t.user_id = ? `,
+      [status, userId]
+    );
+    console.log(result);
+
+    return result;
+  } catch (e) {
+    console.error("Error al mostrar lista de transacciones: ", e);
+    throw generateError("Error al mostrar lista de transacciones", 404);
+  }
+}
+
 async function getSellerID(productId) {
   try {
     const pool = await getPool();
@@ -120,8 +172,9 @@ export {
   createTransaction,
   getTransaction,
   getSellerEmail,
-  getTransactionListModel,
+  getSalesTransactionsModel,
   getSellerID,
   setTransactionStateModel,
   isAvailable,
+  getBuyTransactionsModel,
 };

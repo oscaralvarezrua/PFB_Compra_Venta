@@ -27,13 +27,18 @@ export async function getFilteredProducts(filters, isAdmin) {
     values.push(`%${filters.locality}%`);
   }
 
-  if (filters.is_available !== undefined) {
-    query += ` AND is_available = ?`;
-    values.push(filters.is_available === "true");
+  if (filters.min_price) {
+    query += ` AND price >= ?`;
+    values.push(filters.min_price);
+  }
+
+  if (filters.max_price) {
+    query += ` AND price <= ?`;
+    values.push(filters.max_price);
   }
 
   if (filters.order_by) {
-    const validOrderFields = ["price", "created_at"];
+    const validOrderFields = ["name", "price"];
     const direction = filters.order_direction === "asc" ? "ASC" : "DESC";
 
     if (validOrderFields.includes(filters.order_by)) {
