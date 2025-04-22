@@ -4,8 +4,6 @@
     box-sizing: border-box; 
   }
 
-
-
 /* Estilos básicos para la cabecera */
 header {
     background-color: white;
@@ -126,6 +124,19 @@ header .auth-buttons .sell-button:hover {
   }
   
   @media (max-width: 480px) {
-    header {
+    .header {
+      padding: 10px;
     }
-}
+  
+    .header .logo {
+      width: 120px;
+    }
+  
+    .header .buttons {
+      gap: 8px;
+    }
+  
+    .header .search-bar {
+      padding: 8px 10px;
+    }
+  }

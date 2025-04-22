@@ -1,7 +1,7 @@
 // Importamos los Componentes
 import { Route, Routes } from "react-router-dom";
 import Header from "./components/Header/Header";
-import Menu from "./components/Menu/Menu";  // Importa el componente Menu
+import Menu from "./components/Menu/menu";  // Importa el componente Menu
 
 
 // Importamos las páginas
