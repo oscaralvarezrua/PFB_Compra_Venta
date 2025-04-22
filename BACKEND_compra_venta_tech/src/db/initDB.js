@@ -23,6 +23,8 @@ const initDB = async () => {
         biography TEXT,
         avatar VARCHAR (200),
         role ENUM ("user", "admin") DEFAULT "user",
+        recovery_code VARCHAR(100) DEFAULT NULL,
+        recovery_code_expires DATETIME DEFAULT NULL,
         created_at TIMESTAMP DEFAULT NOW(),
         updated_at TIMESTAMP ON UPDATE NOW()
         )
@@ -55,12 +57,12 @@ const initDB = async () => {
       ('Impresoras y escáneres'),
       ('Componentes de PC'),
       ('Dispositivos inteligentes (smart home)'),
-      ('Electrónica de consumo')
+      ('Electrónica de consumo'),
       ('Consolas y videojuegos'),
       ('Relojes inteligentes y wearables'),
       ('Cables y adaptadores'),
       ('Redes y routers'),
-      ('Equipos de sonido')
+      ('Equipos de sonido'),
       ('Otros')
 `);
 
