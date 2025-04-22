@@ -1,0 +1,142 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box; 
+  }
+
+/* Estilos básicos para la cabecera */
+header {
+    background-color: white;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    overflow: hidden; /* Evita el scroll horizontal */
+    width: 100%; /* Asegura que el header ocupe todo el ancho disponible */
+    box-sizing: border-box; /* Incluye el padding en el ancho total del header */
+  }
+  
+  header .logo img {
+    width: 230px; 
+    height: auto;
+  }
+  
+  header .search-bar {
+    display: flex;
+    align-items: center;
+    border: 1px solid #ccc;
+    border-radius: 30px;
+    padding: 5px 15px;
+    margin: 0 15px;
+    flex: 1; /* Para que ocupe todo el espacio disponible */
+    max-width: 400px; /* Limita el tamaño máximo de la barra de búsqueda */
+  }
+  
+  header .search-bar input {
+    border: none;
+    outline: none;
+    padding: 8px;
+    font-size: 13px;
+    flex: 1;
+  }
+  
+  header .search-bar button {
+    background: none;
+    border: none;
+    cursor: pointer;
+  }
+
+  .search-btn img {
+    width: 15px; 
+    height: auto;
+  }
+  
+  header .auth-buttons {
+    display: flex;
+    gap: 15px;
+  }
+  
+  header .auth-buttons button {
+    padding: 10px 15px;
+    background-color: transparent;
+    color: black;
+    font-weight: bold;
+    border: 2px solid;
+    cursor: pointer;
+    border-radius: 30px;
+    transition: all 0.3s ease;  /* Añadido para una transición suave en el hover */
+}
+
+  /* Botón de Registro o inicio */
+header .auth-buttons .register-button {
+    background-color: white;
+    color: black;
+    border: 2px solid #e7c61b; 
+    font-family: 'Inter', sans-serif;
+}
+
+header .auth-buttons .register-button:hover {
+    background-color: rgba(231, 198, 27, 0.2);
+  }
+  
+  header .auth-buttons button:focus {
+    outline: none;
+  }
+  
+  /* Botón de Vender */
+header .auth-buttons .sell-button {
+    background-color: #e7c61b; 
+    color: black;
+    border: 2px solid black;
+    font-family: 'Inter', sans-serif;
+}
+
+header .auth-buttons .sell-button:hover {
+    background-color: rgba(0, 0, 0, 0.8); 
+    color: #e7c61b; 
+    border: 2px solid #e7c61b;  
+  }
+
+  /* Media Queries para hacerlo responsive */
+  @media (max-width: 768px) {
+    header {
+      padding: 10px 15px;
+    }
+  
+    header .logo img {
+      width: 180px; 
+    }
+  
+    /* Mantener el header en una fila */
+    header .search-bar {
+      width: 100%;
+      margin-top: 0;
+    }
+  
+    header .auth-buttons {
+      gap: 10px;
+    }
+  
+    /* Asegurar que todo se alinee correctamente */
+    header {
+      justify-content: flex-start;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .header {
+      padding: 10px;
+    }
+  
+    .header .logo {
+      width: 120px;
+    }
+  
+    .header .buttons {
+      gap: 8px;
+    }
+  
+    .header .search-bar {
+      padding: 8px 10px;
+    }
+  }
