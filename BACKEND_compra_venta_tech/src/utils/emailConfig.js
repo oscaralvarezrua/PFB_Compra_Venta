@@ -35,7 +35,7 @@ export async function sendMail(email, subject, html) {
   }
 }
 
-// Función para enviar el correo de validación
+//Enviar el correo de validación
 export const sendValidationEmail = async (email, username, validationCode) => {
   try {
     /*if (!process.env.BREVO_API_KEY) {
@@ -50,7 +50,7 @@ export const sendValidationEmail = async (email, username, validationCode) => {
 
     const validationUrl = `${FRONTEND_URL}/users/validate/${validationCode}`;
 
-    // Configuración del correo de validacion
+    //Correo de validacion
     const mailOptions = {
       from: {
         name: "Segunda Tec",
@@ -77,11 +77,7 @@ export const sendValidationEmail = async (email, username, validationCode) => {
       subject: mailOptions.subject,
     });
 
-    // Enviar el correo
-    //const info = await transporter.sendMail(mailOptions);
     await sendMail(mailOptions.to, mailOptions.subject, mailOptions.html);
-    // console.log("Correo enviado exitosamente:", info.messageId);
-    //console.log("Respuesta del servidor:", info.response);
 
     return true;
   } catch (error) {
@@ -110,3 +106,46 @@ export async function sendTransactionRequest(sellerEmail, buyerUser, productName
 
   await sendMail(sellerEmail, subject, html);
 }
+
+//Enviar el correo de recuperación de contraseña
+export const sendRecoveryEmail = async (email, recoveryCode) => {
+  try {
+    console.log("Iniciando envío de correo de recuperación...");
+    console.log("Configuración SMTP:", {
+      host: SMTP_HOST,
+      apiKeyConfigured: "Sí",
+    });
+
+    const recoveryUrl = `${FRONTEND_URL}/users/recover/${recoveryCode}`;
+
+    //Correo de recuperación
+    const html = `
+      <h1>Recupera aquí tu contraseña!</h1>
+      <p>¿No recuerdas tu contraseña? No te preocupes, nosotros te ayudamos a recuperarla.</p>
+      <p>Haz clic en el siguiente enlace para establecer una nueva contraseña:</p>
+      <a href="${recoveryUrl}" style="display: inline-block; padding: 10px 20px; background-color: #${COLOR_CODE}; color: black; text-decoration: none; border-radius: 5px; margin: 20px 0;">
+        Recuperar contraseña
+      </a>
+      <p>Si el botón no funciona también puedes copiar y pegar el siguiente enlace en tu navegador:</p>
+      <p>${recoveryUrl}</p>
+      <p>Este enlace expirará en 1 hora por seguridad.</p>
+      <p>Si no has solicitado recuperar tu contraseña, puedes ignorar este correo.</p>
+    `;
+
+    console.log("Opciones del correo de recuperación:", {
+      to: email,
+      subject: "Recuperación de contraseña - Segunda Tec",
+    });
+
+    await sendMail(email, "Recuperación de contraseña - Segunda Tec", html);
+
+    return true;
+  } catch (error) {
+    console.error("Error detallado al enviar el correo de recuperación:", {
+      message: error.message,
+      code: error.code,
+      stack: error.stack,
+    });
+    throw new Error("Error al enviar el correo de recuperación");
+  }
+};

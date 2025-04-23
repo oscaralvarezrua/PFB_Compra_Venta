@@ -24,7 +24,9 @@ const initDB = async () => {
         avatar VARCHAR (200),
         role ENUM ("user", "admin") DEFAULT "user",
         created_at TIMESTAMP DEFAULT NOW(),
-        updated_at TIMESTAMP ON UPDATE NOW()
+        updated_at TIMESTAMP ON UPDATE NOW(),
+        recovery_code VARCHAR(100) DEFAULT NULL,
+        recovery_code_expires DATETIME DEFAULT NULL
         )
         `);
 
