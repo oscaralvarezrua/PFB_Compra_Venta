@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useAuth } from "../hooks/useAuth";
-import "./PublishProduct.css";
+import "../styles/PublishProduct.css";
 
 const PublishProduct = () => {
   const { token } = useAuth();
@@ -34,12 +34,10 @@ const PublishProduct = () => {
 
   const handleChange = (event) => {
     const { name, value, type, files } = event.target;
-
-    if (type === "file") {
-      setFormData({ ...formData, [name]: files[0] });
-    } else {
-      setFormData({ ...formData, [name]: value });
-    }
+    setFormData({
+      ...formData,
+      [name]: type === "file" ? files[0] : value,
+    });
   };
 
   const handleSubmit = async (event) => {
