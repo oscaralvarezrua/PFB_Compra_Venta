@@ -30,41 +30,60 @@ const initDB = async () => {
         )
         `);
 
-    //Crear tabla de Categorías
+    // Tabla categorías con jerarquía
     await pool.query(`
-      CREATE TABLE IF NOT EXISTS category(
-      id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
-      name VARCHAR(50) NOT NULL UNIQUE,
-      created_at TIMESTAMP DEFAULT NOW(),
-      updated_at TIMESTAMP ON UPDATE NOW()
-      )
-      `);
+      CREATE TABLE IF NOT EXISTS category (
+        id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+        name VARCHAR(50) NOT NULL,
+        parent_id INT UNSIGNED DEFAULT NULL,
+        created_at TIMESTAMP DEFAULT NOW(),
+        updated_at TIMESTAMP ON UPDATE NOW(),
+        FOREIGN KEY (parent_id) REFERENCES category(id) ON DELETE SET NULL
+      );
+    `);
 
-    //Iniciar todas las categorias disponibles
+    // Insertar categorías principales
     await pool.query(`
-  INSERT IGNORE INTO category (name) VALUES
-      ('Ordenadores de sobremesa'),
-      ('Laptops / Portátiles'),
-      ('Tabletas'),
-      ('Móviles / Smartphones'),
-      ('Accesorios para ordenadores'),
-      ('Teclados'),
-      ('Ratones'),
-      ('Monitores y televisores'),
-      ('Auriculares / Headsets'),
-      ('Cámaras y cámaras de seguridad'),
-      ('Dispositivos de almacenamiento'),
-      ('Impresoras y escáneres'),
-      ('Componentes de PC'),
-      ('Dispositivos inteligentes (smart home)'),
-      ('Electrónica de consumo'),
-      ('Consolas y videojuegos'),
-      ('Relojes inteligentes y wearables'),
-      ('Cables y adaptadores'),
-      ('Redes y routers'),
-      ('Equipos de sonido'),
-      ('Otros')
-`);
+      INSERT INTO category (name) VALUES
+      ('Informática'),
+      ('Electrónica'),
+      ('Telefonía'),
+      ('Gamer'),
+      ('Hogar')
+    `);
+
+    // Obtener los IDs de categorías padre
+    const [parents] = await pool.query(`SELECT id, name FROM category`);
+
+    const getParentId = (name) => {
+      const cat = parents.find((c) => c.name === name);
+      return cat ? cat.id : null;
+    };
+
+    // Subcategorías organizadas
+    const subcategories = [
+      ["Portátiles", "Informática"],
+      ["Ordenadores de sobremesa", "Informática"],
+      ["Teclados", "Informática"],
+      ["Ratones", "Informática"],
+      ["Impresoras", "Informática"],
+      ["Monitores", "Electrónica"],
+      ["Auriculares", "Electrónica"],
+      ["Cámaras", "Electrónica"],
+      ["Smartphones", "Telefonía"],
+      ["Relojes inteligentes", "Telefonía"],
+      ["Consolas", "Gamer"],
+      ["Videojuegos", "Gamer"],
+      ["Domótica", "Hogar"],
+      ["Sonido", "Hogar"],
+    ];
+
+    for (const [name, parent] of subcategories) {
+      await pool.query(`INSERT INTO category (name, parent_id) VALUES (?, ?)`, [
+        name,
+        getParentId(parent),
+      ]);
+    }
 
     //Crear Tabla de Productos
     await pool.query(`
