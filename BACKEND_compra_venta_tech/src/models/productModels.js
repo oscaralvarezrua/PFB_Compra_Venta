@@ -65,7 +65,7 @@ export async function getProductById(productId) {
 //Creamos Función para la publicación de un producto
 export async function publishProduct(
   name,
-  description,
+  description = null,
   price,
   photoURL,
   locality,
@@ -92,7 +92,22 @@ export async function getAcceptProductListModel() {
     const pool = await getPool();
     const [result] = await pool.query(
       `
-    SELECT * FROM product p WHERE p.is_accepted = true;
+    SELECT * FROM product p WHERE p.is_accepted = true AND p.is_available = true;
+    `
+    );
+    return result;
+  } catch (error) {
+    console.error("Error obteniedno Productos: ", error);
+    throw new Error("Error al obtener Productos");
+  }
+}
+
+export async function getPendingProductListModel() {
+  try {
+    const pool = await getPool();
+    const [result] = await pool.query(
+      `
+    SELECT * FROM product p WHERE p.is_accepted = false;
     `
     );
     return result;
@@ -141,6 +156,7 @@ export async function updateProductModel(
   description,
   price,
   locality,
+  photo,
   category_id
 ) {
   const pool = await getPool();
@@ -148,10 +164,10 @@ export async function updateProductModel(
   const [result] = await pool.query(
     `
     UPDATE product
-    SET name = ?, description = ?, price = ?, locality = ?, category_id = ?, updated_at = NOW()
+    SET name = ?, description = ?, price = ?, locality = ?, photo = ?, category_id = ?, updated_at = NOW()
     WHERE id = ?
     `,
-    [name, description, price, locality, category_id, productId]
+    [name, description, price, locality, photo, category_id, productId]
   );
 
   if (result.affectedRows === 0) {

@@ -10,10 +10,10 @@ import express from "express";
 
 const router = express.Router();
 
-// Registro de usuarios
+// Iniciar una transacción
 router.post("/", authUserController, initTransactionController);
 
-//obtener lista solicitudes de compra
+//obtener lista solicitudes de compra (4 tipos, según Vendedor/Comprador o Pendientes / Finalizadas
 router.get("/", authUserController, getTransactionList);
 
 //Aceptar o rechazar compra

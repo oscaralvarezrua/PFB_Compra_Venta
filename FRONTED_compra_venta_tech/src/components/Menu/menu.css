@@ -1,0 +1,131 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box; 
+  }
+
+/* Estilos generales */
+.menu-container {
+    position: relative;
+    background-color: black;
+    color: white;
+    font-family: 'Inter', sans-serif;
+    padding: 10px 30px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+  
+  .menu-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+  }
+  
+  .hamburger {
+    font-size: 30px;
+    cursor: pointer;
+    margin-right: 10px; /* Espacio entre el icono y el texto */
+  }
+  
+  .hamburger:hover {
+    color: #e7c61b;
+  }
+
+  .categories-title {
+    font-size: 18px;
+    font-family: 'Inter', sans-serif;
+    margin-right: 20px; /* Espacio entre "Todas las categorías" y las categorías */
+  }
+  
+  .categories-list {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    flex-grow: 1; /* Permite que las categorías ocupen el espacio restante */
+  }
+  
+  .category {
+    cursor: pointer;
+    transition: color 0.3s ease;
+  }
+  
+  .category:hover {
+    color: #e7c61b;
+  }
+
+  /* Estilo del menú desplegable */
+.all-categories {
+    background-color: white;
+    padding: 20px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    margin-top: 10px;
+  }
+  
+  .all-categories .category {
+    color: black;
+    font-size: 18px;
+    padding: 10px 0;
+    border-bottom: 1px solid #f0f0f0;
+  }
+  
+  .all-categories .category:hover {
+    background-color: #f0f0f0;
+    color: #e7c61b; /* Cambio de color en hover */
+  }
+  
+  .dropdown-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: white;
+    width: 100%;
+    padding: 10px 20px;
+    box-shadow: 0px 4px 6px rgba(0,0,0,0.1);
+    z-index: 999;
+    box-sizing: border-box;
+    max-height: 300px;
+    overflow-y: auto;
+  }
+  
+  .dropdown-category {
+    padding: 10px;
+    cursor: pointer;
+    color: black;
+    font-weight: 500;
+  }
+  
+  .dropdown-category:hover {
+    background-color: #f0f0f0;
+  }
+  
+  
+  /* Media Query para pantallas móviles */
+  @media (max-width: 768px) {
+    .menu-header {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  
+    .hamburger {
+      font-size: 25px;
+    }
+  
+    .categories-title {
+      margin-top: 10px;
+      font-size: 16px;
+      margin-left: 0;
+    }
+  
+    .categories-list {
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 15px;
+      justify-content: center;
+    }
+  
+    .categories-list.open {
+      display: block;
+    }
+  }
+  
