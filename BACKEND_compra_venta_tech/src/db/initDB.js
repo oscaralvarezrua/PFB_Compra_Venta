@@ -25,9 +25,11 @@ const initDB = async () => {
         recovery_code VARCHAR(100) DEFAULT NULL,
         recovery_code_expires DATETIME DEFAULT NULL,
         created_at TIMESTAMP DEFAULT NOW(),
-        updated_at TIMESTAMP ON UPDATE NOW()
-      )
-    `);
+        updated_at TIMESTAMP ON UPDATE NOW(),
+        recovery_code VARCHAR(100) DEFAULT NULL,
+        recovery_code_expires DATETIME DEFAULT NULL
+        )
+        `);
 
     await pool.query(`
       CREATE TABLE IF NOT EXISTS category (

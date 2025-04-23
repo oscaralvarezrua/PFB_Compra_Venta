@@ -1,17 +1,9 @@
 //Rutas relacionadas con la información del usuario
 
 import express from "express";
-import {
-  userContoler,
-  validateUserController,
-  userLogin,
-  getUserListController,
-  getUserDetailController,
-  rateSellerController,
-  changePass,
-  getUserInfo,
-  updateUserContoler,
-} from "../controllers/userController.js";
+
+import { userContoler, validateUserController, userLogin, getUserListController, getUserDetailController, rateSellerController, changePass, getUserInfo, adminLogin, requestPassRecovery, changePassWithRecovery } from "../controllers/userController.js";
+
 import authUserController from "../middlewares/authUserController.js";
 
 const router = express.Router();
@@ -40,7 +32,13 @@ router.post("/rate/:transactionId", rateSellerController);
 // Cambio pass
 router.put("/password", authUserController, changePass);
 
+
+// Recuperar pass
+router.post("/recover", requestPassRecovery);
+router.post("/recover/:recoveryCode", changePassWithRecovery);
+
 // Detalle de usuario con histórico
 router.get("/:id", getUserDetailController);
+
 
 export default router;

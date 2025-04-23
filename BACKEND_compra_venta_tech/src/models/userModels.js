@@ -2,6 +2,7 @@
 
 import getPool from "../db/getPool.js";
 import bcrypt from "bcryptjs";
+import crypto from "crypto";
 import { generateError } from "../utils/helpers.js";
 
 //Crea nuevos usuarios
@@ -234,19 +235,69 @@ const getUserInf = async (userId) => {
   }
 };
 
-export {
-  createUser,
-  getUserByEmail,
-  getUserByUsername,
-  trustPass,
-  userValidation,
-  getUserByValidationCode,
-  getUserById,
-  updatePass,
-  getUserInf,
-  getUserByPhone,
-  updateUserModel,
+
+//Generar y guardar el código de recuperación
+const generateRecoverCode = async (email) => {
+  try {
+    const pool = await getPool();
+    const recoveryCode = crypto.randomBytes(40).toString("hex");
+
+    await pool.query(
+      `UPDATE user 
+       SET recovery_code = ?, 
+           recovery_code_expires = DATE_ADD(NOW(), INTERVAL 1 HOUR)
+       WHERE email = ?`,
+      [recoveryCode, email]
+    );
+
+    return recoveryCode;
+  } catch (error) {
+    console.error("Error generando código de recuperación:", error);
+    throw new Error("Error al generar código de recuperación");
+  }
 };
+
+//Verificar el código de recuperación
+const verifyRecoverCode = async (recoveryCode) => {
+  try {
+    const pool = await getPool();
+
+    const [user] = await pool.query(
+      `SELECT * FROM user 
+       WHERE recovery_code = ? 
+       AND recovery_code_expires > NOW()`,
+      [recoveryCode]
+    );
+
+    return user[0];
+  } catch (error) {
+    console.error("Error verificando código de recuperación:", error);
+    throw new Error("Error al verificar código de recuperación");
+  }
+};
+
+//Actualizar la contraseña
+const updatePassWithRecovery = async (recoveryCode, newPassword) => {
+  try {
+    const pool = await getPool();
+    const encriptedPass = await bcrypt.hash(newPassword, 10);
+
+    await pool.query(
+      `UPDATE user 
+       SET password = ?, 
+           recovery_code = NULL, 
+           recovery_code_expires = NULL,
+           updated_at = NOW()
+       WHERE recovery_code = ?`,
+      [encriptedPass, recoveryCode]
+    );
+  } catch (error) {
+    console.error("Error actualizando contraseña:", error);
+    throw new Error("Error al actualizar contraseña");
+  }
+};
+
+export { createUser, getUserByEmail, getUserByUsername, trustPass, userValidation, getUserByValidationCode, getUserById, updatePass, getUserInf, getUserByPhone, generateRecoverCode, verifyRecoverCode, updatePassWithRecovery };
 
 // Modelo para obtener la lista de usuarios
 export async function getUserListModel() {
