@@ -1,6 +1,5 @@
 CV Tech es una aplicación web que permite a los usuarios comprar y vender productos tecnológicos. Incluye funcionalidades como registro y login de usuarios, publicación de artículos, valoraciones de vendedores y más.
 
-
 🚀 Funcionalidades principales
 
 - Registro y validación de usuarios por email
@@ -17,7 +16,6 @@ CV Tech es una aplicación web que permite a los usuarios comprar y vender produ
 
 - Sistema de categorías para los productos
 
-
 🔧 Tecnologías usadas
 
 - Frontend: HTML, CSS, JavaScript, React
@@ -30,19 +28,15 @@ CV Tech es una aplicación web que permite a los usuarios comprar y vender produ
 
 - Entorno: Node.js + npm
 
-
-
 💡 Instalación
 
 Clona este repositorio:
 
 git clone https://github.com/oscaralvarezrua/PFB_Compra_Venta
 
-
 Instala las dependencias:
 
 npm install
-
 
 Configura las variables de entorno (usa .env o configura directamente en app.js)
 
@@ -52,12 +46,9 @@ Inicia el servidor:
 
 npm run dev
 
-
-
 🔌 Endpoints disponibles (Postman)
 
 Puedes importar la colección de Postman que contiene todos los endpoints implementados:
-
 
 Autenticación:
 
@@ -65,29 +56,100 @@ Usuario:
 
 POST /users/register Registro de usuario
 
+     -    "username": "usuario123",
+     -    "email": "usuario@ejemplo.com",
+     -    "password": "pruebaContraseña2@",
+     -    "phone": "123456789",
+     -    "biography": "Biografía opcional",
+     -    "avatar": imagen
+
+POST /users/update Actualizar de usuario
+
+     -    Autenticación obligatoria
+     -    "username": "usuario123",
+     -    "phone": "123456789",
+     -    "biography": "Biografía opcional",
+     -    "avatar": imagen
+
+GET users/validate/:validationCode Validación de usuario
+
 POST /users/login Login de usuario
 
-GET users/:id Info de usuario
+     -    "username": "usuario123",
+     -    "email": "usuario@ejemplo.com",
 
 GET /users Lista de usuarios
 
-POST /users/password Cambio de contraseña
+GET /users/info Información de usuarios
 
-GET /users Lista de usuarios
+     -    Autenticación obligatoria
 
-POST users/rate/:transactionId Rating Vendedor
+POST users/rate/:transactionId Valorar Vendedor
 
-POST /users/validate/:validationCode Validar usuario
+     -    "ratings": "5",
+     -    "comment": "Excelente vendedor"
+
+PUT /users/password Cambio de contraseña
+
+     -    Autenticación obligatoria
+     -    "currentPassword": "pruebaContraseña2@",
+     -    "newPassword": "5"
+
+GET users/:id Detalle de usuario con histórico
 
 Productos:
 
+PUT /products/:id/accept Aceptar un producto por el Administrador
+
+     -    Autenticación obligatoria
+     -    Verificación de Administrador
+
+GET /products/search Búsqueda de productos con filtros
+
+          Filtrar por:
+               name
+               category_id
+               price (mínimo y máximo opcional)
+               locality
+
+          Ordenar por:
+               name (alfabéticamente)
+               price (ascendente o descendente)
+
+    (Ejemplos de búsqueda)
+    - /products/search?name=camiseta&order_by=price&order_direction=asc
+
+    -/products/search?category_id=2&min_price=10&max_price=50&order_by=name&order_direction=desc
+
 GET /products: Lista de artículos
+
+     -    Verificación de Administrador ocional, para ver productos Pendientes de aceptación
 
 POST /products: Publicación de artículo
 
-GET /products/:id: Detalle de artículo
+     -    Autenticación obligatoria
+     -    "name": "Ordenador"
+     -    "description": "Sin usar"
+     -    "price": "500"
+     -    "photo": image
+     -    "locality": "Barcelona"
+     -    "category_id": 1
+
+PUT /products/:id Actualizar producto
+
+     -    Autenticación obligatoria
+     -    "name": "Ordenador"
+     -    "description": "Sin usar"
+     -    "price": "500"
+     -    "photo": image
+     -    "locality": "Barcelona"
+     -    "category_id": 1
 
 PATCH /products/:id/sold: Marcar como vendido
+
+DELETE /products/:id Eliminar un producto
+
+GET /products/:id: Detalle de artículo
 
 Categorías:
 
@@ -97,13 +159,22 @@ Transacciones:
 
 POST /transactions: Solicitud de compra
 
-GET /transactions: Lista de solicitudes (según rol)
+     -    Autenticación obligatoria
+     -    "productId": "28",
+     -    "productName": "pantalla"
 
-Admin:
+GET /transactions/pendingsale: lista solicitudes de compra (4 tipos, según Vendedor/Comprador o Pendientes / Finalizadas
 
-PATCH /products/:id/approve: Aceptar publicación de artículo (admin)
+     // tipo: 'sales' o 'buys'; status: 'pending', 'accepted' o 'cancelled'
+    - GET /transactions?type=sales&status=pending
+    - GET /transactions?type=sales&status=accepted
+    - GET /transactions?type=buys&status=pending
+    - GET /transactions?type=buys&status=cancelled
 
+PATCH /products/:id Aceptar publicación de artículo (Vendedor)
 
+     -    Autenticación obligatoria
+     -    "status": "cancelled"
 
 🔮 Cómo probar
 
@@ -116,8 +187,6 @@ Publica un artículo, realiza una solicitud de compra y acepta/rechaza
 Prueba el endpoint de valoración del vendedor
 
 Usa roles diferentes para probar funcionalidades de admin
-
-
 
 Dependencias Instaladas:
 
@@ -162,4 +231,3 @@ Archivos creados:
 - .gitignore
 - readme.md
 - prettierrc.json
-

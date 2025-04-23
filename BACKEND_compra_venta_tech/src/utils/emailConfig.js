@@ -1,15 +1,7 @@
 import nodemailer from "nodemailer";
 import { generateError } from "./helpers.js";
 
-const {
-  SMTP_HOST,
-  SMTP_USER,
-  SMTP_PASSWORD,
-  SMTP_PORT,
-  FRONTEND_URL,
-  SENDERS_EMAIL,
-  COLOR_CODE,
-} = process.env;
+const { SMTP_HOST, SMTP_USER, SMTP_PASSWORD, SMTP_PORT, FRONTEND_URL, SENDERS_EMAIL, COLOR_CODE } = process.env;
 
 // Configuración del transporter de nodemailer
 const transporter = nodemailer.createTransport({
@@ -58,7 +50,7 @@ export const sendValidationEmail = async (email, username, validationCode) => {
 
     const validationUrl = `${FRONTEND_URL}/users/validate/${validationCode}`;
 
-    // Configuración del correo
+    // Configuración del correo de validacion
     const mailOptions = {
       from: {
         name: "Segunda Tec",
@@ -102,12 +94,7 @@ export const sendValidationEmail = async (email, username, validationCode) => {
   }
 };
 
-export async function sendTransactionRequest(
-  sellerEmail,
-  buyerUser,
-  productName,
-  transactionId
-) {
+export async function sendTransactionRequest(sellerEmail, buyerUser, productName, transactionId) {
   let subject = "Nueva petición de compra";
   /*let text = `El usuario ${buyerUser} quiere comprar tu producto ${productName}.\nHaz click en el siguiente enlace para aceptar o rechazar la transacción:\n${FRONTEND_URL}/request?transactionId=${transactionId}`;*/
   let html = `

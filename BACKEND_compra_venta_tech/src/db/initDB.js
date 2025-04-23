@@ -23,6 +23,8 @@ const initDB = async () => {
         biography TEXT,
         avatar VARCHAR (200),
         role ENUM ("user", "admin") DEFAULT "user",
+        recovery_code VARCHAR(100) DEFAULT NULL,
+        recovery_code_expires DATETIME DEFAULT NULL,
         created_at TIMESTAMP DEFAULT NOW(),
         updated_at TIMESTAMP ON UPDATE NOW()
         )
@@ -41,21 +43,27 @@ const initDB = async () => {
     //Iniciar todas las categorias disponibles
     await pool.query(`
   INSERT IGNORE INTO category (name) VALUES
-  ('Ordenadores de sobremesa'),
-  ('Laptops / Portátiles'),
-  ('Tabletas'),
-  ('Smartphones'),
-  ('Accesorios para computadoras'),
-  ('Teclados'),
-  ('Ratones'),
-  ('Monitores'),
-  ('Auriculares / Headsets'),
-  ('Cámaras y cámaras de seguridad'),
-  ('Dispositivos de almacenamiento'),
-  ('Impresoras y escáneres'),
-  ('Componentes de PC'),
-  ('Dispositivos inteligentes (smart home)'),
-  ('Electrónica de consumo')
+      ('Ordenadores de sobremesa'),
+      ('Laptops / Portátiles'),
+      ('Tabletas'),
+      ('Móviles / Smartphones'),
+      ('Accesorios para ordenadores'),
+      ('Teclados'),
+      ('Ratones'),
+      ('Monitores y televisores'),
+      ('Auriculares / Headsets'),
+      ('Cámaras y cámaras de seguridad'),
+      ('Dispositivos de almacenamiento'),
+      ('Impresoras y escáneres'),
+      ('Componentes de PC'),
+      ('Dispositivos inteligentes (smart home)'),
+      ('Electrónica de consumo'),
+      ('Consolas y videojuegos'),
+      ('Relojes inteligentes y wearables'),
+      ('Cables y adaptadores'),
+      ('Redes y routers'),
+      ('Equipos de sonido'),
+      ('Otros')
 `);
 
     //Crear Tabla de Productos

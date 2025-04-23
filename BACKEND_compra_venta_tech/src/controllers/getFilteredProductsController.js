@@ -1,22 +1,26 @@
-import { getProductById } from "../models/productModels.js";
+import { getFilteredProducts } from "../models/getFilteredProducts.js";
 
 //Funcion controladora para obtener detalles de los productos
-export default async function getProductDetails(req, res, next) {
+export async function getFilteredProductsController(req, res, next) {
   try {
-    const productId = req.params.id;
-    const product = await getProductById(productId);
-
-    if (!product) {
-      return res.status(404).send({
-        status: "Error",
-        message: "Producto no encontrado",
-      });
+    const filters = {
+      name: req.query.name,
+      category_id: req.query.category_id,
+      locality: req.query.locality,
+      min_price: req.query.min_price,
+      max_price: req.query.max_price,
+      order_by: req.query.order_by,
+      order_direction: req.query.order_direction,
+    };
+    let isAdmin = false;
+    if (req.user?.role === "admin") {
+      isAdmin = true;
     }
-    res.send({
-      status: "OK",
-      data: product,
-    });
-  } catch (e) {
-    next(e);
+
+    const products = await getFilteredProducts(filters, isAdmin);
+
+    res.json({ status: "success", data: products });
+  } catch (err) {
+    next(err);
   }
 }
