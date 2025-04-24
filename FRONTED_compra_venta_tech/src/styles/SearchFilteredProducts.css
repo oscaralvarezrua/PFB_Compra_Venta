@@ -4,47 +4,40 @@
   box-sizing: border-box;
 }
 
+/* Mobile First */
 .filtered-products-page {
-  max-width: 800px;
-  margin: 40px auto;
-  padding: 30px;
+  padding: 20px;
+  margin: 20px auto;
   font-family: "Inter", sans-serif;
   background-color: white;
   border: 2px solid #e7c61b;
   border-radius: 15px;
-  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
 }
 
-/* Títulos */
 .filtered-products-page .title {
   text-align: center;
-  margin-bottom: 25px;
+  margin-bottom: 20px;
+  font-size: 20px;
   color: black;
-  font-size: 24px;
 }
 
-/* Formulario de filtros */
 .filters-form {
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
   gap: 15px;
-  justify-content: space-between;
   margin-bottom: 30px;
 }
 
 .filters-form input,
 .filters-form select {
-  flex: 1 1 calc(50% - 10px);
   padding: 10px;
   font-size: 15px;
   border: 2px solid #ccc;
   border-radius: 10px;
-  font-family: "Inter", sans-serif;
 }
 
-/* Botón buscar */
 .filters-form button {
-  flex: 1 1 100%;
   padding: 12px;
   background-color: #e7c61b;
   color: black;
@@ -53,16 +46,14 @@
   border-radius: 30px;
   cursor: pointer;
   transition: all 0.3s ease;
-  font-family: "Inter", sans-serif;
 }
 
 .filters-form button:hover {
-  background-color: rgba(0, 0, 0, 0.8);
+  background-color: black;
   color: #e7c61b;
   border-color: #e7c61b;
 }
 
-/* Lista de resultados */
 .product-list {
   list-style: none;
   padding: 0;
@@ -75,50 +66,54 @@
 
 .product-item h3 {
   margin-bottom: 5px;
+  font-size: 16px;
   color: #333;
-  font-size: 18px;
 }
 
 .product-item p {
+  font-size: 13px;
   color: #555;
-  font-size: 14px;
 }
 
-/* Mensajes */
 .loading,
 .no-results {
   text-align: center;
   font-weight: 500;
   font-size: 14px;
   color: #444;
-  margin-top: 10px;
 }
 
-/* Mobile First */
-@media (max-width: 480px) {
+/* Desktop */
+@media (min-width: 481px) {
   .filtered-products-page {
-    padding: 20px;
-    margin: 20px;
+    max-width: 800px;
+    padding: 30px;
   }
 
   .filtered-products-page .title {
-    font-size: 20px;
+    font-size: 24px;
   }
 
   .filters-form {
-    flex-direction: column;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
   }
 
   .filters-form input,
   .filters-form select {
+    flex: 1 1 calc(50% - 10px);
+  }
+
+  .filters-form button {
     flex: 1 1 100%;
   }
 
   .product-item h3 {
-    font-size: 16px;
+    font-size: 18px;
   }
 
   .product-item p {
-    font-size: 13px;
+    font-size: 14px;
   }
 }
