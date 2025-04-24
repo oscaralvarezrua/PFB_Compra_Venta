@@ -53,19 +53,21 @@ const Header = () => {
       </div>
 
       <div className="auth-buttons">
-        {/* Aquí ajustar la lógica para usar autenticación real */}
-        <button className="register-button">
-          Regístrate o inicia sesión
-        </button>
-        <button
-          className="sell-button"
-          onClick={() => (window.location.href = "/vender")}
-        >
-          Vender
-        </button>
+      <Link to="/register">
+          <button className="register-button">
+            Regístrate o inicia sesión
+          </button>
+        </Link>
+
+        <Link to="/register">
+          <button className="sell-button">
+            Vender
+          </button>
+        </Link>
       </div>
     </header>
   );
 };
+
 
 export default Header;
