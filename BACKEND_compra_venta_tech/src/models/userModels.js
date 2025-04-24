@@ -235,7 +235,6 @@ const getUserInf = async (userId) => {
   }
 };
 
-
 //Generar y guardar el código de recuperación
 const generateRecoverCode = async (email) => {
   try {
@@ -297,7 +296,22 @@ const updatePassWithRecovery = async (recoveryCode, newPassword) => {
   }
 };
 
-export { createUser, getUserByEmail, getUserByUsername, trustPass, userValidation, getUserByValidationCode, getUserById, updatePass, getUserInf, getUserByPhone, generateRecoverCode, verifyRecoverCode, updatePassWithRecovery };
+export {
+  createUser,
+  updateUserModel,
+  getUserByEmail,
+  getUserByUsername,
+  trustPass,
+  userValidation,
+  getUserByValidationCode,
+  getUserById,
+  updatePass,
+  getUserInf,
+  getUserByPhone,
+  generateRecoverCode,
+  verifyRecoverCode,
+  updatePassWithRecovery,
+};
 
 // Modelo para obtener la lista de usuarios
 export async function getUserListModel() {

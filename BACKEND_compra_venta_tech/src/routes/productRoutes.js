@@ -8,6 +8,7 @@ import {
   getProductListController,
   deleteProductController,
   setProtucdAsSoldController,
+  addVisitProductController,
 } from "../controllers/productController.js";
 import {
   publishProductController,
@@ -37,6 +38,9 @@ router.post("/", authUserController, publishProductController);
 
 //Ruta para actualizar un producto
 router.put("/:id", authUserController, updateProductController);
+
+//Ruta para incrementar visitas del producto
+router.put("/:id/addvisit", addVisitProductController);
 
 //Ruta para Marcar como vendido un producto
 router.patch("/:id/sold", authUserController, setProtucdAsSoldController);

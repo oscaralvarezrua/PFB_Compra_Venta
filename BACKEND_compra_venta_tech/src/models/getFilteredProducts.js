@@ -38,7 +38,7 @@ export async function getFilteredProducts(filters, isAdmin) {
   }
 
   if (filters.order_by) {
-    const validOrderFields = ["name", "price"];
+    const validOrderFields = ["name", "price", "visits", "created_at"];
     const direction = filters.order_direction === "asc" ? "ASC" : "DESC";
 
     if (validOrderFields.includes(filters.order_by)) {

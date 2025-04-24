@@ -4,6 +4,7 @@ import {
   deleteProductModel,
   setProductAsSoldModel,
   getPendingProductListModel,
+  addVisitProductModel,
 } from "../models/productModels.js";
 import { deletePhoto } from "../utils/helpers.js";
 
@@ -92,6 +93,24 @@ export async function setProtucdAsSoldController(req, res, next) {
     res.status(200).json({
       status: "success",
       message: `Producto ${productId} marcado como vendido.`,
+    });
+  } catch (err) {
+    next(err);
+  }
+}
+export async function addVisitProductController(req, res, next) {
+  try {
+    const productId = req.params.id;
+
+    const updatedProduct = await addVisitProductModel(productId);
+
+    res.send({
+      status: "ok",
+      message: "La visita se ha incrementado correctamente",
+      data: {
+        id: productId,
+        updatedProduct,
+      },
     });
   } catch (err) {
     next(err);
