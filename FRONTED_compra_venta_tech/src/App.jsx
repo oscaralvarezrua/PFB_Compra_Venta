@@ -9,6 +9,7 @@ import SearchResults from "./pages/SearchResults";
 import PublishProduct from "./pages/PublishProduct";
 import SearchFilteredProducts from "./pages/SearchFilteredProducts";
 import Register from "./pages/Register";
+import NotFound from "./pages/NotFound";
 
 function App() {
   const location = useLocation(); // Obtener la ubicación actual de la ruta
@@ -27,7 +28,8 @@ function App() {
         <Route path="/search" element={<SearchResults />} />
         <Route path="/publicar" element={<PublishProduct />} />
         <Route path="/filtrados" element={<SearchFilteredProducts />} />
-        <Route path="/register" element={<Register />} /> 
+        <Route path="/register" element={<Register />} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </>
   );
