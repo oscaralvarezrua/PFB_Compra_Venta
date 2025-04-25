@@ -104,8 +104,10 @@ const UpdateUserSchema = Joi.object({
 const userContoler = async (req, res, next) => {
   try {
     //Validamos los datos introducidos por el usuario
-    const { error, value } = userSchema.validate(req.body);
-    const avatar = req.files.avatar;
+    const { error, value } = userSchema.validate(req.body, {
+      allowUnknown: true,
+    });
+    const avatar = req.files?.avatar;
 
     if (error) {
       const errorMessage = error.details[0].message;
@@ -146,7 +148,7 @@ const userContoler = async (req, res, next) => {
         message: "El telefono no está disponible", //! Da información de que ese correo tiene una cuenta
       });
     }
-    let avatarUrl = "";
+    let avatarUrl = null;
 
     if (avatar) {
       avatarUrl = await savePhoto(avatar);
