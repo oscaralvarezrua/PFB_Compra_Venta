@@ -183,3 +183,28 @@ export async function updateProductModel(
     category_id,
   };
 }
+
+export async function addVisitProductModel(
+  productId,
+  
+) {
+  const pool = await getPool();
+
+  const [result] = await pool.query(
+    `
+    UPDATE product
+    SET visits = visits + 1
+    WHERE id = ?
+    `,
+    [productId]
+  );
+
+  if (result.affectedRows === 0) {
+    throw generateError("Producto no encontrado", 404);
+  }
+
+  return {
+    id: productId,
+    
+  };
+}

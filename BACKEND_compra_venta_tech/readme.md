@@ -121,6 +121,8 @@ GET /products/search Búsqueda de productos con filtros
 
     -/products/search?category_id=2&min_price=10&max_price=50&order_by=name&order_direction=desc
 
+    -/products/search?order_by=visits&order_direction=desc
+
 GET /products: Lista de artículos
 
      -    Verificación de Administrador ocional, para ver productos Pendientes de aceptación
@@ -144,6 +146,8 @@ PUT /products/:id Actualizar producto
      -    "photo": image
      -    "locality": "Barcelona"
      -    "category_id": 1
+
+PUT /products/:id/addvisit Ruta para incrementar visitas del producto
 
 PATCH /products/:id/sold: Marcar como vendido
 
