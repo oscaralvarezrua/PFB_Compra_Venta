@@ -4,22 +4,22 @@
   box-sizing: border-box;
 }
 
-/* Mobile First */
 .publish-page {
-  padding: 20px;
-  margin: 20px auto;
+  max-width: 600px;
+  margin: 40px auto;
+  padding: 30px;
   font-family: "Inter", sans-serif;
   background-color: white;
   border: 2px solid #e7c61b;
   border-radius: 15px;
-  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
 }
 
 .publish-page h2 {
   text-align: center;
-  margin-bottom: 20px;
-  font-size: 20px;
+  margin-bottom: 25px;
   color: black;
+  font-size: 24px;
 }
 
 .publish-page form {
@@ -28,13 +28,23 @@
   gap: 15px;
 }
 
-.publish-page input,
+.publish-page input[type="text"],
+.publish-page input[type="number"],
+.publish-page input[type="file"],
 .publish-page textarea,
 .publish-page select {
-  padding: 10px;
-  font-size: 15px;
+  padding: 12px;
   border: 2px solid #ccc;
   border-radius: 10px;
+  font-size: 15px;
+  font-family: "Inter", sans-serif;
+}
+
+/* Estilo del select */
+.publish-page select {
+  background-color: white;
+  color: black;
+  cursor: pointer;
 }
 
 .publish-page textarea {
@@ -56,29 +66,68 @@
   border-radius: 30px;
   cursor: pointer;
   transition: all 0.3s ease;
+  font-family: "Inter", sans-serif;
 }
 
 .publish-page button[type="submit"]:hover {
-  background-color: black;
+  background-color: rgba(0, 0, 0, 0.8);
   color: #e7c61b;
   border-color: #e7c61b;
 }
 
 .publish-page p {
   text-align: center;
-  margin-top: 10px;
+  margin-top: 15px;
   font-weight: bold;
   color: green;
 }
 
-/* Desktop */
-@media (min-width: 481px) {
+/* Mensajes de feedback */
+.feedback-message {
+  text-align: center;
+  margin-top: 15px;
+  padding: 10px 20px;
+  border-radius: 10px;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.feedback-message.success {
+  color: green;
+  background-color: #e6f9e6;
+  border: 2px solid green;
+}
+
+.feedback-message.error {
+  color: red;
+  background-color: #ffe6e6;
+  border: 2px solid red;
+}
+
+.preview-file {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+  margin-top: 10px;
+}
+
+.delete-file-btn {
+  background-color: transparent;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+  color: red;
+}
+
+/* Responsive */
+@media (max-width: 480px) {
   .publish-page {
-    max-width: 600px;
-    padding: 30px;
+    padding: 20px;
+    margin: 20px;
   }
 
   .publish-page h2 {
-    font-size: 24px;
+    font-size: 20px;
   }
 }
