@@ -41,14 +41,14 @@ const initDB = async () => {
       )
     `);
 
-    //Categorías padre
+    /*//Categorías padre
     await pool.query(`
       INSERT INTO category (name) VALUES
       ('Informática'),
       ('Electrónica'),
       ('Telefonía'),
       ('Gamer'),
-      ('Hogar')`);
+      ('Hogar')`);*/
 
     // Subcategorías
     await pool.query(`

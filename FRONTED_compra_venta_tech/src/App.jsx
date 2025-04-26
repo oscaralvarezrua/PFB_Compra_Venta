@@ -9,6 +9,8 @@ import SearchResults from "./pages/SearchResults";
 import PublishProduct from "./pages/PublishProduct";
 import SearchFilteredProducts from "./pages/SearchFilteredProducts";
 import Register from "./pages/Register";
+import Login from "./pages/Login";
+import UserDataAndChangePass from "./pages/UserDataAndChangePass";
 import NotFound from "./pages/NotFound";
 
 function App() {
@@ -29,7 +31,10 @@ function App() {
         <Route path="/publicar" element={<PublishProduct />} />
         <Route path="/filtrados" element={<SearchFilteredProducts />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/changepassword" element={<UserDataAndChangePass />} />
         <Route path="*" element={<NotFound />} />
+
       </Routes>
     </>
   );

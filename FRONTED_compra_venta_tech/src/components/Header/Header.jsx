@@ -53,21 +53,18 @@ const Header = () => {
       </div>
 
       <div className="auth-buttons">
-      <Link to="/register">
+        <Link to="/login">
           <button className="register-button">
             Regístrate o inicia sesión
           </button>
         </Link>
 
         <Link to="/register">
-          <button className="sell-button">
-            Vender
-          </button>
+          <button className="sell-button">Vender</button>
         </Link>
       </div>
     </header>
   );
 };
-
 
 export default Header;

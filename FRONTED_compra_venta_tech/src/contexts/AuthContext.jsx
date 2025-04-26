@@ -1,10 +1,10 @@
-import React, { createContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 
 //Creamos el contexto
 const AuthContext = createContext();
 export { AuthContext };
 //Creamos el proveedor
-const AuthProvider = ({ children }) => {
+export function AuthProvider({ children }) {
   //Leer el token desde localStorage
   const savedToken = localStorage.getItem("token");
   const [token, setToken] = useState(savedToken ? savedToken : "");
@@ -51,6 +51,6 @@ const AuthProvider = ({ children }) => {
       {children}
     </AuthContext.Provider>
   );
-};
+}
 
-export default AuthProvider;
+export const useAuth = () => useContext(AuthContext);
