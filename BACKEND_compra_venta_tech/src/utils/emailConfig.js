@@ -1,7 +1,16 @@
 import nodemailer from "nodemailer";
 import { generateError } from "./helpers.js";
 
-const { SMTP_HOST, SMTP_USER, SMTP_PASSWORD, SMTP_PORT, FRONTEND_URL, SENDERS_EMAIL, COLOR_CODE } = process.env;
+const {
+  SMTP_HOST,
+  SMTP_USER,
+  SMTP_PASSWORD,
+  SMTP_PORT,
+  BACKEND_URL,
+  FRONTEND_URL,
+  SENDERS_EMAIL,
+  COLOR_CODE,
+} = process.env;
 
 // Configuración del transporter de nodemailer
 const transporter = nodemailer.createTransport({
@@ -48,7 +57,7 @@ export const sendValidationEmail = async (email, username, validationCode) => {
       apiKeyConfigured: "Sí",
     });
 
-    const validationUrl = `${FRONTEND_URL}/users/validate/${validationCode}`;
+    const validationUrl = `${BACKEND_URL}/users/validate/${validationCode}`;
 
     //Correo de validacion
     const mailOptions = {
@@ -90,9 +99,14 @@ export const sendValidationEmail = async (email, username, validationCode) => {
   }
 };
 
-export async function sendTransactionRequest(sellerEmail, buyerUser, productName, transactionId) {
+export async function sendTransactionRequest(
+  sellerEmail,
+  buyerUser,
+  productName,
+  transactionId
+) {
   let subject = "Nueva petición de compra";
-  /*let text = `El usuario ${buyerUser} quiere comprar tu producto ${productName}.\nHaz click en el siguiente enlace para aceptar o rechazar la transacción:\n${FRONTEND_URL}/request?transactionId=${transactionId}`;*/
+  /*let text = `El usuario ${buyerUser} quiere comprar tu producto ${productName}.\nHaz click en el siguiente enlace para aceptar o rechazar la transacción:\n${BACKEND_URL}/request?transactionId=${transactionId}`;*/
   let html = `
                 <h1>¡Enhorabuena!</h1>
                 <p>El usuario <strong>${buyerUser}</strong>  quiere comprar tu producto <strong>${productName}</strong> .\nHaz click en el siguiente enlace para aceptar o rechazar la transacción:</p>
@@ -116,7 +130,7 @@ export const sendRecoveryEmail = async (email, recoveryCode) => {
       apiKeyConfigured: "Sí",
     });
 
-    const recoveryUrl = `${FRONTEND_URL}/users/recover/${recoveryCode}`;
+    const recoveryUrl = `${BACKEND_URL}/users/recover/${recoveryCode}`;
 
     //Correo de recuperación
     const html = `
