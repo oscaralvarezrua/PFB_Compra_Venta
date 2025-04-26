@@ -40,7 +40,7 @@
   font-family: "Inter", sans-serif;
 }
 
-/* Estilo del select */
+/* Select */
 .publish-page select {
   background-color: white;
   color: black;
@@ -82,7 +82,7 @@
   color: green;
 }
 
-/* Mensajes de feedback */
+/* Feedback */
 .feedback-message {
   text-align: center;
   margin-top: 15px;
