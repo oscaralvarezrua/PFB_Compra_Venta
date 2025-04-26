@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import "../styles/SearchFilteredProducts.css";
 
+//Busqueda y filtrado productos
 const SearchFilteredProducts = () => {
   const location = useLocation();
   const navigate = useNavigate();
@@ -18,11 +19,11 @@ const SearchFilteredProducts = () => {
     order_direction: "asc",
   });
 
-  // Estado para los productos obtenidos y para el estado de carga
+  // Estado para los productos
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // Cargar productos al cambiar la URL (query string con los filtros)
+  // Cargar productos automáticamente
   useEffect(() => {
     const fetchProducts = async () => {
       setLoading(true);
@@ -42,7 +43,7 @@ const SearchFilteredProducts = () => {
     fetchProducts();
   }, [location.search]);
 
-  // Actualizar valores del formulario
+  // Actualizar formulario
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFilters((prev) => ({
@@ -51,7 +52,7 @@ const SearchFilteredProducts = () => {
     }));
   };
 
-  // Enviar formulario: actualiza la URL con los filtros como query params
+  // Enviar formulario
   const handleSubmit = (e) => {
     e.preventDefault();
     const params = new URLSearchParams();

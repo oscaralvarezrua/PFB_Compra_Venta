@@ -113,6 +113,7 @@ const PublishProduct = () => {
           placeholder="Precio (€)"
           value={formData.price}
           onChange={handleChange}
+          min="0"
           required
         />
 
