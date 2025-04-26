@@ -57,7 +57,9 @@
   padding: 0;
 }
 
-.publish-page button[type="submit"] {
+/* Botones */
+.publish-page button[type="submit"],
+.publish-page .reset-button {
   padding: 12px;
   background-color: #e7c61b;
   color: black;
@@ -69,12 +71,19 @@
   font-family: "Inter", sans-serif;
 }
 
-.publish-page button[type="submit"]:hover {
+.publish-page button[type="submit"]:hover,
+.publish-page .reset-button:hover {
   background-color: rgba(0, 0, 0, 0.8);
   color: #e7c61b;
   border-color: #e7c61b;
 }
 
+/* Espacio entre botones */
+.publish-page .reset-button {
+  margin-top: 10px;
+}
+
+/* Feedback */
 .publish-page p {
   text-align: center;
   margin-top: 15px;
@@ -82,7 +91,6 @@
   color: green;
 }
 
-/* Feedback */
 .feedback-message {
   text-align: center;
   margin-top: 15px;
