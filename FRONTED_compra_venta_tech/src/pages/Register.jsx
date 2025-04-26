@@ -1,3 +1,4 @@
+//Página de registro
 import React from "react";
 
 const Register = () => {

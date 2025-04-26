@@ -1,10 +1,16 @@
-import React, { useState, useEffect } from "react";
+// Página de publicación artículo
+import React, { useState, useEffect, useRef } from "react";
+import { useNavigate } from "react-router-dom"; // ✅ Necesario para el botón Volver
 import { useAuth } from "../hooks/useAuth";
 import "../styles/PublishProduct.css";
 
 const PublishProduct = () => {
   const { token } = useAuth();
+  const navigate = useNavigate(); // ✅
 
+  const fileInputRef = useRef(null); // Para limpiar el input de tipo file
+
+  // Estados
   const [formData, setFormData] = useState({
     name: "",
     description: "",
@@ -15,9 +21,9 @@ const PublishProduct = () => {
   });
 
   const [categories, setCategories] = useState([]);
-  const [message, setMessage] = useState("");
+  const [submitMessage, setSubmitMessage] = useState("");
 
-  // Obtener categorías desde el backend
+  // Cargar categorías
   useEffect(() => {
     const fetchCategories = async () => {
       try {
@@ -32,6 +38,7 @@ const PublishProduct = () => {
     fetchCategories();
   }, []);
 
+  // Cambios en los inputs
   const handleChange = (event) => {
     const { name, value, type, files } = event.target;
     setFormData({
@@ -40,6 +47,7 @@ const PublishProduct = () => {
     });
   };
 
+  // Enviar formulario
   const handleSubmit = async (event) => {
     event.preventDefault();
 
@@ -60,19 +68,36 @@ const PublishProduct = () => {
       const data = await res.json();
 
       if (!res.ok) {
-        setMessage(data.message || "Algo ha fallado 😢");
+        setSubmitMessage(data.message || "Algo ha fallado, lo sentimos.");
       } else {
-        setMessage("¡Producto publicado correctamente! ✅");
+        setSubmitMessage("¡Producto publicado correctamente! ✅");
+
+        // Limpiar formulario
+        setFormData({
+          name: "",
+          description: "",
+          price: "",
+          locality: "",
+          category_id: "",
+          photo: null,
+        });
+        if (fileInputRef.current) fileInputRef.current.value = "";
       }
     } catch (error) {
       console.error("Error al conectar con el servidor:", error);
-      setMessage("Error al conectar con el servidor.");
+      setSubmitMessage("Error al conectar con el servidor.");
     }
+  };
+
+  // Botón volver al inicio
+  const handleReset = () => {
+    navigate("/");
   };
 
   return (
     <div className="publish-page">
       <h2>Publicar un nuevo artículo</h2>
+
       <form onSubmit={handleSubmit} encType="multipart/form-data">
         <input
           type="text"
@@ -94,6 +119,7 @@ const PublishProduct = () => {
           type="number"
           name="price"
           placeholder="Precio (€)"
+          min="0"
           value={formData.price}
           onChange={handleChange}
           required
@@ -122,12 +148,43 @@ const PublishProduct = () => {
           ))}
         </select>
 
-        <input type="file" name="photo" onChange={handleChange} required />
+        <div className="file-input-wrapper">
+          <input
+            type="file"
+            name="photo"
+            onChange={handleChange}
+            ref={fileInputRef}
+            required
+          />
+          {formData.photo && (
+            <button
+              type="button"
+              className="delete-file-btn"
+              onClick={() => {
+                setFormData({ ...formData, photo: null });
+                if (fileInputRef.current) fileInputRef.current.value = "";
+              }}
+            >
+              X
+            </button>
+          )}
+        </div>
 
         <button type="submit">Publicar artículo</button>
+        <button type="button" onClick={handleReset} className="reset-button">
+          Volver al inicio
+        </button>
       </form>
 
-      {message && <p>{message}</p>}
+      {submitMessage && (
+        <p
+          className={`feedback-message ${
+            submitMessage.includes("✅") ? "success" : "error"
+          }`}
+        >
+          {submitMessage}
+        </p>
+      )}
     </div>
   );
 };

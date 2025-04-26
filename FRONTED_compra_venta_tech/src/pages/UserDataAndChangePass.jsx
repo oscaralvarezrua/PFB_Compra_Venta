@@ -1,3 +1,5 @@
+
+//Página datos usuario con posibilidad de cambio de contraseña
 import React from "react";
 
 const UserDataAndChangePass = () => {
@@ -10,3 +12,4 @@ const UserDataAndChangePass = () => {
 };
 
 export default UserDataAndChangePass;
+

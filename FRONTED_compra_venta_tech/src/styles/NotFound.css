@@ -1,0 +1,82 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.notfound-container {
+  font-family: "Inter", sans-serif;
+  text-align: center;
+  padding: 30px 20px;
+  max-width: 600px;
+  margin: 40px auto;
+  border: 2px solid #e7c61b;
+  border-radius: 15px;
+  background-color: white;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+}
+
+.notfound-container h1 {
+  font-size: 80px;
+  color: #e7c61b;
+  margin-bottom: 10px;
+}
+
+.notfound-container p {
+  font-size: 18px;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.home-link {
+  display: inline-block;
+  padding: 12px 24px;
+  background-color: #e7c61b;
+  color: black;
+  text-decoration: none;
+  font-weight: bold;
+  border-radius: 30px;
+  border: 2px solid black;
+  transition: all 0.3s ease;
+}
+
+.home-link:hover {
+  background-color: black;
+  color: #e7c61b;
+  border-color: #e7c61b;
+}
+
+/* Feedback */
+.feedback-message {
+  font-size: 14px;
+  font-weight: 500;
+  margin-bottom: 15px;
+  padding: 10px;
+  border-radius: 10px;
+}
+
+.feedback-message.error {
+  background-color: rgba(255, 0, 0, 0.1);
+  color: red;
+  border: 1px solid red;
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  .notfound-container h1 {
+    font-size: 60px;
+  }
+
+  .notfound-container p {
+    font-size: 16px;
+  }
+
+  .home-link {
+    padding: 10px 20px;
+    font-size: 14px;
+  }
+
+  .feedback-message {
+    font-size: 13px;
+  }
+}

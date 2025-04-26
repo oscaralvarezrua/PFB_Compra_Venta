@@ -11,6 +11,7 @@ import SearchFilteredProducts from "./pages/SearchFilteredProducts";
 import Register from "./pages/Register";
 import Login from "./pages/Login";
 import UserDataAndChangePass from "./pages/UserDataAndChangePass";
+import NotFound from "./pages/NotFound";
 
 function App() {
   const location = useLocation(); // Obtener la ubicación actual de la ruta
@@ -32,6 +33,8 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
         <Route path="/changepassword" element={<UserDataAndChangePass />} />
+        <Route path="*" element={<NotFound />} />
+
       </Routes>
     </>
   );
