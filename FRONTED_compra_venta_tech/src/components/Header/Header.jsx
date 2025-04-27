@@ -2,15 +2,21 @@ import React, { useState, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "./header.css";
 import logo from "../../assets/logo_negro.png";
+
+import { useAuth } from "../../contexts/AuthContext";
+//import notification from "../../assets/notification.png";
+//import user from "../../assets/user.png";
+
 import buscarIcon from "../../assets/buscar.png"; // Importa la imagen de búsqueda
-import { AuthContext } from "../../contexts/AuthContext"; // Importamos el contexto
+
 
 const Header = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const navigate = useNavigate();
-
+  
   // Usamos el contexto de autenticación
-  const { user, logout } = useContext(AuthContext); // Obtenemos el estado del usuario desde el contexto
+  const { token, logout } = useAuth();// Obtenemos el estado del usuario desde el contexto
+
 
   // Cambios en el input
   const handleSearchChange = (e) => {
@@ -56,16 +62,19 @@ const Header = () => {
           <img src={buscarIcon} alt="Buscar" /> {/* Usa la imagen importada */}
         </button>
       </div>
-
       <div className="auth-buttons">
-        {!user ? (
+        {!token ? (
           <>
             <Link to="/register">
-              <button className="register-button">Regístrate o inicia sesión</button>
-            </Link>
-            <Link to="/sell"> {/* Cambié la ruta a /sell, asumiendo que tienes una página para vender */}
-              <button className="sell-button">Vender</button>
-            </Link>
+            <button className="register-button">Regístrate</button>
+          </Link>
+          <Link to="/login">
+            <button className="register-button">Inicia sesión</button>
+          </Link>
+
+          <Link to="/login">
+            <button className="sell-button">Vender</button>
+          </Link>
           </>
         ) : (
           <>
@@ -78,12 +87,16 @@ const Header = () => {
             <Link to="/profile">
               <button className="profile-button">Mi perfil</button>
             </Link>
+          <Link to="/publicar">
+            <button className="sell-button">Vender</button>
+          </Link>
             <button className="logout-button" onClick={logout}>
               Cerrar sesión
             </button>
           </>
         )}
       </div>
+
     </header>
   );
 };

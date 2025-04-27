@@ -3,6 +3,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom"; // ✅ Necesario para el botón Volver
 import { useAuth } from "../hooks/useAuth";
 import "../styles/PublishProduct.css";
+const { VITE_API_URL } = import.meta.env;
 
 const PublishProduct = () => {
   const { token } = useAuth();
@@ -27,7 +28,7 @@ const PublishProduct = () => {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const res = await fetch("http://localhost:3000/categories");
+        const res = await fetch(VITE_API_URL + "/categories");
         const data = await res.json();
         setCategories(data.data);
       } catch (error) {
@@ -57,10 +58,10 @@ const PublishProduct = () => {
     }
 
     try {
-      const res = await fetch("http://localhost:3000/products", {
+      const res = await fetch(VITE_API_URL + "/products", {
         method: "POST",
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: token ? "Bearer " + token : "",
         },
         body,
       });

@@ -29,13 +29,13 @@ const createUser = async (
     );
 
     if (!result.insertId) {
-      throw new Error("No se pudo crear el usuario");
+      throw generateError("No se pudo crear el usuario", 404);
     }
 
     return result.insertId;
   } catch (error) {
     console.error("Error creando el usuario: ", error);
-    throw new Error("Error al crear el usuario");
+    throw generateError("Error al crear el usuario", 404);
   }
 };
 
@@ -68,7 +68,7 @@ const updateUserModel = async (
     return result.insertId;
   } catch (error) {
     console.error("Error actualizando el usuario: ", error);
-    throw new Error("Error al actualizar el usuario");
+    throw generateError("Error al actualizar el usuario", 404);
   }
 };
 
@@ -84,7 +84,7 @@ const getUserByEmail = async (email) => {
     return user[0];
   } catch (error) {
     console.error("Error buscando el usuario por email: ", error);
-    throw new Error("No se ha encontrado el usuario"); //! Da información de que no hay ningún usuario con ese email
+    throw generateError("No se ha encontrado el usuario", 404); //! Da información de que no hay ningún usuario con ese email
   }
 };
 
@@ -100,7 +100,7 @@ const getUserByUsername = async (username) => {
     return user[0];
   } catch (error) {
     console.error("Error buscando el usuario por username: ", error);
-    throw new Error("No se ha encontrado el usuario"); //! Da información de que no hay ningún usuario con ese username
+    throw generateError("No se ha encontrado el usuario", 404); //! Da información de que no hay ningún usuario con ese username
   }
 };
 
@@ -116,7 +116,7 @@ const getUserByPhone = async (phone) => {
     return user[0];
   } catch (error) {
     console.error("Error buscando el usuario por telefono: ", error);
-    throw new Error("No se ha encontrado el usuario"); //! Da información de que no hay ningún usuario con ese username
+    throw generateError("No se ha encontrado el usuario", 404); //! Da información de que no hay ningún usuario con ese username
   }
 };
 
@@ -141,7 +141,7 @@ const userValidation = async (email, validationCode) => {
     return result.affectedRows > 0;
   } catch (error) {
     console.error("Error validando el usuario: ", error);
-    throw new Error("Usuario inválido");
+    throw generateError("Usuario inválido", 404);
   }
 };
 
@@ -158,7 +158,7 @@ const getUserByValidationCode = async (validationCode) => {
     return user[0];
   } catch (error) {
     console.error("Error obteniendo el usuario: ", error);
-    throw new Error("Usuario no encontrado");
+    throw generateError("Usuario no encontrado", 404);
   }
 };
 
@@ -171,7 +171,7 @@ const getUserById = async (id) => {
     return user[0];
   } catch (error) {
     console.error("Error obteniendo el usuario: ", error);
-    throw new Error("Usuario no encontrado");
+    throw generateError("Usuario no encontrado", 404);
   }
 };
 
@@ -188,7 +188,7 @@ const updatePass = async (userId, newPass) => {
     );
   } catch (error) {
     console.error("Error cambiando la contraseña: ", error);
-    throw new Error("Contraseña no cambiada");
+    throw generateError("Contraseña no cambiada", 404);
   }
 };
 
@@ -231,7 +231,10 @@ const getUserInf = async (userId) => {
     };
   } catch (error) {
     console.error("Error consultando la información del usuario: ", error);
-    throw new Error("No se ha podido obtener la información de este usuario");
+    throw generateError(
+      "No se ha podido obtener la información de este usuario",
+      404
+    );
   }
 };
 
@@ -252,7 +255,7 @@ const generateRecoverCode = async (email) => {
     return recoveryCode;
   } catch (error) {
     console.error("Error generando código de recuperación:", error);
-    throw new Error("Error al generar código de recuperación");
+    throw generateError("Error al generar código de recuperación", 404);
   }
 };
 
@@ -271,7 +274,7 @@ const verifyRecoverCode = async (recoveryCode) => {
     return user[0];
   } catch (error) {
     console.error("Error verificando código de recuperación:", error);
-    throw new Error("Error al verificar código de recuperación");
+    throw generateError("Error al verificar código de recuperación", 404);
   }
 };
 
@@ -292,7 +295,7 @@ const updatePassWithRecovery = async (recoveryCode, newPassword) => {
     );
   } catch (error) {
     console.error("Error actualizando contraseña:", error);
-    throw new Error("Error al actualizar contraseña");
+    throw generateError("Error al actualizar contraseña", 404);
   }
 };
 
@@ -383,16 +386,12 @@ export async function rateSellerModel(transactionId, userId, ratings, comment) {
   );
 
   if (result.length === 0) {
-    const error = new Error("Transacción no válida o aún no aceptada.");
-    error.httpCode = 403;
-    throw error;
+    throw generateError("Transacción no válida o aún no aceptada.", 403);
   }
 
   // 2. Verificamos si ya ha sido valorada
   if (result[0].ratings !== null || result[0].comment !== null) {
-    const error = new Error("Ya has valorado esta transacción.");
-    error.httpCode = 400;
-    throw error;
+    throw generateError("Ya has valorado esta transacción.", 400);
   }
 
   // 3. Actualizamos con la valoración y comentario
