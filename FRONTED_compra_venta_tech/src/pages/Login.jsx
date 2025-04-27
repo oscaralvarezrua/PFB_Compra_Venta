@@ -33,7 +33,7 @@ const Login = () => {
                 name="email"
                 value={formState.email}
                 onChange={handleChange}
-                placeholder="Dirección de email"
+                placeholder="Dirección de email "
               />
             </li>
             <li className="password-li">
