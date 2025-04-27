@@ -1,4 +1,3 @@
-
 import React from "react";
 import useLogin from "../hooks/useLogin";
 import PasswordInput from "../components/Post/PasswordInput";
@@ -17,7 +16,7 @@ const Login = () => {
             <img src={close} />
           </button>
         </Link>
-        <div className="logo">
+        <div className="logo-login">
           <img src={logo} alt="Logo" className="logo-img" />
         </div>
 
@@ -63,4 +62,3 @@ const Login = () => {
 };
 
 export default Login;
-

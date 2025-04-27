@@ -58,7 +58,7 @@ export async function getProductById(productId) {
     return result[0];
   } catch (error) {
     console.error("Producto no encontrado: ", error);
-    throw new Error("Producto no encontrado");
+    throw generateError("Producto no encontrado", 404);
   }
 }
 
@@ -84,7 +84,7 @@ export async function publishProduct(
     return result.insertId;
   } catch (error) {
     console.error("Error creando el producto: ", error);
-    throw new Error("Error al crear el producto");
+    throw generateError("Error al crear el producto", 404);
   }
 }
 export async function getAcceptProductListModel() {
@@ -98,7 +98,7 @@ export async function getAcceptProductListModel() {
     return result;
   } catch (error) {
     console.error("Error obteniedno Productos: ", error);
-    throw new Error("Error al obtener Productos");
+    throw generateError("Error al obtener Productos", 404);
   }
 }
 
@@ -113,7 +113,7 @@ export async function getPendingProductListModel() {
     return result;
   } catch (error) {
     console.error("Error obteniedno Productos: ", error);
-    throw new Error("Error al obtener Productos");
+    throw generateError("Error al obtener Productos", 404);
   }
 }
 
@@ -128,7 +128,7 @@ export async function deleteProductModel(productId) {
     return result;
   } catch (error) {
     console.error("Error al borrar producto: ", error);
-    throw new Error("Error al borrar producto");
+    throw generateError("Error al borrar producto", 404);
   }
 }
 
@@ -184,10 +184,7 @@ export async function updateProductModel(
   };
 }
 
-export async function addVisitProductModel(
-  productId,
-  
-) {
+export async function addVisitProductModel(productId) {
   const pool = await getPool();
 
   const [result] = await pool.query(
@@ -205,6 +202,5 @@ export async function addVisitProductModel(
 
   return {
     id: productId,
-    
   };
 }

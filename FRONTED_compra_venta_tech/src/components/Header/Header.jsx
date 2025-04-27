@@ -2,10 +2,14 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "./header.css";
 import logo from "../../assets/logo_negro.png";
+import { useAuth } from "../../contexts/AuthContext";
+import notification from "../../assets/notification.png";
+import user from "../../assets/user.png";
 
 const Header = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const navigate = useNavigate();
+  const { token } = useAuth();
 
   // Cambios en el input
   const handleSearchChange = (e) => {
@@ -51,18 +55,39 @@ const Header = () => {
           <img src="/src/assets/buscar.png" alt="Buscar" />
         </button>
       </div>
+      {token ? (
+        <div className="auth-buttons">
+          <Link to="/user/notification">
+            <button className="notification-button">
+              Notificaciones
+              {/* <img src={notification} /> */}
+            </button>
+          </Link>
+          <Link to="/user">
+            <button className="user-button">
+              Mi Perfil
+              {/* <img src={user} /> */}
+            </button>
+          </Link>
 
-      <div className="auth-buttons">
-        <Link to="/login">
-          <button className="register-button">
-            Regístrate o inicia sesión
-          </button>
-        </Link>
+          <Link to="/publicar">
+            <button className="sell-button">Vender</button>
+          </Link>
+        </div>
+      ) : (
+        <div className="auth-buttons">
+          <Link to="/register">
+            <button className="register-button">Regístrate</button>
+          </Link>
+          <Link to="/login">
+            <button className="register-button">Inicia sesión</button>
+          </Link>
 
-        <Link to="/register">
-          <button className="sell-button">Vender</button>
-        </Link>
-      </div>
+          <Link to="/login">
+            <button className="sell-button">Vender</button>
+          </Link>
+        </div>
+      )}
     </header>
   );
 };

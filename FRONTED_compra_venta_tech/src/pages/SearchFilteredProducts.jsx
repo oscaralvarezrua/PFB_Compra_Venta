@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import "../styles/SearchFilteredProducts.css";
+const { VITE_API_URL } = import.meta.env;
 
 const SearchFilteredProducts = () => {
   const location = useLocation();
@@ -37,7 +38,7 @@ const SearchFilteredProducts = () => {
 
       try {
         const res = await fetch(
-          `http://localhost:3000/products/search${location.search}`
+          `${VITE_API_URL}/products/search${location.search}`
         );
         const data = await res.json();
 

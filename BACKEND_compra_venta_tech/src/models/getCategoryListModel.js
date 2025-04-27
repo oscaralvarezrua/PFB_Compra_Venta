@@ -1,4 +1,5 @@
 import getPool from "../db/getPool.js";
+import { generateError } from "../utils/helpers.js";
 
 export default async function getCategoryListModel() {
   try {
@@ -11,6 +12,6 @@ export default async function getCategoryListModel() {
     return result;
   } catch (error) {
     console.error("Error obteniendo las categorias: ", error);
-    throw new Error("Error al obtener las categorias");
+    throw generateError("Error al obtener las categorias", 401);
   }
 }

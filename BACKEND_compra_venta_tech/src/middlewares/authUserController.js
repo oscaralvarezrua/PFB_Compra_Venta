@@ -11,11 +11,11 @@ const authUserController = async (req, res, next) => {
 
     // Si falta el token lanzamos un error.
     if (!authorization) {
-      generateError("Falta la cabecera de autorización", 401);
+      throw generateError("Falta la cabecera de autorización", 401);
     }
 
     if (!authorization.startsWith("Bearer ")) {
-      generateError("Formato token no valido", 401);
+      throw generateError("Formato token no valido", 401);
     }
 
     const token = authorization.split(" ")[1];
@@ -27,7 +27,7 @@ const authUserController = async (req, res, next) => {
       const user = await getUserById(tokenInfo.id);
 
       if (!user) {
-        generateError("Usuario no encontrado", 401);
+        throw generateError("Usuario no encontrado", 401);
       }
 
       req.user = user;
@@ -37,7 +37,7 @@ const authUserController = async (req, res, next) => {
     } catch (err) {
       console.error(err);
 
-      generateError("Token inválido", 401);
+      throw generateError("Token inválido", 401);
     }
   } catch (err) {
     next(err);

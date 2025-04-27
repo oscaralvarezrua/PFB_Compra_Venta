@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom"; // Para redirigir al hacer clic
 import "./menu.css";
+const { VITE_API_URL } = import.meta.env;
 
 const Menu = () => {
   const [categories, setCategories] = useState([]);
@@ -12,7 +13,7 @@ const Menu = () => {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await fetch("http://localhost:3000/categories");
+        const response = await fetch(VITE_API_URL + "/categories");
         const data = await response.json();
         setCategories(data.data); // data.data porque tu backend devuelve { status, data }
       } catch (error) {
@@ -33,11 +34,36 @@ const Menu = () => {
 
         <div className="categories-list">
           {/* Aquí siguen tus categorías destacadas como antes */}
-          <div className="category" onClick={() => navigate("/categoria/informatica")}>Informática</div>
-          <div className="category" onClick={() => navigate("/categoria/electronica")}>Electrónica</div>
-          <div className="category" onClick={() => navigate("/categoria/telefonia")}>Telefonía</div>
-          <div className="category" onClick={() => navigate("/categoria/gamer")}>Gamer</div>
-          <div className="category" onClick={() => navigate("/categoria/hogar")}>Hogar</div>
+          <div
+            className="category"
+            onClick={() => navigate("/categoria/informatica")}
+          >
+            Informática
+          </div>
+          <div
+            className="category"
+            onClick={() => navigate("/categoria/electronica")}
+          >
+            Electrónica
+          </div>
+          <div
+            className="category"
+            onClick={() => navigate("/categoria/telefonia")}
+          >
+            Telefonía
+          </div>
+          <div
+            className="category"
+            onClick={() => navigate("/categoria/gamer")}
+          >
+            Gamer
+          </div>
+          <div
+            className="category"
+            onClick={() => navigate("/categoria/hogar")}
+          >
+            Hogar
+          </div>
         </div>
       </div>
 
@@ -48,7 +74,9 @@ const Menu = () => {
             <div
               key={cat.id}
               className="dropdown-category"
-              onClick={() => navigate(`/categoria/${cat.slug || cat.name.toLowerCase()}`)}
+              onClick={() =>
+                navigate(`/categoria/${cat.slug || cat.name.toLowerCase()}`)
+              }
             >
               {cat.name}
             </div>
@@ -60,4 +88,3 @@ const Menu = () => {
 };
 
 export default Menu;
-

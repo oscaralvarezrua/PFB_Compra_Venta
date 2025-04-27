@@ -1,11 +1,7 @@
-.logo img {
-  width: 70px;
+.logo-login img {
+  width: 50px;
   height: auto;
-}
-.logo {
-  display: flex;
-  justify-content: center;
-  padding: 2rem;
+  padding-top: 1rem;
 }
 
 main {
@@ -14,16 +10,16 @@ main {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  padding-top: 8rem;
 }
 
-/* Contenedor principal */
 main > div {
   background-color: white;
   padding: 2rem;
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
   width: 100%;
-  max-width: 400px;
+  max-width: 350px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -34,6 +30,8 @@ h2 {
   text-align: center;
   font-weight: normal;
   margin-bottom: 2rem;
+  padding-top: 1rem;
+  font-size: 1.1rem;
 }
 form ul {
   list-style: none;
@@ -50,7 +48,7 @@ input {
   font-size: 1rem;
   box-sizing: border-box;
 }
-/* Botón Enviar */
+
 .enter-button {
   width: 100%;
   padding: 1rem;
