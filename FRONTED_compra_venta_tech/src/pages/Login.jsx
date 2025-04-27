@@ -3,7 +3,7 @@ import useLogin from "../hooks/useLogin";
 import PasswordInput from "../components/Post/PasswordInput";
 import logo from "../assets/logo_negro_recortado.png";
 import close from "../assets/close.png";
-//import "../styles/Login.css";
+import "../styles/Login.css";
 import { Link } from "react-router-dom";
 
 const Login = () => {
@@ -33,7 +33,7 @@ const Login = () => {
                 name="email"
                 value={formState.email}
                 onChange={handleChange}
-                placeholder="Dirección de email"
+                placeholder="Dirección de email "
               />
             </li>
             <li className="password-li">
