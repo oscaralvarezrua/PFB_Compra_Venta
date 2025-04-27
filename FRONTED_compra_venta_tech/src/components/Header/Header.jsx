@@ -1,15 +1,22 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "./header.css";
 import logo from "../../assets/logo_negro.png";
+
 import { useAuth } from "../../contexts/AuthContext";
-import notification from "../../assets/notification.png";
-import user from "../../assets/user.png";
+//import notification from "../../assets/notification.png";
+//import user from "../../assets/user.png";
+
+import buscarIcon from "../../assets/buscar.png"; // Importa la imagen de búsqueda
+
 
 const Header = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const navigate = useNavigate();
-  const { token } = useAuth();
+  
+  // Usamos el contexto de autenticación
+  const { token, logout } = useAuth();// Obtenemos el estado del usuario desde el contexto
+
 
   // Cambios en el input
   const handleSearchChange = (e) => {
@@ -35,7 +42,7 @@ const Header = () => {
   };
 
   return (
-    <header>
+    <header className="header"> {/* Asegúrate de tener esta clase en el header */}
       <div className="logo">
         <Link to="/">
           <img src={logo} alt="Logo" className="logo-img" />
@@ -52,31 +59,13 @@ const Header = () => {
           onKeyDown={handleKeyPress}
         />
         <button className="search-btn" onClick={handleSearchSubmit}>
-          <img src="/src/assets/buscar.png" alt="Buscar" />
+          <img src={buscarIcon} alt="Buscar" /> {/* Usa la imagen importada */}
         </button>
       </div>
-      {token ? (
-        <div className="auth-buttons">
-          <Link to="/user/notification">
-            <button className="notification-button">
-              Notificaciones
-              {/* <img src={notification} /> */}
-            </button>
-          </Link>
-          <Link to="/user">
-            <button className="user-button">
-              Mi Perfil
-              {/* <img src={user} /> */}
-            </button>
-          </Link>
-
-          <Link to="/publicar">
-            <button className="sell-button">Vender</button>
-          </Link>
-        </div>
-      ) : (
-        <div className="auth-buttons">
-          <Link to="/register">
+      <div className="auth-buttons">
+        {!token ? (
+          <>
+            <Link to="/register">
             <button className="register-button">Regístrate</button>
           </Link>
           <Link to="/login">
@@ -86,8 +75,28 @@ const Header = () => {
           <Link to="/login">
             <button className="sell-button">Vender</button>
           </Link>
-        </div>
-      )}
+          </>
+        ) : (
+          <>
+            <Link to="/notifications">
+              <button className="notifications-button">Notificaciones</button>
+            </Link>
+            <Link to="/favorites">
+              <button className="favorites-button">Favoritos</button>
+            </Link>
+            <Link to="/profile">
+              <button className="profile-button">Mi perfil</button>
+            </Link>
+          <Link to="/publicar">
+            <button className="sell-button">Vender</button>
+          </Link>
+            <button className="logout-button" onClick={logout}>
+              Cerrar sesión
+            </button>
+          </>
+        )}
+      </div>
+
     </header>
   );
 };
