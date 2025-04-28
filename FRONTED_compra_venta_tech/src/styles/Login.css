@@ -4,7 +4,7 @@
   padding-top: 1rem;
 }
 
-main {
+/* main {
   min-height: 70vh;
   display: flex;
   flex-direction: column;
@@ -12,7 +12,7 @@ main {
   align-items: center;
   padding-top: 8rem;
 }
-
+*/
 main > div {
   background-color: white;
   padding: 2rem;
