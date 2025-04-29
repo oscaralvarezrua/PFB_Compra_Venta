@@ -1,30 +1,44 @@
 import React, { useState, useEffect } from "react";
 import Slider from "../components/Slider/Slider";
+import ProductSlider from "../components/ProductSlider/ProductSlider";
+import Footer from "../components/Footer/Footer"; 
 import { getProducts } from "../services/ProductServices"; 
 import "../styles/home.css";
 
 const Home = () => {
   const [newProducts, setNewProducts] = useState([]);
+  const [popularProducts, setPopularProducts] = useState([]);
 
   useEffect(() => {
-    const fetchProducts = async () => {
+    const fetchNewProducts = async () => {
       try {
         const products = await getProducts("recent");
-        setNewProducts(products); 
+        setNewProducts(products);
       } catch (error) {
-        console.error("Error cargando productos", error);
+        console.error("Error cargando productos recientes", error);
       }
     };
 
-    fetchProducts();
+    const fetchPopularProducts = async () => {
+      try {
+        const products = await getProducts("popular");
+        setPopularProducts(products);
+      } catch (error) {
+        console.error("Error cargando productos populares", error);
+      }
+    };
+
+    fetchNewProducts();
+    fetchPopularProducts();
   }, []);
 
   return (
     <main className="main-container">
+      {/* Slider de cabecera */}
       <section className="w-full max-w-7xl mb-10">
         <Slider />
       </section>
-
+  
       {/* Novedades */}
       <section className="w-full max-w-7xl mb-10">
         <h2 className="novedades-title">Novedades</h2>
@@ -35,35 +49,25 @@ const Home = () => {
         <button className="novedades-btn">
           Ver todo
         </button>
-
-        {/* Slider de productos recientes */}
-        <div className="product-slider">
-          {newProducts.slice(0, 3).map((product) => (
-            <div key={product.id} className="product-slider-item">
-              <img
-                src={product.photo}
-                alt={product.name}
-                className="w-full h-80 object-cover rounded-lg"
-              />
-              <h3>{product.name}</h3>
-            </div>
-          ))}
-          {/* Flechas de navegación */}
-          <button className="slider-arrow arrow-left">◀</button>
-          <button className="slider-arrow arrow-right">▶</button>
-        </div>
+  
+        <ProductSlider products={newProducts.slice(0, 10)} />
       </section>
-
+  
       {/* Más buscados */}
       <section className="w-full max-w-7xl mb-10">
-      <h2 className="buscados-title">Más buscados</h2>
-      <p className="buscados-text">
-      ¿No sabes qué quieres? Echa un vistazo a los más buscados
+        <h2 className="buscados-title">Más buscados</h2>
+        <p className="buscados-text">
+          ¿No sabes qué quieres? Echa un vistazo a los más buscados
         </p>
         <button className="buscados-btn">
           Ver todo
         </button>
+  
+        <ProductSlider products={popularProducts.slice(0, 10)} />
       </section>
+  
+      {/* ¡Aquí renderizamos el Footer! */}
+      <Footer />
     </main>
   );
 };

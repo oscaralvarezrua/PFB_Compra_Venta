@@ -43,7 +43,7 @@ input {
   width: 100%;
   padding: 1rem 0.8rem;
   padding-right: 5rem;
-  border: 3px solid #f5d000;
+  border: 3px solid #E7c61b;
   border-radius: 8px;
   font-size: 1rem;
   box-sizing: border-box;
@@ -53,7 +53,7 @@ input {
   width: 100%;
   padding: 1rem;
   margin-top: 1.5rem;
-  background-color: #f5d000;
+  background-color: #E7c61b;
   border: 2px solid whitesmoke;
   border-radius: 30px;
   font-size: 1.1rem;
@@ -71,8 +71,14 @@ input {
   width: 100%;
 }
 
+.change-pass-button:hover {
+  background-color: transparent;
+  color: #E7c61b;
+}
+
 button:hover {
-  background-color: #e5c100;
+  background-color: black;
+  color: #E7c61b;
 }
 
 .error {
@@ -83,7 +89,7 @@ button:hover {
 
 input:focus {
   outline: none;
-  border-color: #ffcc00;
+  border-color: #E7c61b;
 }
 .password-li {
   position: relative;
@@ -102,6 +108,11 @@ input:focus {
   font-size: 1.2rem;
   color: #555;
 }
+
+.eye-button:hover {
+background-color: transparent;
+  
+}
 .close-button {
   position: absolute;
   top: 1rem;
@@ -110,5 +121,9 @@ input:focus {
   border: none;
   font-size: 1.5rem;
   cursor: pointer;
-  color: black;
+  color: #605F5F;
+}
+
+.close-button:hover {
+background-color: transparent;
 }
