@@ -115,6 +115,8 @@ GET /products/search Búsqueda de productos con filtros
           Ordenar por:
                name (alfabéticamente)
                price (ascendente o descendente)
+               últimas publicaciones (novedades)
+               más buscados (productos con más visitar al detalle)
 
     (Ejemplos de búsqueda)
     - /products/search?name=camiseta&order_by=price&order_direction=asc
@@ -122,6 +124,9 @@ GET /products/search Búsqueda de productos con filtros
     -/products/search?category_id=2&min_price=10&max_price=50&order_by=name&order_direction=desc
 
     -/products/search?order_by=visits&order_direction=desc
+
+    -/products/search?order_by=created_at
+    -/products/search?order_by=visits
 
 GET /products: Lista de artículos
 
