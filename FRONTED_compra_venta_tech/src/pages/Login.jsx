@@ -9,7 +9,7 @@ import { Link } from "react-router-dom";
 const Login = () => {
   const { error, formState, handleSubmit, handleChange } = useLogin();
   return (
-    <main>
+    <main className="login-page">
       <div>
         <Link to="/">
           <button className="close-button">
@@ -54,7 +54,9 @@ const Login = () => {
             </button>
           </Link>
 
-          <button className="enter-button">Entrar a SegundaTec</button>
+          <button type="submit" className="enter-button">
+            Entrar a SegundaTec
+          </button>
         </form>
       </div>
     </main>

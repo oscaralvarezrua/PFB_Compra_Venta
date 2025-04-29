@@ -1,10 +1,10 @@
-.logo-login img {
+.login-page .logo-login img {
   width: 50px;
   height: auto;
   padding-top: 1rem;
 }
 
-/* main {
+.login-page {
   min-height: 70vh;
   display: flex;
   flex-direction: column;
@@ -12,8 +12,8 @@
   align-items: center;
   padding-top: 8rem;
 }
-*/
-main > div {
+
+.login-page > div {
   background-color: white;
   padding: 2rem;
   border-radius: 10px;
@@ -26,34 +26,34 @@ main > div {
   position: relative;
 }
 
-h2 {
+.login-page h2 {
   text-align: center;
   font-weight: normal;
   margin-bottom: 2rem;
   padding-top: 1rem;
   font-size: 1.1rem;
 }
-form ul {
+.login-page form ul {
   list-style: none;
 }
-form li {
+.login-page form li {
   margin-bottom: 1.5rem;
 }
-input {
+.login-page input {
   width: 100%;
   padding: 1rem 0.8rem;
   padding-right: 5rem;
-  border: 3px solid #E7c61b;
+  border: 3px solid #e7c61b;
   border-radius: 8px;
   font-size: 1rem;
   box-sizing: border-box;
 }
 
-.enter-button {
+.login-page .enter-button {
   width: 100%;
   padding: 1rem;
   margin-top: 1.5rem;
-  background-color: #E7c61b;
+  background-color: #e7c61b;
   border: 2px solid whitesmoke;
   border-radius: 30px;
   font-size: 1.1rem;
@@ -63,7 +63,7 @@ input {
   transition: all 0.2s ease;
 }
 
-.change-pass-button {
+.login-page .change-pass-button {
   border: none;
   background: none;
   font-size: 1rem;
@@ -71,32 +71,32 @@ input {
   width: 100%;
 }
 
-.change-pass-button:hover {
+.login-page .change-pass-button:hover {
   background-color: transparent;
-  color: #E7c61b;
+  color: #e7c61b;
 }
 
-button:hover {
+.login-page button:hover {
   background-color: black;
-  color: #E7c61b;
+  color: #e7c61b;
 }
 
-.error {
+.login-page .error {
   color: red;
   text-align: center;
   margin-bottom: 1rem;
 }
 
-input:focus {
+.login-page input:focus {
   outline: none;
-  border-color: #E7c61b;
+  border-color: #e7c61b;
 }
-.password-li {
+.login-page .password-li {
   position: relative;
   width: 100%;
 }
 
-.eye-button {
+.login-page .eye-button {
   position: absolute;
   top: 50%;
   right: 12px;
@@ -109,11 +109,10 @@ input:focus {
   color: #555;
 }
 
-.eye-button:hover {
-background-color: transparent;
-  
+.login-page .eye-button:hover {
+  background-color: transparent;
 }
-.close-button {
+.login-page .close-button {
   position: absolute;
   top: 1rem;
   right: 1rem;
@@ -121,9 +120,9 @@ background-color: transparent;
   border: none;
   font-size: 1.5rem;
   cursor: pointer;
-  color: #605F5F;
+  color: #605f5f;
 }
 
-.close-button:hover {
-background-color: transparent;
+.login-page .close-button:hover {
+  background-color: transparent;
 }

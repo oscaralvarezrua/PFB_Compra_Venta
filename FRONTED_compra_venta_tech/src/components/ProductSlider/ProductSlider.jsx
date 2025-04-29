@@ -1,7 +1,10 @@
 import React, { useRef } from "react";
 import "./ProductSlider.css";
+import ApiImage from "../Post/ApiImage";
 
 const ProductSlider = ({ products }) => {
+  console.log(products);
+
   const sliderRef = useRef();
 
   const scroll = (direction) => {
@@ -15,14 +18,17 @@ const ProductSlider = ({ products }) => {
 
   return (
     <div className="product-slider-wrapper">
-      <button className="slider-arrow arrow-left" onClick={() => scroll("left")}>
+      <button
+        className="slider-arrow arrow-left"
+        onClick={() => scroll("left")}
+      >
         ◀
       </button>
       <div className="product-slider" ref={sliderRef}>
         {products.map((product) => (
           <div key={product.id} className="product-slider-item">
-            <img
-              src={product.photo}
+            <ApiImage
+              name={product.photo}
               alt={product.name}
               className="w-full h-80 object-cover rounded-lg"
             />
@@ -30,7 +36,10 @@ const ProductSlider = ({ products }) => {
           </div>
         ))}
       </div>
-      <button className="slider-arrow arrow-right" onClick={() => scroll("right")}>
+      <button
+        className="slider-arrow arrow-right"
+        onClick={() => scroll("right")}
+      >
         ▶
       </button>
     </div>
