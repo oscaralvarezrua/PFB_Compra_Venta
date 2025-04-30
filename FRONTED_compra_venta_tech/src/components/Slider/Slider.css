@@ -38,7 +38,7 @@
   }
   
   .text-section h2 {
-    font-size: 1.5rem;
+    font-size: 2vw;
     font-weight: bold;
     margin: 0;
     padding: 10px;
@@ -47,12 +47,12 @@
   
   .bold-text {
     font-weight: bold;
-    font-size: 1.5rem; 
+    font-size: 3vw; 
   }
   
   .normal-text {
     font-weight: normal;
-    font-size: 1.2rem; 
+    font-size: 2vw; 
     display: block; 
   }
   
@@ -90,36 +90,97 @@
   
   .nav-button:hover {
     color: white;
+    background-color: transparent;
   }
   
   /* Estilo responsive */
-  @media (max-width: 768px) {
-    .slider-container {
-      height: 18rem; 
-    }
-  
-    .text-section h2 {
-      font-size: 1.2rem; 
-      padding: 5px;
-    }
-  
-    .nav-button {
-      font-size: 1.2rem; 
-      padding: 8px;
-    }
+@media (max-width: 768px) {
+  .text-section {
+    width: 100%;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    box-sizing: border-box;
   }
-  
-  @media (max-width: 480px) {
-    .slider-container {
-      height: 15rem; 
-    }
-  
-    .text-section h2 {
-      font-size: 1rem; 
-      padding: 3px;
-    }
-  
-    .nav-button {
-      font-size: 1rem; 
-    }
+
+  .text-section h2 {
+    font-size: 4vw;
+    margin-bottom: 2vw;
   }
+
+  .bold-text {
+    font-size: 4vw;
+  }
+
+  .normal-text {
+    font-size: 3vw;
+    margin-top: 1vw;
+  }
+
+  .image-section {
+    width: 100%;
+    height: auto;
+  }
+
+  .nav-button {
+    font-size: 1.5rem; 
+    padding: 10px; 
+    top: auto; 
+    bottom: 10px;
+    transform: translateY(0); 
+    background-color: rgba(0, 0, 0, 0.5); 
+    color: white;
+    border-radius: 5px; 
+  }
+
+  .nav-button.left {
+    left: 10px;
+  }
+
+  .nav-button.right {
+    right: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .slider-container {
+    height: auto; 
+    width: auto; 
+    display: flex;
+    scroll-snap-type: x mandatory; 
+  }
+  .text-section {
+    padding: 15px;
+  }
+
+  .text-section h2 {
+    font-size: 5vw;
+    margin-bottom: 2.5vw;
+  }
+
+  .bold-text {
+    font-size: 4vw;
+  }
+
+  .normal-text {
+    font-size: 3vw;
+    margin-top: 1.5vw;
+    padding-bottom: 10px;
+  }
+
+  .nav-button {
+    font-size: 0.8rem; 
+    padding: 5px;
+  }
+
+  .nav-button.left {
+    left: 5px; 
+  }
+
+  .nav-button.right {
+    right: 5px; 
+  }
+}
