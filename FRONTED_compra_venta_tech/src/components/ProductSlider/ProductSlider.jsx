@@ -1,6 +1,7 @@
 import React, { useRef } from "react";
 import "./ProductSlider.css";
 import ApiImage from "../Post/ApiImage";
+import { Link } from "react-router-dom";
 
 const ProductSlider = ({ products }) => {
   console.log(products);
@@ -27,11 +28,14 @@ const ProductSlider = ({ products }) => {
       <div className="product-slider" ref={sliderRef}>
         {products.map((product) => (
           <div key={product.id} className="product-slider-item">
-            <ApiImage
-              name={product.photo}
-              alt={product.name}
-              className="w-full h-80 object-cover rounded-lg"
-            />
+            <Link to={"/producto/" + product.id}>
+              <ApiImage
+                name={product.photo}
+                alt={product.name}
+                className="w-full h-80 object-cover rounded-lg"
+              />
+            </Link>
+
             <h3>{product.name}</h3>
           </div>
         ))}
