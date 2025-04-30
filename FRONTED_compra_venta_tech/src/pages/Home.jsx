@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Slider from "../components/Slider/Slider";
 import ProductSlider from "../components/ProductSlider/ProductSlider";
-import Footer from "../components/Footer/Footer";
 import { getProducts } from "../services/ProductServices";
 import "../styles/home.css";
 
@@ -61,9 +60,6 @@ const Home = () => {
 
         <ProductSlider products={popularProducts.slice(0, 10)} />
       </section>
-
-      {/* ¡Aquí renderizamos el Footer! */}
-      <Footer />
     </main>
   );
 };
