@@ -11,7 +11,7 @@ const ProductDetail = () => {
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const { productId } = useParams(); // Asegúrate que en tu ruta usas :productId
+  const { productId } = useParams();
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -21,7 +21,7 @@ const ProductDetail = () => {
           throw new Error("No se pudo obtener el producto");
         }
         const data = await response.json();
-        setProduct(data.data); // Asegúrate que tu API devuelve el producto dentro de "data"
+        setProduct(data.data); 
       } catch (err) {
         setError(err.message);
       } finally {
