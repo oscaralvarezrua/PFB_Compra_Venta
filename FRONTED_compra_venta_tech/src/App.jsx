@@ -12,9 +12,9 @@ import Register from "./pages/Register";
 import Login from "./pages/Login";
 import UserDataAndChangePass from "./pages/UserDataAndChangePass";
 import ProductDetail from "./pages/ProductDetail";
-import NotFound from "./pages/NotFound";
-import UserProfile from "./pages/UserProfile";
 import UserValidation from "./pages/UserValidation";
+import NotFound from "./pages/NotFound";
+import UserProfile from "./pages/UserProfile"
 
 function App() {
   const location = useLocation();
