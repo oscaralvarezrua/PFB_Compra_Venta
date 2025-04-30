@@ -3,6 +3,7 @@
 import "../styles/ProductDetail.css"; // Estilos separados
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import ApiImage from "../components/Post/ApiImage";
 
 const { VITE_API_URL } = import.meta.env;
 console.log("VITE_API_URL:", VITE_API_URL);
@@ -39,10 +40,7 @@ const ProductDetail = () => {
     <div className="product-detail-page">
       <div className="product-detail-card">
         <div className="product-detail-image">
-          <img
-            src={`${VITE_API_URL}/uploads/${product.photo}`}
-            alt={product.name}
-          />
+          <ApiImage name={product.photo} alt={product.name} />
         </div>
         <div className="product-detail-info">
           <p className="price">{product.price} €</p>
