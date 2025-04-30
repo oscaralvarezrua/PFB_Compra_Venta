@@ -14,12 +14,14 @@ import UserDataAndChangePass from "./pages/UserDataAndChangePass";
 import ProductDetail from "./pages/ProductDetail";
 import NotFound from "./pages/NotFound";
 import UserProfile from "./pages/UserProfile";
+import UserValidation from "./pages/UserValidation";
 
 
 function App() {
   const location = useLocation();
 
   return (
+
     <div className="app-layout"> 
       {location.pathname !== "/register" &&
         location.pathname !== "/login" &&
@@ -32,7 +34,7 @@ function App() {
 
 
       <div className="main-content"> 
-        <Routes>
+      <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/search" element={<SearchResults />} />
           <Route path="/publicar" element={<PublishProduct />} />
@@ -42,13 +44,14 @@ function App() {
           <Route path="/user" element={<UserProfile />} />
           <Route path="/user/notification" element={<UserProfile />} />
           <Route path="/changepassword" element={<UserDataAndChangePass />} />
-          <Route path="*" element={<NotFound />} />
           <Route path="/producto/:productId" element={<ProductDetail />} />
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </div>
 
       <Footer /> 
     </div>
+
 
   );
 }
