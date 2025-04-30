@@ -22,28 +22,36 @@ function App() {
 
   return (
 
-    <>
-      {location.pathname !== "/register" && location.pathname !== "/login" && location.pathname !== "/changepassword" && (
-        <>
-          <Header />
-          <Menu />
-        </>
-      )}
+    <div className="app-layout"> 
+      {location.pathname !== "/register" &&
+        location.pathname !== "/login" &&
+        location.pathname !== "/changepassword" && (
+          <>
+            <Header />
+            <Menu />
+          </>
+        )}
 
+
+      <div className="main-content"> 
       <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/search" element={<SearchResults />} />
-        <Route path="/publicar" element={<PublishProduct />} />
-        <Route path="/filtrados" element={<SearchFilteredProducts />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/user" element={<UserDataAndChangePass />} />
-        <Route path="/user/notification" element={<UserProfile />} />
-        <Route path="/changepassword" element={<UserDataAndChangePass />} />
-        <Route path="/validate/:validationCode" element={<UserValidation />} />
-        <Route path="*" element={<NotFound />} />
-      </Routes>
-    </>
+          <Route path="/" element={<Home />} />
+          <Route path="/search" element={<SearchResults />} />
+          <Route path="/publicar" element={<PublishProduct />} />
+          <Route path="/filtrados" element={<SearchFilteredProducts />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/user" element={<UserProfile />} />
+          <Route path="/user/notification" element={<UserProfile />} />
+          <Route path="/changepassword" element={<UserDataAndChangePass />} />
+          <Route path="/producto/:productId" element={<ProductDetail />} />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </div>
+
+      <Footer /> 
+    </div>
+
 
   );
 }
