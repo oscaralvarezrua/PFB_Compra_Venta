@@ -9,14 +9,12 @@ import { useAuth } from "../../contexts/AuthContext";
 
 import buscarIcon from "../../assets/buscar.png"; // Importa la imagen de búsqueda
 
-
 const Header = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const navigate = useNavigate();
-  
-  // Usamos el contexto de autenticación
-  const { token, logout } = useAuth();// Obtenemos el estado del usuario desde el contexto
 
+  // Usamos el contexto de autenticación
+  const { token, logout } = useAuth(); // Obtenemos el estado del usuario desde el contexto
 
   // Cambios en el input
   const handleSearchChange = (e) => {
@@ -42,22 +40,16 @@ const Header = () => {
   };
 
   return (
-    <header className="header"> {/* Asegúrate de tener esta clase en el header */}
+    <header className="header">
+      {" "}
+      {/* Asegúrate de tener esta clase en el header */}
       <div className="logo">
         <Link to="/">
           <img src={logo} alt="Logo" className="logo-img" />
         </Link>
       </div>
-
       <div className="search-bar">
-        <input
-          type="text"
-          placeholder="Buscar"
-          className="search-input"
-          value={searchQuery}
-          onChange={handleSearchChange}
-          onKeyDown={handleKeyPress}
-        />
+        <input type="text" placeholder="Buscar" className="search-input" value={searchQuery} onChange={handleSearchChange} onKeyDown={handleKeyPress} />
         <button className="search-btn" onClick={handleSearchSubmit}>
           <img src={buscarIcon} alt="Buscar" /> {/* Usa la imagen importada */}
         </button>
@@ -66,15 +58,15 @@ const Header = () => {
         {!token ? (
           <>
             <Link to="/register">
-            <button className="register-button">Regístrate</button>
-          </Link>
-          <Link to="/login">
-            <button className="register-button">Inicia sesión</button>
-          </Link>
+              <button className="register-button">Regístrate</button>
+            </Link>
+            <Link to="/login">
+              <button className="register-button">Inicia sesión</button>
+            </Link>
 
-          <Link to="/login">
-            <button className="sell-button">Vender</button>
-          </Link>
+            <Link to="/login">
+              <button className="sell-button">Vender</button>
+            </Link>
           </>
         ) : (
           <>
@@ -84,19 +76,18 @@ const Header = () => {
             <Link to="/favorites">
               <button className="favorites-button">Favoritos</button>
             </Link>
-            <Link to="/profile">
+            <Link to="/user">
               <button className="profile-button">Mi perfil</button>
             </Link>
-          <Link to="/publicar">
-            <button className="sell-button">Vender</button>
-          </Link>
+            <Link to="/publicar">
+              <button className="sell-button">Vender</button>
+            </Link>
             <button className="logout-button" onClick={logout}>
               Cerrar sesión
             </button>
           </>
         )}
       </div>
-
     </header>
   );
 };
