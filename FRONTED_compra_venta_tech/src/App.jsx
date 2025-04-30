@@ -14,43 +14,40 @@ import UserDataAndChangePass from "./pages/UserDataAndChangePass";
 import ProductDetail from "./pages/ProductDetail";
 import NotFound from "./pages/NotFound";
 import UserProfile from "./pages/UserProfile";
+import UserValidation from "./pages/UserValidation";
 
 
 function App() {
   const location = useLocation();
 
   return (
-    <div className="app-layout"> 
-      {location.pathname !== "/register" &&
-        location.pathname !== "/login" &&
-        location.pathname !== "/changepassword" && (
-          <>
-            <Header />
-            <Menu />
-          </>
-        )}
 
+    <>
+      {location.pathname !== "/register" && location.pathname !== "/login" && location.pathname !== "/changepassword" && (
+        <>
+          <Header />
+          <Menu />
+        </>
+      )}
 
-      <div className="main-content"> 
       <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/search" element={<SearchResults />} />
-          <Route path="/publicar" element={<PublishProduct />} />
-          <Route path="/filtrados" element={<SearchFilteredProducts />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/user" element={<UserProfile />} />
-          <Route path="/user/notification" element={<UserProfile />} />
-          <Route path="/changepassword" element={<UserDataAndChangePass />} />
-          <Route path="/producto/:productId" element={<ProductDetail />} />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </div>
-
-      <Footer /> 
-    </div>
+        <Route path="/" element={<Home />} />
+        <Route path="/search" element={<SearchResults />} />
+        <Route path="/publicar" element={<PublishProduct />} />
+        <Route path="/filtrados" element={<SearchFilteredProducts />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/user" element={<UserDataAndChangePass />} />
+        <Route path="/user/notification" element={<UserProfile />} />
+        <Route path="/changepassword" element={<UserDataAndChangePass />} />
+        <Route path="/validate/:validationCode" element={<UserValidation />} />
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+    </>
 
   );
 }
 
 export default App;
+
+// borrar
