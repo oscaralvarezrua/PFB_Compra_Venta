@@ -1,0 +1,144 @@
+.main-footer {
+  width: 100%;
+  background-color: transparent;
+  flex-grow: 1;
+  padding-top: 5vw;
+  bottom: 0;
+}
+
+.footer-top-line {
+  width: 100%;
+  height: 1px;
+  background-color: #000;
+  margin-bottom: 1rem;
+}
+
+.footer-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  flex-direction: row;
+}
+
+.footer-logo {
+  flex-shrink: 0;
+  margin-right: 30px;
+  text-align: left;
+}
+
+.logo-img {
+  height: 60px;
+}
+
+.footer-columns {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  flex-grow: 1;
+  gap: 40px;
+}
+
+.footer-column {
+  min-width: 120px;
+  text-align: left;
+}
+
+.column-title {
+  font-size: 1.2em;
+  font-weight: bold;
+  margin-bottom: 10px;
+  color: black;
+}
+
+.column-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.column-list li {
+  margin-bottom: 8px;
+}
+
+.footer-link {
+  text-decoration: none;
+  color: #605F5F;
+  font-size: 0.9em;
+}
+
+.footer-link:hover {
+  color: black;
+}
+
+/* Responsive para tablets y móviles */
+@media (max-width: 768px) {
+  .footer-container {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 20px;
+  }
+
+  .footer-logo {
+    margin-right: 0;
+    margin-bottom: 20px;
+  }
+  
+  .logo-img {
+    height: 60px;
+  }
+
+  .footer-columns {
+    flex-direction: row;
+    width: 100%;
+    justify-content: space-around;
+    gap: 20px;
+    margin-top: 20px;
+  }
+
+  .footer-column {
+    min-width: 100px;
+    text-align: center;
+  }
+
+  .column-title {
+    font-size: 1.1em;
+  }
+
+  .footer-link {
+    font-size: 0.95em;
+  }
+}
+
+/* Extra responsive para móviles pequeños */
+@media (max-width: 480px) {
+  .logo-img {
+    height: 35px;
+  }
+
+  .footer-logo {
+    margin-right: 0;
+    margin-bottom: 20px;
+  }
+
+  .footer-columns {
+    flex-direction: row;
+    display: flex;
+  }
+
+  .footer-column {
+    width: 100%;
+    margin-bottom: 15px;
+  }
+
+  .column-title {
+    font-size: 0.9em;
+  }
+
+  .footer-link {
+    font-size: 0.8em;
+  }
+}
