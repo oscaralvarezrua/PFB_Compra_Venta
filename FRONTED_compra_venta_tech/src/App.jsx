@@ -32,7 +32,7 @@ function App() {
 
 
       <div className="main-content"> 
-        <Routes>
+      <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/search" element={<SearchResults />} />
           <Route path="/publicar" element={<PublishProduct />} />
@@ -42,8 +42,8 @@ function App() {
           <Route path="/user" element={<UserProfile />} />
           <Route path="/user/notification" element={<UserProfile />} />
           <Route path="/changepassword" element={<UserDataAndChangePass />} />
-          <Route path="*" element={<NotFound />} />
           <Route path="/producto/:productId" element={<ProductDetail />} />
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </div>
 
