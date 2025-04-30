@@ -233,7 +233,7 @@
   }
 
   .categories-title {
-    font-size: 20px; 
+    font-size: 22px; 
     margin-top: 0; 
     margin-left: 10px;
   }
@@ -262,11 +262,11 @@
 
 @media (max-width: 480px) {
   .hamburger {
-    font-size: 26px; 
+    font-size: 20px; 
   }
 
   .categories-title {
-    font-size: 18px; 
+    font-size: 13px; 
   }
 
   .category {

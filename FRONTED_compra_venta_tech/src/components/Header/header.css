@@ -145,3 +145,13 @@
     border-radius: 15px;
   }
 }
+
+.header .search-bar {
+  border-radius: 20px;
+  padding: 6px 5px;
+}
+
+.header .search-bar input {
+  font-size: 11px;
+  padding: 5px;
+}

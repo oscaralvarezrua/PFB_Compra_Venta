@@ -112,7 +112,7 @@
   }
 
   .bold-text {
-    font-size: 5vw;
+    font-size: 4vw;
   }
 
   .normal-text {
@@ -146,6 +146,12 @@
 }
 
 @media (max-width: 480px) {
+  .slider-container {
+    height: auto; 
+    width: auto; 
+    display: flex;
+    scroll-snap-type: x mandatory; 
+  }
   .text-section {
     padding: 15px;
   }
@@ -156,17 +162,18 @@
   }
 
   .bold-text {
-    font-size: 6vw;
+    font-size: 4vw;
   }
 
   .normal-text {
-    font-size: 4vw;
+    font-size: 3vw;
     margin-top: 1.5vw;
+    padding-bottom: 10px;
   }
 
   .nav-button {
-    font-size: 1.2rem; 
-    padding: 8px;
+    font-size: 0.8rem; 
+    padding: 5px;
   }
 
   .nav-button.left {

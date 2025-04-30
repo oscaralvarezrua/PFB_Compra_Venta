@@ -6,6 +6,7 @@ import './Footer.css';
 const Footer = () => {
   return (
     <footer className="main-footer">
+      <div className="footer-top-line"></div>
       <div className="footer-container">
         <div className="footer-logo">
           <img src={logo} alt="Logo de SegundaTec" className="logo-img" />
