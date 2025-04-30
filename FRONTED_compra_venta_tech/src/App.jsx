@@ -12,9 +12,9 @@ import Register from "./pages/Register";
 import Login from "./pages/Login";
 import UserDataAndChangePass from "./pages/UserDataAndChangePass";
 import ProductDetail from "./pages/ProductDetail";
+import UserValidation from "./pages/UserValidation";
 import NotFound from "./pages/NotFound";
 import UserProfile from "./pages/UserProfile";
-
 
 function App() {
   const location = useLocation();
@@ -30,26 +30,25 @@ function App() {
           </>
         )}
 
-
       <div className="main-content"> 
-        <Routes>
+      <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/search" element={<SearchResults />} />
           <Route path="/publicar" element={<PublishProduct />} />
           <Route path="/filtrados" element={<SearchFilteredProducts />} />
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/user" element={<UserProfile />} />
+          <Route path="/user" element={<UserDataAndChangePass />} />
           <Route path="/user/notification" element={<UserProfile />} />
           <Route path="/changepassword" element={<UserDataAndChangePass />} />
-          <Route path="*" element={<NotFound />} />
+          <Route path="/validate/:validationCode" element={<UserValidation />} />
           <Route path="/producto/:productId" element={<ProductDetail />} />
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </div>
 
       <Footer /> 
     </div>
-
   );
 }
 
