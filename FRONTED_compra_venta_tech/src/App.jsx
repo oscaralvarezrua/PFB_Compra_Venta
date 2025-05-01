@@ -41,7 +41,10 @@ function App() {
           <Route path="/user" element={<UserDataAndChangePass />} />
           <Route path="/user/notification" element={<UserProfile />} />
           <Route path="/changepassword" element={<UserDataAndChangePass />} />
-          <Route path="/validate/:validationCode" element={<UserValidation />} />
+          <Route
+            path="/validate/:validationCode"
+            element={<UserValidation />}
+          />
           <Route path="/producto/:productId" element={<ProductDetail />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
@@ -49,9 +52,7 @@ function App() {
 
       {location.pathname !== "/register" &&
         location.pathname !== "/login" &&
-        location.pathname !== "/changepassword" && (
-          <Footer />
-        )}
+        location.pathname !== "/changepassword" && <Footer />}
     </div>
   );
 }
