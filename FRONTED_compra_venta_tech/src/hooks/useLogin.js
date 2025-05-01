@@ -14,7 +14,7 @@ export default function useLogin() {
 
   const [formState, setFormState] = useState(initalState);
 
-  const [error, setError] = useState(" ");
+  const [error, setError] = useState("");
 
   function handleChange({ target: { name, value } }) {
     setError("");
