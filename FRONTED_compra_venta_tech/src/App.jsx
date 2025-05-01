@@ -1,7 +1,7 @@
 import { Route, Routes, useLocation } from "react-router-dom";
 import Header from "./components/Header/Header";
 import Menu from "./components/Menu/menu";
-import Footer from "./components/Footer/Footer"; 
+import Footer from "./components/Footer/Footer";
 
 // Importa tus páginas
 import Home from "./pages/Home";
@@ -14,24 +14,22 @@ import UserDataAndChangePass from "./pages/UserDataAndChangePass";
 import ProductDetail from "./pages/ProductDetail";
 import UserValidation from "./pages/UserValidation";
 import NotFound from "./pages/NotFound";
-import UserProfile from "./pages/UserProfile";
+import UserProfile from "./pages/UserProfile"
 
 function App() {
   const location = useLocation();
 
   return (
-    <div className="app-layout"> 
-      {location.pathname !== "/register" &&
-        location.pathname !== "/login" &&
-        location.pathname !== "/changepassword" && (
-          <>
-            <Header />
-            <Menu />
-          </>
-        )}
+    <div className="app-layout">
+      {location.pathname !== "/register" && location.pathname !== "/login" && location.pathname !== "/changepassword" && (
+        <>
+          <Header />
+          <Menu />
+        </>
+      )}
 
-      <div className="main-content"> 
-      <Routes>
+      <div className="main-content">
+        <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/search" element={<SearchResults />} />
           <Route path="/publicar" element={<PublishProduct />} />
@@ -47,7 +45,7 @@ function App() {
         </Routes>
       </div>
 
-      <Footer /> 
+      <Footer />
     </div>
   );
 }
