@@ -3,6 +3,7 @@ import useUserData from "../hooks/useUserData";
 import useChangePassword from "../hooks/useChangePassword";
 import useUpdateUser from "../hooks/useUpdateUser";
 import PasswordInput from "../components/Post/PasswordInput";
+import ApiImage from "../components/Post/ApiImage";
 import "../styles/UserDataAndChangePass.css";
 
 const UserDataAndChangePass = () => {
@@ -22,6 +23,7 @@ const UserDataAndChangePass = () => {
     repeatPassword: "",
   });
   const [avatar, setAvatar] = useState(null);
+  const [previewUrl, setPreviewUrl] = useState(null);
 
   // Actualizar formData cuando userData cambie
   React.useEffect(() => {
@@ -45,7 +47,13 @@ const UserDataAndChangePass = () => {
   };
 
   const handleFileChange = (e) => {
-    setAvatar(e.target.files[0]);
+    const file = e.target.files[0];
+    if (file) {
+      setAvatar(file);
+      // Crear URL para previsualización
+      const url = URL.createObjectURL(file);
+      setPreviewUrl(url);
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -72,6 +80,14 @@ const UserDataAndChangePass = () => {
     await changePassword(passwordData.currentPassword, passwordData.newPassword);
   };
 
+  React.useEffect(() => {
+    return () => {
+      if (previewUrl) {
+        URL.revokeObjectURL(previewUrl);
+      }
+    };
+  }, [previewUrl]);
+
   if (loading) {
     return <div className="loading">Cargando datos del usuario...</div>;
   }
@@ -89,6 +105,18 @@ const UserDataAndChangePass = () => {
         {updateSuccess && <p className="success">Datos actualizados correctamente</p>}
 
         <form onSubmit={handleSubmit} className="user-data-form">
+          <div className="avatar-section">
+            {userData?.avatar && !previewUrl && (
+              <div className="current-avatar">
+                <ApiImage name={userData.avatar} alt="Foto de perfil actual" className="profile-image" />
+              </div>
+            )}
+            {previewUrl && (
+              <div className="avatar-preview">
+                <img src={previewUrl} alt="Vista previa" className="profile-image" />
+              </div>
+            )}
+          </div>
           <div className="form-group">
             <label htmlFor="username">Nombre de usuario</label>
             <input type="text" id="username" name="username" value={formData.username} onChange={handleInputChange} required />
@@ -115,8 +143,8 @@ const UserDataAndChangePass = () => {
         </form>
 
         <div className="password-section">
-          <button className="toggle-password-button" onClick={() => setShowPasswordForm(!showPasswordForm)}>
-            {showPasswordForm ? "Ocultar cambio de contraseña" : "Cambiar contraseña"}
+          <button onClick={() => setShowPasswordForm(!showPasswordForm)} className="toggle-password-button">
+            {showPasswordForm ? "Cancelar cambio de contraseña" : "Cambiar contraseña"}
           </button>
 
           {showPasswordForm && (
@@ -139,8 +167,8 @@ const UserDataAndChangePass = () => {
                 <PasswordInput id="repeatPassword" name="repeatPassword" value={passwordData.repeatPassword} onChange={handlePasswordChange} required />
               </div>
 
-              <button type="submit" className="update-button">
-                Cambiar contraseña
+              <button type="submit" className="change-password-button">
+                Actualizar contraseña
               </button>
             </form>
           )}

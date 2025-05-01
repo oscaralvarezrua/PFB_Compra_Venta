@@ -13,10 +13,12 @@ export default function useRegister() {
 
   const [formState, setFormState] = useState(blankState);
   const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
   const [avatar, setAvatar] = useState(null);
 
   function handleChange({ target: { name, value } }) {
     setError("");
+    setSuccess("");
     setFormState({ ...formState, [name]: value });
   }
 
@@ -27,6 +29,7 @@ export default function useRegister() {
   async function handleSubmit(e) {
     e.preventDefault();
     setError("");
+    setSuccess("");
 
     try {
       const formData = new FormData();
@@ -49,11 +52,15 @@ export default function useRegister() {
         throw new Error(json.message);
       }
 
-      navigate("/login");
+      setSuccess("¡Registro exitoso! Por favor, revisa tu correo electrónico para validar tu cuenta.");
+
+      setTimeout(() => {
+        navigate("/login");
+      }, 10000);
     } catch (error) {
       setError(error.message);
     }
   }
 
-  return { error, formState, handleSubmit, handleChange, handleFileChange };
+  return { error, success, formState, handleSubmit, handleChange, handleFileChange };
 }

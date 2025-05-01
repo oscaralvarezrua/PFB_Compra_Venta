@@ -8,10 +8,10 @@ import { Link } from "react-router-dom";
 import "../styles/Register.css";
 
 const Register = () => {
-  const { error, formState, handleSubmit, handleChange, handleFileChange } = useRegister();
+  const { error, success, formState, handleSubmit, handleChange, handleFileChange } = useRegister();
 
   return (
-    <main>
+    <main className="login-page">
       <div>
         <Link to="/">
           <button className="close-button">
@@ -24,6 +24,7 @@ const Register = () => {
 
         <h2>¡Crea tu cuenta!</h2>
         {error && <p className="error">{error}</p>}
+        {success && <p className="success">{success}</p>}
         <form onSubmit={handleSubmit}>
           <ul>
             <li>

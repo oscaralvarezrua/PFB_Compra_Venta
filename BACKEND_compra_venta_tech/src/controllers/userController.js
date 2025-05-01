@@ -1,29 +1,8 @@
-import {
-  createUser,
-  getUserByEmail,
-  getUserByUsername,
-  getUserByPhone,
-  getUserByValidationCode,
-  trustPass,
-  getUserListModel,
-  getUserDetailModel,
-  rateSellerModel,
-  updatePass,
-  getUserInf,
-  userValidation,
-  generateRecoverCode,
-  verifyRecoverCode,
-  updatePassWithRecovery,
-  getUserById,
-  updateUserModel,
-} from "../models/userModels.js";
+import { createUser, getUserByEmail, getUserByUsername, getUserByPhone, getUserByValidationCode, trustPass, getUserListModel, getUserDetailModel, rateSellerModel, updatePass, getUserInf, userValidation, generateRecoverCode, verifyRecoverCode, updatePassWithRecovery, getUserById, updateUserModel } from "../models/userModels.js";
 import Joi from "joi";
 import jwt from "jsonwebtoken";
 import crypto from "crypto";
-import {
-  sendValidationEmail,
-  sendRecoveryEmail,
-} from "../utils/emailConfig.js";
+import { sendValidationEmail, sendRecoveryEmail } from "../utils/emailConfig.js";
 import { savePhoto, deletePhoto } from "../utils/helpers.js";
 
 //Validación del usuario registrado (schema)
@@ -34,12 +13,9 @@ const userSchema = Joi.object({
     .required()
     .pattern(/^[a-zA-Z0-9_]+$/)
     .messages({
-      "string.pattern.base":
-        "El username solo puede contener letras, números y barra baja.",
-      "string.min":
-        "Nombre de usuario demasiado corto, debe tener al menos 5 caracteres.",
-      "string.max":
-        "Nombre de usuario demasiado largo, debe tener como maximo 25 caracteres.",
+      "string.pattern.base": "El username solo puede contener letras, números y barra baja.",
+      "string.min": "Nombre de usuario demasiado corto, debe tener al menos 5 caracteres.",
+      "string.max": "Nombre de usuario demasiado largo, debe tener como maximo 25 caracteres.",
       "any.required": "El campo nombre es obligatorio.",
     }),
 
@@ -53,10 +29,8 @@ const userSchema = Joi.object({
     .required()
     .pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\w\d\s]).{10,}$/)
     .messages({
-      "string.pattern.base":
-        "La contraseña debe contener una minuscula, una mayuscula, un número y un caracter especial.",
-      "string.min":
-        "La contraseña es demasiado corta, debe tener al menos 10 caracteres.",
+      "string.pattern.base": "La contraseña debe contener una minuscula, una mayuscula, un número y un caracter especial.",
+      "string.min": "La contraseña es demasiado corta, debe tener al menos 10 caracteres.",
       "any.required": "El campo contraseña es obligatorio.",
     }),
 
@@ -79,12 +53,9 @@ const UpdateUserSchema = Joi.object({
     .required()
     .pattern(/^[a-zA-Z0-9_]+$/)
     .messages({
-      "string.pattern.base":
-        "El username solo puede contener letras, números y barra baja.",
-      "string.min":
-        "Nombre de usuario demasiado corto, debe tener al menos 5 caracteres.",
-      "string.max":
-        "Nombre de usuario demasiado largo, debe tener como maximo 25 caracteres.",
+      "string.pattern.base": "El username solo puede contener letras, números y barra baja.",
+      "string.min": "Nombre de usuario demasiado corto, debe tener al menos 5 caracteres.",
+      "string.max": "Nombre de usuario demasiado largo, debe tener como maximo 25 caracteres.",
       "any.required": "El campo nombre es obligatorio.",
     }),
 
@@ -107,7 +78,6 @@ const userContoler = async (req, res, next) => {
     const { error, value } = userSchema.validate(req.body, {
       allowUnknown: true,
     });
-    const avatar = req.files?.avatar;
 
     if (error) {
       const errorMessage = error.details[0].message;
@@ -150,23 +120,22 @@ const userContoler = async (req, res, next) => {
     }
     let avatarUrl = null;
 
-    if (avatar) {
-      avatarUrl = await savePhoto(avatar);
+    if (req.files && req.files.avatar) {
+      try {
+        avatarUrl = await savePhoto(req.files.avatar);
+      } catch (error) {
+        return res.status(400).json({
+          status: "error",
+          message: error.message,
+        });
+      }
     }
 
     // Generar código de validación
     const validationCode = crypto.randomBytes(40).toString("hex");
 
     //Guardar usuario en la bbdd
-    const userBbdd = await createUser(
-      username,
-      email,
-      password,
-      phone,
-      biography,
-      avatarUrl,
-      validationCode
-    );
+    const userBbdd = await createUser(username, email, password, phone, biography, avatarUrl, validationCode);
 
     // Enviar correo de validación
     try {
@@ -178,8 +147,7 @@ const userContoler = async (req, res, next) => {
 
     res.status(201).json({
       status: "success",
-      message:
-        "Cuenta creada creada! Por favor revisa el correo para validarla :)",
+      message: "Cuenta creada creada! Por favor revisa el correo para validarla :)",
       data: {
         id: userBbdd,
         username,
@@ -208,65 +176,61 @@ const updateUserContoler = async (req, res, next) => {
     const oldDataUser = await getUserById(req.user.id);
 
     const { username, phone, biography } = value;
-    const avatar = req.files?.avatar;
 
-    if (
-      username != oldDataUser.username ||
-      phone != oldDataUser.phone ||
-      biography != oldDataUser.biography
-    ) {
-      if (username != oldDataUser.username) {
-        //Verificar si ya hay una cuenta con ese usuario
-        const verifyUsername = await getUserByUsername(username);
-        if (verifyUsername) {
-          return res.status(409).json({
-            status: "error",
-            message: "El username no está disponible", //! Da información de que ese correo tiene una cuenta
-          });
-        }
-      }
-
-      if (phone != oldDataUser.phone) {
-        //Verificar si ya hay una cuenta con ese teléfono
-        const verifyPhone = await getUserByPhone(phone);
-        if (verifyPhone) {
-          return res.status(409).json({
-            status: "error",
-            message: "El telefono no está disponible", //! Da información de que ese correo tiene una cuenta
-          });
-        }
-      }
-
-      //modificamos imagen del avatar
-      let newAvatarUrl = null;
-
-      if (avatar) {
-        await deletePhoto(oldDataUser.avatar);
-        newAvatarUrl = await savePhoto(avatar);
-      }
-
-      //Guardar usuario en la bbdd
-      const userBbdd = await updateUserModel(
-        username,
-        phone,
-        biography,
-        newAvatarUrl,
-        req.user.id
-      );
-
-      res.status(201).json({
-        status: "success",
-        message: "Datos del usuario actualizados correctamente",
-        data: {
-          userBbdd,
-        },
-      });
-    } else {
-      res.status(201).json({
-        status: "Nothing happened",
-        message: "Los Datos del usuario no han cambiado",
+    if (username === oldDataUser.username && phone === oldDataUser.phone && biography === oldDataUser.biography && !req.files?.avatar) {
+      return res.status(200).json({
+        status: "nothing_changed",
+        message: "No se han detectado cambios en los datos",
       });
     }
+
+    if (username !== oldDataUser.username) {
+      //Verificar si ya hay una cuenta con ese usuario
+      const verifyUsername = await getUserByUsername(username);
+      if (verifyUsername) {
+        return res.status(409).json({
+          status: "error",
+          message: "El username no está disponible",
+        });
+      }
+    }
+
+    if (phone != oldDataUser.phone) {
+      //Verificar si ya hay una cuenta con ese teléfono
+      const verifyPhone = await getUserByPhone(phone);
+      if (verifyPhone) {
+        return res.status(409).json({
+          status: "error",
+          message: "El telefono no está disponible", //! Da información de que ese correo tiene una cuenta
+        });
+      }
+    }
+
+    //modificamos imagen del avatar
+    let newAvatarUrl = oldDataUser.avatar;
+
+    if (req.files && req.files.avatar) {
+      try {
+        // Si hay un avatar existente, lo borramos
+        if (oldDataUser.avatar) {
+          await deletePhoto(oldDataUser.avatar);
+        }
+        newAvatarUrl = await savePhoto(req.files.avatar);
+      } catch (error) {
+        return res.status(400).json({
+          status: "error",
+          message: error.message,
+        });
+      }
+    }
+
+    //Guardar usuario en la bbdd
+    await updateUserModel(username, phone, biography, newAvatarUrl, req.user.id);
+
+    res.status(200).json({
+      status: "success",
+      message: "Datos del usuario actualizados correctamente",
+    });
   } catch (error) {
     next(error);
   }
@@ -399,10 +363,8 @@ const changePassSchema = Joi.object({
     .required()
     .pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\w\d\s]).{10,}$/)
     .messages({
-      "string.pattern.base":
-        "La contraseña debe contener una minuscula, una mayuscula y un número.",
-      "string.min":
-        "La contraseña es demasiado corta, debe tener al menos 10 caracteres.",
+      "string.pattern.base": "La contraseña debe contener una minuscula, una mayuscula y un número.",
+      "string.min": "La contraseña es demasiado corta, debe tener al menos 10 caracteres.",
       "any.required": "El campo contraseña es obligatorio.",
     }),
 });
@@ -468,10 +430,8 @@ const recoveryPassSchema = Joi.object({
     .required()
     .pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\w\d\s]).{10,}$/)
     .messages({
-      "string.pattern.base":
-        "La contraseña debe contener una minuscula, una mayuscula, un número y un caracter especial.",
-      "string.min":
-        "La contraseña es demasiado corta, debe tener al menos 10 caracteres.",
+      "string.pattern.base": "La contraseña debe contener una minuscula, una mayuscula, un número y un caracter especial.",
+      "string.min": "La contraseña es demasiado corta, debe tener al menos 10 caracteres.",
       "any.required": "El campo contraseña es obligatorio.",
     }),
   repeatPassword: Joi.string().valid(Joi.ref("password")).required().messages({
@@ -511,8 +471,7 @@ const requestPassRecovery = async (req, res, next) => {
 
     res.status(200).json({
       status: "success",
-      message:
-        "Se ha enviado un correo con las instrucciones para recuperar tu contraseña",
+      message: "Se ha enviado un correo con las instrucciones para recuperar tu contraseña",
     });
   } catch (error) {
     next(error);
@@ -553,16 +512,7 @@ const changePassWithRecovery = async (req, res, next) => {
   }
 };
 
-export {
-  userContoler,
-  validateUserController,
-  userLogin,
-  changePass,
-  getUserInfo,
-  requestPassRecovery,
-  changePassWithRecovery,
-  updateUserContoler,
-};
+export { userContoler, validateUserController, userLogin, changePass, getUserInfo, requestPassRecovery, changePassWithRecovery, updateUserContoler };
 
 // Controlador para listar usuarios
 export async function getUserListController(req, res, next) {

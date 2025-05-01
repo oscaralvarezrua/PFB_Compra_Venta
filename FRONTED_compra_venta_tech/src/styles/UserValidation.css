@@ -21,10 +21,10 @@
   margin-bottom: 2rem;
 }
 
-.logo-img {
+/*.logo-img {
   width: 50px;
   height: auto;
-}
+} */
 
 .validation-message {
   padding: 1rem;
@@ -58,11 +58,45 @@
   animation: spin 1s linear infinite;
 }
 
-@keyframes spin {
-  0% {
-    transform: rotate(0deg);
+
+  .validation-message {
+    padding: 1rem;
   }
-  100% {
-    transform: rotate(360deg);
+  
+  .validation-message h2 {
+    margin-bottom: 1rem;
+    color: #333;
   }
-}
+  
+  .validation-message p {
+    color: #666;
+    margin-bottom: 0.5rem;
+  }
+  
+  .validation-message.success {
+    color: #28a745;
+  }
+  
+  .validation-message.error {
+    color: #dc3545;
+  }
+  
+  .loading-spinner {
+    width: 40px;
+    height: 40px;
+    margin: 20px auto;
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid #f5d000;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+  }
+  
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+  
