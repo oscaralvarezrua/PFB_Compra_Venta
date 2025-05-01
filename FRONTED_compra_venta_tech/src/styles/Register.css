@@ -36,3 +36,43 @@ textarea {
     color: #666;
   }
   
+=======
+@import "./Login.css";
+
+textarea {
+  width: 100%;
+  padding: 1rem 0.8rem;
+  border: 3px solid #f5d000;
+  border-radius: 8px;
+  font-size: 1rem;
+  box-sizing: border-box;
+  resize: vertical;
+  min-height: 100px;
+  font-family: inherit;
+}
+
+.login-link {
+  text-align: center;
+  margin-top: 1rem;
+}
+
+.login-link a {
+  color: #f5d000;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.login-link a:hover {
+  text-decoration: underline;
+}
+
+input[type="file"] {
+  border: none;
+  padding: 0.5rem 0;
+}
+
+label[for="avatar"] {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: #666;
+}

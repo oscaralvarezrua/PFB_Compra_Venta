@@ -14,13 +14,14 @@ import UserDataAndChangePass from "./pages/UserDataAndChangePass";
 import ProductDetail from "./pages/ProductDetail";
 import UserValidation from "./pages/UserValidation";
 import NotFound from "./pages/NotFound";
-import UserProfile from "./pages/UserProfile";
+import UserProfile from "./pages/UserProfile"
 
 function App() {
   const location = useLocation();
 
   return (
     <div className="app-layout">
+
       {location.pathname !== "/register" &&
         location.pathname !== "/login" &&
         location.pathname !== "/changepassword" && (
@@ -52,6 +53,7 @@ function App() {
         location.pathname !== "/changepassword" && (
           <Footer />
         )}
+
     </div>
   );
 }
