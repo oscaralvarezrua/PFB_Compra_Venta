@@ -21,12 +21,15 @@ function App() {
 
   return (
     <div className="app-layout">
-      {location.pathname !== "/register" && location.pathname !== "/login" && location.pathname !== "/changepassword" && (
-        <>
-          <Header />
-          <Menu />
-        </>
-      )}
+
+      {location.pathname !== "/register" &&
+        location.pathname !== "/login" &&
+        location.pathname !== "/changepassword" && (
+          <>
+            <Header />
+            <Menu />
+          </>
+        )}
 
       <div className="main-content">
         <Routes>
@@ -45,7 +48,12 @@ function App() {
         </Routes>
       </div>
 
-      <Footer />
+      {location.pathname !== "/register" &&
+        location.pathname !== "/login" &&
+        location.pathname !== "/changepassword" && (
+          <Footer />
+        )}
+
     </div>
   );
 }
