@@ -50,7 +50,7 @@
   .update-button {
     width: 100%;
     padding: 1rem;
-    background-color: #f5d000;
+    background-color: #e7e61b;
     color: black;
     border: none;
     border-radius: 4px;
@@ -60,7 +60,7 @@
   }
   
   .update-button:hover {
-    background-color: #e5c000;
+    background-color: #e7e61b;
   }
   
   .toggle-password-button {
