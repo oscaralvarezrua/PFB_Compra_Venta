@@ -1,4 +1,3 @@
-// Página de validación usuario
 import React from "react";
 import useValidation from "../hooks/useValidation";
 import logo from "../assets/logo_negro_recortado.png";
