@@ -64,4 +64,4 @@ export default function useValidation() {
   }, [validationCode, navigate]);
 
   return { status, message };
-}
+
