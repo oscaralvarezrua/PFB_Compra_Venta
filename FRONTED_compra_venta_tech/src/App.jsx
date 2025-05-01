@@ -12,21 +12,23 @@ import Register from "./pages/Register";
 import Login from "./pages/Login";
 import UserDataAndChangePass from "./pages/UserDataAndChangePass";
 import ProductDetail from "./pages/ProductDetail";
+import UserValidation from "./pages/UserValidation";
 import NotFound from "./pages/NotFound";
 import UserProfile from "./pages/UserProfile";
-import UserValidation from "./pages/UserValidation";
 
 function App() {
   const location = useLocation();
 
   return (
     <div className="app-layout">
-      {location.pathname !== "/register" && location.pathname !== "/login" && location.pathname !== "/changepassword" && (
-        <>
-          <Header />
-          <Menu />
-        </>
-      )}
+      {location.pathname !== "/register" &&
+        location.pathname !== "/login" &&
+        location.pathname !== "/changepassword" && (
+          <>
+            <Header />
+            <Menu />
+          </>
+        )}
 
       <div className="main-content">
         <Routes>
@@ -45,7 +47,11 @@ function App() {
         </Routes>
       </div>
 
-      <Footer />
+      {location.pathname !== "/register" &&
+        location.pathname !== "/login" &&
+        location.pathname !== "/changepassword" && (
+          <Footer />
+        )}
     </div>
   );
 }
