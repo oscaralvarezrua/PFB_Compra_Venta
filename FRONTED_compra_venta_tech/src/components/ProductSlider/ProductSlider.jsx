@@ -2,6 +2,7 @@ import React, { useRef } from "react";
 import "./ProductSlider.css";
 import ApiImage from "../Post/ApiImage";
 import { Link } from "react-router-dom";
+const { VITE_API_URL } = import.meta.env;
 
 const ProductSlider = ({ products }) => {
   console.log(products);
@@ -17,6 +18,21 @@ const ProductSlider = ({ products }) => {
     });
   };
 
+  //incrementar visitas
+  const handleClickProduct = async (productId) => {
+    try {
+      const res = await fetch(
+        VITE_API_URL + "/products/" + productId + "/addvisit",
+        {
+          method: "PUT",
+        }
+      );
+      console.log("Visita incrementada" + res);
+    } catch (error) {
+      console.error("Error al incrementar las visitas:", error);
+    }
+  };
+
   return (
     <div className="product-slider-wrapper">
       <button
@@ -28,7 +44,10 @@ const ProductSlider = ({ products }) => {
       <div className="product-slider" ref={sliderRef}>
         {products.map((product) => (
           <div key={product.id} className="product-slider-item">
-            <Link to={"/producto/" + product.id}>
+            <Link
+              to={"/producto/" + product.id}
+              onClick={() => handleClickProduct(product.id)}
+            >
               <ApiImage
                 name={product.photo}
                 alt={product.name}
