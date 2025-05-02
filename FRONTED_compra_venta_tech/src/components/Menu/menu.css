@@ -9,7 +9,7 @@
   position: relative;
   background-color: black;
   color: white;
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
   padding: 10px 30px;
   width: 100%;
   box-sizing: border-box;
@@ -26,26 +26,26 @@
 .hamburger {
   font-size: 30px;
   cursor: pointer;
-  margin-right: 10px; 
-  display: flex; 
+  margin-right: 10px;
+  display: flex;
   align-items: center;
 }
 
 .hamburger:hover,
-.categories-title.hamburger-hovered { 
+.categories-title.hamburger-hovered {
   color: #e7c61b;
 }
 
 .categories-title {
   font-size: 18px;
-  font-family: 'Inter', sans-serif;
-  cursor: pointer; 
+  font-family: "Inter", sans-serif;
+  cursor: pointer;
 }
 
 .categories-list {
   display: flex;
   gap: 20px;
-  justify-content: center; 
+  justify-content: center;
   flex-grow: 1;
 }
 
@@ -75,7 +75,7 @@
 
 .all-categories .category:hover {
   background-color: #f0f0f0;
-  color: #e7c61b; 
+  color: #e7c61b;
 }
 
 .dropdown-menu {
@@ -85,7 +85,7 @@
   background-color: white;
   width: 100%;
   padding: 10px 20px;
-  box-shadow: 0px 4px 6px rgba(0,0,0,0.1);
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
   z-index: 999;
   box-sizing: border-box;
   max-height: 300px;
@@ -103,7 +103,6 @@
   background-color: #f0f0f0;
 }
 
-
 /* Media Query para pantallas móviles */
 * {
   margin: 0;
@@ -116,7 +115,7 @@
   position: relative;
   background-color: black;
   color: white;
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
   padding: 10px 20px; /* Reduzco un poco el padding horizontal general */
   width: 100%;
   box-sizing: border-box;
@@ -145,7 +144,7 @@
 
 .categories-title {
   font-size: 18px;
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
   cursor: pointer;
 }
 
@@ -193,7 +192,7 @@
   background-color: white;
   width: 100%;
   padding: 10px 20px;
-  box-shadow: 0px 4px 6px rgba(0,0,0,0.1);
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
   z-index: 999;
   box-sizing: border-box;
   max-height: 300px;
@@ -211,7 +210,6 @@
   background-color: #f0f0f0;
 }
 
-
 /* Responsive */
 @media (max-width: 768px) {
   .menu-header {
@@ -227,19 +225,19 @@
   }
 
   .hamburger {
-    font-size: 28px; 
-    margin-right: 2px; 
-    margin-bottom: 0; 
+    font-size: 28px;
+    margin-right: 2px;
+    margin-bottom: 0;
   }
 
   .categories-title {
-    font-size: 22px; 
-    margin-top: 0; 
+    font-size: 22px;
+    margin-top: 0;
     margin-left: 10px;
   }
 
   .categories-list {
-    display: none; 
+    display: none;
     flex-direction: row;
     gap: 15px;
     margin-top: 15px;
@@ -249,28 +247,28 @@
   }
 
   .categories-list.open {
-    display: flex; 
-    width: 100%; 
+    display: flex;
+    width: 100%;
   }
 
   .category {
-    font-size: 18px; 
-    padding: 8px 12px; 
-    white-space: nowrap; 
+    font-size: 18px;
+    padding: 8px 12px;
+    white-space: nowrap;
   }
 }
 
 @media (max-width: 480px) {
   .hamburger {
-    font-size: 20px; 
+    font-size: 20px;
   }
 
   .categories-title {
-    font-size: 13px; 
+    font-size: 13px;
   }
 
   .category {
-    font-size: 16px; 
+    font-size: 16px;
     padding: 6px 10px;
   }
 }

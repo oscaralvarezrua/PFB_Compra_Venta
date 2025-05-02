@@ -15,20 +15,20 @@ import ProductDetail from "./pages/ProductDetail";
 import UserValidation from "./pages/UserValidation";
 import NotFound from "./pages/NotFound";
 import UserProfile from "./pages/UserProfile";
+import UserList from "./pages/UserList";
+import EditProduct from "./pages/EditProduct";
 
 function App() {
   const location = useLocation();
 
   return (
     <div className="app-layout">
-      {location.pathname !== "/register" &&
-        location.pathname !== "/login" &&
-        location.pathname !== "/changepassword" && (
-          <>
-            <Header />
-            <Menu />
-          </>
-        )}
+      {location.pathname !== "/register" && location.pathname !== "/login" && location.pathname !== "/changepassword" && (
+        <>
+          <Header />
+          <Menu />
+        </>
+      )}
 
       <div className="main-content">
         <Routes>
@@ -44,16 +44,16 @@ function App() {
           <Route path="/validate/:validationCode" element={<UserValidation />} />
           <Route path="/producto/:productId" element={<ProductDetail />} />
           <Route path="*" element={<NotFound />} />
+          <Route path="/usuarios" element={<UserList />} />
+          <Route path="/edit/:productId" element={<EditProduct />} />
         </Routes>
       </div>
 
-      {location.pathname !== "/register" &&
-        location.pathname !== "/login" &&
-        location.pathname !== "/changepassword" && (
-          <Footer />
-        )}
+      {location.pathname !== "/register" && location.pathname !== "/login" && location.pathname !== "/changepassword" && <Footer />}
     </div>
   );
 }
 
 export default App;
+
+// prueba error
