@@ -1,17 +1,16 @@
-// Página de publicación artículo
+// Página de Publicación de Artículos
 import React, { useState, useEffect, useRef } from "react";
-import { useNavigate } from "react-router-dom"; // ✅ Necesario para el botón Volver
+import { useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
 import "../styles/PublishProduct.css";
+
 const { VITE_API_URL } = import.meta.env;
 
 const PublishProduct = () => {
   const { token } = useAuth();
-  const navigate = useNavigate(); // ✅
+  const navigate = useNavigate();
+  const fileInputRef = useRef(null);
 
-  const fileInputRef = useRef(null); // Para limpiar el input de tipo file
-
-  // Estados
   const [formData, setFormData] = useState({
     name: "",
     description: "",
@@ -23,170 +22,171 @@ const PublishProduct = () => {
 
   const [categories, setCategories] = useState([]);
   const [submitMessage, setSubmitMessage] = useState("");
+  const [preview, setPreview] = useState(null);
 
-  // Cargar categorías
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const res = await fetch(VITE_API_URL + "/categories");
+        const res = await fetch(`${VITE_API_URL}/categories`);
         const data = await res.json();
         setCategories(data.data);
-      } catch (error) {
-        console.error("Error al cargar categorías:", error);
+      } catch (err) {
+        console.error("Error al cargar categorías:", err);
       }
     };
-
     fetchCategories();
   }, []);
 
-  // Cambios en los inputs
-  const handleChange = (event) => {
-    const { name, value, type, files } = event.target;
-    setFormData({
-      ...formData,
-      [name]: type === "file" ? files[0] : value,
-    });
+  const handleChange = (e) => {
+    const { name, value, type, files } = e.target;
+    if (type === "file") {
+      const file = files[0];
+      setFormData({ ...formData, photo: file });
+      if (file) {
+        const reader = new FileReader();
+        reader.onloadend = () => setPreview(reader.result);
+        reader.readAsDataURL(file);
+      } else {
+        setPreview(null);
+      }
+    } else {
+      setFormData({ ...formData, [name]: value });
+    }
   };
 
-  // Enviar formulario
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-
+  const handleSubmit = async (e) => {
+    e.preventDefault();
     const body = new FormData();
-    for (const key in formData) {
-      body.append(key, formData[key]);
-    }
+    Object.entries(formData).forEach(([key, val]) => {
+      if (val) body.append(key, val);
+    });
 
     try {
-      const res = await fetch(VITE_API_URL + "/products", {
+      const res = await fetch(`${VITE_API_URL}/products`, {
         method: "POST",
         headers: {
-          Authorization: token ? "Bearer " + token : "",
+          Authorization: `Bearer ${token}`,
         },
         body,
       });
 
       const data = await res.json();
+      if (!res.ok) throw new Error(data.message);
 
-      if (!res.ok) {
-        setSubmitMessage(data.message || "Algo ha fallado, lo sentimos.");
-      } else {
-        setSubmitMessage("¡Producto publicado correctamente! ✅");
-
-        // Limpiar formulario
-        setFormData({
-          name: "",
-          description: "",
-          price: "",
-          locality: "",
-          category_id: "",
-          photo: null,
-        });
-        if (fileInputRef.current) fileInputRef.current.value = "";
-      }
-    } catch (error) {
-      console.error("Error al conectar con el servidor:", error);
-      setSubmitMessage("Error al conectar con el servidor.");
+      setSubmitMessage("¡Producto publicado correctamente! ✅");
+      setFormData({
+        name: "",
+        description: "",
+        price: "",
+        locality: "",
+        category_id: "",
+        photo: null,
+      });
+      setPreview(null);
+      if (fileInputRef.current) fileInputRef.current.value = "";
+    } catch (err) {
+      setSubmitMessage(err.message || "Error al conectar con el servidor.");
     }
   };
 
-  // Botón volver al inicio
-  const handleReset = () => {
-    navigate("/");
-  };
-
   return (
-    <div className="publish-page">
-      <h2>Publicar un nuevo artículo</h2>
+    <section className="publish-wrapper">
+      <h2 className="page-title">Publicar nuevo artículo</h2>
 
-      <form onSubmit={handleSubmit} encType="multipart/form-data">
-        <input
-          type="text"
-          name="name"
-          placeholder="Nombre del artículo"
-          value={formData.name}
-          onChange={handleChange}
-          required
-        />
-
-        <textarea
-          name="description"
-          placeholder="Descripción"
-          value={formData.description}
-          onChange={handleChange}
-        />
-
-        <input
-          type="number"
-          name="price"
-          placeholder="Precio (€)"
-          min="0"
-          value={formData.price}
-          onChange={handleChange}
-          required
-        />
-
-        <input
-          type="text"
-          name="locality"
-          placeholder="Localidad"
-          value={formData.locality}
-          onChange={handleChange}
-          required
-        />
-
-        <select
-          name="category_id"
-          value={formData.category_id}
-          onChange={handleChange}
-          required
-        >
-          <option value="">Selecciona una categoría</option>
-          {categories.map((cat) => (
-            <option key={cat.id} value={cat.id}>
-              {cat.name}
-            </option>
-          ))}
-        </select>
-
-        <div className="file-input-wrapper">
-          <input
-            type="file"
-            name="photo"
-            onChange={handleChange}
-            ref={fileInputRef}
-            required
-          />
-          {formData.photo && (
-            <button
-              type="button"
-              className="delete-file-btn"
-              onClick={() => {
-                setFormData({ ...formData, photo: null });
-                if (fileInputRef.current) fileInputRef.current.value = "";
-              }}
+      <form
+        id="publish-form"
+        onSubmit={handleSubmit}
+        encType="multipart/form-data"
+        className="publish-form"
+      >
+        <div className="form-sections">
+          <div className="info-box">
+            <h3>Información del producto</h3>
+            <input
+              type="text"
+              name="name"
+              placeholder="Nombre"
+              value={formData.name}
+              onChange={handleChange}
+              required
+            />
+            <textarea
+              name="description"
+              placeholder="Descripción"
+              value={formData.description}
+              onChange={handleChange}
+            />
+            <input
+              type="number"
+              name="price"
+              placeholder="Precio (€)"
+              min="0"
+              value={formData.price}
+              onChange={handleChange}
+              required
+            />
+            <input
+              type="text"
+              name="locality"
+              placeholder="Localidad"
+              value={formData.locality}
+              onChange={handleChange}
+              required
+            />
+            <select
+              name="category_id"
+              value={formData.category_id}
+              onChange={handleChange}
+              required
             >
-              X
-            </button>
-          )}
+              <option value="">Selecciona una categoría</option>
+              {categories.map((cat) => (
+                <option key={cat.id} value={cat.id}>
+                  {cat.name}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div className="photo-box">
+            <h3>Foto del producto</h3>
+            <input
+              type="file"
+              name="photo"
+              onChange={handleChange}
+              ref={fileInputRef}
+              required
+            />
+            {preview && (
+              <img src={preview} alt="preview" className="photo-preview" />
+            )}
+          </div>
         </div>
 
-        <button type="submit">Publicar artículo</button>
-        <button type="button" onClick={handleReset} className="reset-button">
-          Volver al inicio
-        </button>
+        {submitMessage && (
+          <p
+            className={`feedback-message ${
+              submitMessage.includes("✅") ? "success" : "error"
+            }`}
+          >
+            {submitMessage}
+          </p>
+        )}
       </form>
 
-      {submitMessage && (
-        <p
-          className={`feedback-message ${
-            submitMessage.includes("✅") ? "success" : "error"
-          }`}
+      <div className="publish-buttons">
+        <button type="submit" form="publish-form">
+          Publicar artículo
+        </button>
+        <button
+          type="button"
+          onClick={() => navigate("/")}
+          className="reset-button"
         >
-          {submitMessage}
-        </p>
-      )}
-    </div>
+          Volver al inicio
+        </button>
+      </div>
+    </section>
   );
 };
 
