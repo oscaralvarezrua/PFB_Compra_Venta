@@ -15,6 +15,8 @@ import ProductDetail from "./pages/ProductDetail";
 import UserValidation from "./pages/UserValidation";
 import NotFound from "./pages/NotFound";
 import UserProfile from "./pages/UserProfile";
+import UserList from "./pages/UserList";
+import EditProduct from "./pages/EditProduct";
 
 function App() {
   const location = useLocation();
@@ -47,6 +49,8 @@ function App() {
           />
           <Route path="/producto/:productId" element={<ProductDetail />} />
           <Route path="*" element={<NotFound />} />
+          <Route path="/usuarios" element={<UserList />} />
+          <Route path="/edit/:productId" element={<EditProduct />} />
         </Routes>
       </div>
 

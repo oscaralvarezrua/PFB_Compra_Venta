@@ -1,5 +1,4 @@
 //Página detalle usuario con histórico de ventas y valoraciones (vendedor) y/o histórico de solicitudes de compras
-//Página de registro
 import React from "react";
 
 const UserProfile = () => {
