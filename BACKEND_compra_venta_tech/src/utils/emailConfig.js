@@ -12,6 +12,9 @@ const transporter = nodemailer.createTransport({
     user: SMTP_USER,
     pass: SMTP_PASSWORD,
   },
+  tls: {
+    rejectUnauthorized: false
+  }
 });
 
 export async function sendMail(email, subject, html) {
@@ -149,3 +152,5 @@ export const sendRecoveryEmail = async (email, recoveryCode) => {
     throw new Error("Error al enviar el correo de recuperación");
   }
 };
+
+// prueba error
