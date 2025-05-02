@@ -23,12 +23,14 @@ function App() {
 
   return (
     <div className="app-layout">
-      {location.pathname !== "/register" && location.pathname !== "/login" && location.pathname !== "/changepassword" && (
-        <>
-          <Header />
-          <Menu />
-        </>
-      )}
+      {location.pathname !== "/register" &&
+        location.pathname !== "/login" &&
+        location.pathname !== "/changepassword" && (
+          <>
+            <Header />
+            <Menu />
+          </>
+        )}
 
       <div className="main-content">
         <Routes>
@@ -39,17 +41,22 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
           <Route path="/user" element={<UserDataAndChangePass />} />
-          <Route path="/user/notification" element={<UserProfile />} />
           <Route path="/changepassword" element={<UserDataAndChangePass />} />
-          <Route path="/validate/:validationCode" element={<UserValidation />} />
+          <Route
+            path="/validate/:validationCode"
+            element={<UserValidation />}
+          />
           <Route path="/producto/:productId" element={<ProductDetail />} />
-          <Route path="*" element={<NotFound />} />
           <Route path="/usuarios" element={<UserList />} />
+          <Route path="/usuarios/:id" element={<UserProfile />} />
           <Route path="/edit/:productId" element={<EditProduct />} />
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </div>
 
-      {location.pathname !== "/register" && location.pathname !== "/login" && location.pathname !== "/changepassword" && <Footer />}
+      {location.pathname !== "/register" &&
+        location.pathname !== "/login" &&
+        location.pathname !== "/changepassword" && <Footer />}
     </div>
   );
 }
