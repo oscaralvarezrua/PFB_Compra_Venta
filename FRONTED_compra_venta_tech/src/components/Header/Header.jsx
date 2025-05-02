@@ -70,12 +70,12 @@ const Header = () => {
           </>
         ) : (
           <>
-            <Link to="/notifications">
+            <Link to="/user/requests-list">
               <button className="notifications-button">Notificaciones</button>
             </Link>
-            <Link to="/favorites">
+            {/* <Link to="/favorites">
               <button className="favorites-button">Favoritos</button>
-            </Link>
+            </Link> */}
             <Link to="/user">
               <button className="profile-button">Mi perfil</button>
             </Link>

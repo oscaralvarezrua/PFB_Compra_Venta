@@ -17,6 +17,7 @@ import NotFound from "./pages/NotFound";
 import UserProfile from "./pages/UserProfile";
 import UserList from "./pages/UserList";
 import EditProduct from "./pages/EditProduct";
+import UserMenu from "./pages/UserMenu";
 
 function App() {
   const location = useLocation();
@@ -40,7 +41,7 @@ function App() {
           <Route path="/filtrados" element={<SearchFilteredProducts />} />
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/user" element={<UserDataAndChangePass />} />
+          <Route path="/user/*" element={<UserMenu />} />
           <Route path="/changepassword" element={<UserDataAndChangePass />} />
           <Route
             path="/validate/:validationCode"
