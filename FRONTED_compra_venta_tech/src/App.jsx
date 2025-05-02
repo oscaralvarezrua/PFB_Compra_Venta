@@ -14,7 +14,7 @@ import UserDataAndChangePass from "./pages/UserDataAndChangePass";
 import ProductDetail from "./pages/ProductDetail";
 import UserValidation from "./pages/UserValidation";
 import NotFound from "./pages/NotFound";
-import UserProfile from "./pages/UserProfile";
+import UserMenu from "./pages/UserMenu";
 
 function App() {
   const location = useLocation();
@@ -38,8 +38,7 @@ function App() {
           <Route path="/filtrados" element={<SearchFilteredProducts />} />
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/user" element={<UserDataAndChangePass />} />
-          <Route path="/user/notification" element={<UserProfile />} />
+          <Route path="/user/*" element={<UserMenu />} />
           <Route path="/changepassword" element={<UserDataAndChangePass />} />
           <Route
             path="/validate/:validationCode"
