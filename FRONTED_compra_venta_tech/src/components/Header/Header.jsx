@@ -49,14 +49,7 @@ const Header = () => {
         </Link>
       </div>
       <div className="search-bar">
-        <input
-          type="text"
-          placeholder="Buscar"
-          className="search-input"
-          value={searchQuery}
-          onChange={handleSearchChange}
-          onKeyDown={handleKeyPress}
-        />
+        <input type="text" placeholder="Buscar" className="search-input" value={searchQuery} onChange={handleSearchChange} onKeyDown={handleKeyPress} />
         <button className="search-btn" onClick={handleSearchSubmit}>
           <img src={buscarIcon} alt="Buscar" /> {/* Usa la imagen importada */}
         </button>
