@@ -14,6 +14,9 @@ import UserDataAndChangePass from "./pages/UserDataAndChangePass";
 import ProductDetail from "./pages/ProductDetail";
 import UserValidation from "./pages/UserValidation";
 import NotFound from "./pages/NotFound";
+import UserProfile from "./pages/UserProfile";
+import UserList from "./pages/UserList";
+import EditProduct from "./pages/EditProduct";
 import UserMenu from "./pages/UserMenu";
 
 function App() {
@@ -45,6 +48,9 @@ function App() {
             element={<UserValidation />}
           />
           <Route path="/producto/:productId" element={<ProductDetail />} />
+          <Route path="/usuarios" element={<UserList />} />
+          <Route path="/usuarios/:id" element={<UserProfile />} />
+          <Route path="/edit/:productId" element={<EditProduct />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </div>
