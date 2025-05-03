@@ -26,30 +26,15 @@ const Login = () => {
           <ul>
             <li>
               <label htmlFor="email"></label>
-              <input
-                type="email"
-                required
-                id="email"
-                name="email"
-                value={formState.email}
-                onChange={handleChange}
-                placeholder="Dirección de email "
-              />
+              <input type="email" required id="email" name="email" value={formState.email} onChange={handleChange} placeholder="Dirección de email " />
             </li>
             <li className="password-li">
               <label htmlFor="password"></label>
-              <PasswordInput
-                required
-                id="password"
-                name="password"
-                value={formState.password}
-                onChange={handleChange}
-                placeholder="Contraseña"
-              />
+              <PasswordInput required id="password" name="password" value={formState.password} onChange={handleChange} placeholder="Contraseña" />
             </li>
           </ul>
-          <Link to="/changepassword">
-            <button type="button" className="change-pass-button">
+          <Link to="/forgot-password">
+            <button type="button" className="forgot-link">
               ¿Has olvidado tu contraseña?
             </button>
           </Link>

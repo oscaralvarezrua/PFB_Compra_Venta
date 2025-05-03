@@ -1,19 +1,18 @@
 .user-data-container {
+  min-height: 70vh;
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 100vh;
   padding: 2rem;
-  background-color: #f5f5f5;
 }
 
 .user-data-content {
   background-color: white;
   padding: 2rem;
   border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
   width: 100%;
-  max-width: 600px;
+  max-width: 500px;
 }
 
 .user-data-content h2 {
@@ -28,6 +27,27 @@
   gap: 1.5rem;
 }
 
+.avatar-section {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+
+.current-avatar,
+.avatar-preview {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 3px solid #e7c61b;
+}
+
+.profile-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
 .form-group {
   display: flex;
   flex-direction: column;
@@ -36,7 +56,7 @@
 
 .form-group label {
   font-weight: bold;
-  color: #666;
+  color: #333;
 }
 
 .form-group input,
@@ -49,77 +69,76 @@
 
 .form-group input:focus,
 .form-group textarea:focus {
-  border-color: #f5d000;
   outline: none;
+  border-color: #e7c61b;
 }
 
-.avatar-section {
-  display: flex;
-  justify-content: center;
-  margin-bottom: 2rem;
+.form-group textarea {
+  min-height: 100px;
+  resize: vertical;
 }
 
-.current-avatar,
-.avatar-preview {
-  width: 150px;
-  height: 150px;
-  border-radius: 50%;
-  overflow: hidden;
-  border: 3px solid #f5d000;
-}
-
-.profile-image {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.update-button,
-.toggle-password-button,
-.change-password-button {
-  background-color: #f5d000;
-  color: black;
+.update-button {
+  background-color: #e7c61b;
+  color: white;
   padding: 1rem;
   border: none;
   border-radius: 5px;
   font-size: 1rem;
+  font-weight: bold;
   cursor: pointer;
   transition: background-color 0.3s;
 }
 
-.update-button:hover,
-.toggle-password-button:hover,
-.change-password-button:hover {
-  background-color: #e6c300;
-}
-
-.toggle-password-button {
-  margin-top: 2rem;
-  background-color: transparent;
-  border: 2px solid #f5d000;
-}
-
-.toggle-password-button:hover {
-  background-color: #f5d000;
-}
-
-.password-form {
-  margin-top: 2rem;
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
+.update-button:hover {
+  background-color: #d4b219;
 }
 
 .error {
   color: #dc3545;
   text-align: center;
-  margin: 1rem 0;
+  margin-bottom: 1rem;
 }
 
 .success {
   color: #28a745;
   text-align: center;
-  margin: 1rem 0;
+  margin-bottom: 1rem;
+}
+
+.loading {
+  text-align: center;
+  font-size: 1.2rem;
+  color: #666;
+}
+
+.password-section {
+  margin-top: 2rem;
+  padding-top: 2rem;
+  border-top: 1px solid #ddd;
+}
+
+.password-section h3 {
+  text-align: center;
+  margin-bottom: 1rem;
+  color: #333;
+}
+
+.password-button {
+  width: 100%;
+  background-color: #333;
+  color: white;
+  padding: 1rem;
+  border: none;
+  border-radius: 5px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.password-button:hover {
+  background-color: #444;
 }
 
 @media (max-width: 768px) {

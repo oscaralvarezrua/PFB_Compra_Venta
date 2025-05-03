@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, Link } from "react-router-dom";
 import { getProducts } from "../services/ProductServices";
+import ApiImage from "../components/Post/ApiImage";
 import "../styles/SearchResults.css";
 
 const SearchResults = () => {
@@ -52,16 +53,18 @@ const SearchResults = () => {
     <div className="search-results">
       <h2>Resultados para: "{query}"</h2>
       {results.length === 0 ? (
-        <p className="no-results">No se encontraron coincidencias.</p>
+        <p className="no-results">No se encontraron productos que coincidan con tu búsqueda.</p>
       ) : (
         <div className="results-grid">
           {results.map((product) => (
-            <div key={product.id} className="product-card">
-              <img src={product.photo} alt={product.name} className="product-image" />
-              <h3>{product.name}</h3>
-              <p className="product-price">{product.price} €</p>
-              <p className="product-location">{product.locality}</p>
-            </div>
+            <Link to={`/producto/${product.id}`} key={product.id} className="product-link">
+              <div className="product-card">
+                <ApiImage name={product.photo} alt={product.name} className="product-image" />
+                <h3>{product.name}</h3>
+                <p className="product-price">{product.price} €</p>
+                <p className="product-location">{product.locality}</p>
+              </div>
+            </Link>
           ))}
         </div>
       )}

@@ -60,12 +60,19 @@
   object-fit: cover;
 }
 
-.product-card h3 {
-  padding: 15px;
-  margin: 0;
-  font-size: 16px;
-  color: black;
-  font-weight: bold;
+.product-link {
+  text-decoration: none;
+  color: inherit;
+}
+
+.product-card {
+  background: white;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  border: 2px solid #e7c61b;
+  cursor: pointer;
 }
 
 .product-price {

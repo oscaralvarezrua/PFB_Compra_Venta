@@ -1,26 +1,19 @@
 import React, { useState } from "react";
 import useUserData from "../hooks/useUserData";
-import useChangePassword from "../hooks/useChangePassword";
 import useUpdateUser from "../hooks/useUpdateUser";
-import PasswordInput from "../components/Post/PasswordInput";
 import ApiImage from "../components/Post/ApiImage";
+import { useNavigate } from "react-router-dom";
 import "../styles/UserDataAndChangePass.css";
 
 const UserDataAndChangePass = () => {
+  const navigate = useNavigate();
   const { userData, loading, error: userError } = useUserData();
-  const { error: passwordError, success: passwordSuccess, changePassword } = useChangePassword();
   const { error: updateError, success: updateSuccess, updateUser } = useUpdateUser();
 
-  const [showPasswordForm, setShowPasswordForm] = useState(false);
   const [formData, setFormData] = useState({
     username: "",
     phone: "",
     biography: "",
-  });
-  const [passwordData, setPasswordData] = useState({
-    currentPassword: "",
-    newPassword: "",
-    repeatPassword: "",
   });
   const [avatar, setAvatar] = useState(null);
   const [previewUrl, setPreviewUrl] = useState(null);
@@ -39,11 +32,6 @@ const UserDataAndChangePass = () => {
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
-  };
-
-  const handlePasswordChange = (e) => {
-    const { name, value } = e.target;
-    setPasswordData({ ...passwordData, [name]: value });
   };
 
   const handleFileChange = (e) => {
@@ -71,13 +59,8 @@ const UserDataAndChangePass = () => {
     await updateUser(formDataToSend);
   };
 
-  const handlePasswordSubmit = async (e) => {
-    e.preventDefault();
-    if (passwordData.newPassword !== passwordData.repeatPassword) {
-      alert("Las contraseñas no coinciden");
-      return;
-    }
-    await changePassword(passwordData.currentPassword, passwordData.newPassword);
+  const handlePasswordChange = () => {
+    navigate("/changepassword");
   };
 
   React.useEffect(() => {
@@ -143,35 +126,10 @@ const UserDataAndChangePass = () => {
         </form>
 
         <div className="password-section">
-          <button onClick={() => setShowPasswordForm(!showPasswordForm)} className="toggle-password-button">
-            {showPasswordForm ? "Cancelar cambio de contraseña" : "Cambiar contraseña"}
+          <h3>Cambiar contraseña</h3>
+          <button onClick={handlePasswordChange} className="password-button">
+            Cambiar contraseña
           </button>
-
-          {showPasswordForm && (
-            <form onSubmit={handlePasswordSubmit} className="password-form">
-              {passwordError && <p className="error">{passwordError}</p>}
-              {passwordSuccess && <p className="success">Contraseña actualizada correctamente</p>}
-
-              <div className="form-group">
-                <label htmlFor="currentPassword">Contraseña actual</label>
-                <PasswordInput id="currentPassword" name="currentPassword" value={passwordData.currentPassword} onChange={handlePasswordChange} required />
-              </div>
-
-              <div className="form-group">
-                <label htmlFor="newPassword">Nueva contraseña</label>
-                <PasswordInput id="newPassword" name="newPassword" value={passwordData.newPassword} onChange={handlePasswordChange} required />
-              </div>
-
-              <div className="form-group">
-                <label htmlFor="repeatPassword">Repetir nueva contraseña</label>
-                <PasswordInput id="repeatPassword" name="repeatPassword" value={passwordData.repeatPassword} onChange={handlePasswordChange} required />
-              </div>
-
-              <button type="submit" className="change-password-button">
-                Actualizar contraseña
-              </button>
-            </form>
-          )}
         </div>
       </div>
     </main>
