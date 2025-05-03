@@ -1,40 +1,110 @@
 import React from "react";
+import { useNavigate, Link } from "react-router-dom";
 import useLogin from "../hooks/useLogin";
 import PasswordInput from "../components/Post/PasswordInput";
 import logo from "../assets/logo_negro_recortado.png";
-import close from "../assets/close.png";
 import "../styles/Login.css";
-import { Link } from "react-router-dom";
 
 const Login = () => {
   const { error, formState, handleSubmit, handleChange } = useLogin();
+  const navigate = useNavigate();
+
   return (
     <main className="login-page">
       <div>
+        <button
+          type="button"
+          className="back-button"
+          onClick={() => navigate(-1)}
+          aria-label="Volver atrás"
+        >
+          <svg
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+            className="back-icon-svg"
+          >
+            <path
+              d="M15 18l-6-6 6-6"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
+        </button>
+
         <Link to="/">
-          <button className="close-button">
-            <img src={close} />
+          <button className="close-button" type="button" aria-label="Cerrar">
+            <svg
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+              className="close-icon-svg"
+            >
+              <line
+                x1="18"
+                y1="6"
+                x2="6"
+                y2="18"
+                stroke="currentColor"
+                strokeWidth="1"
+                strokeLinecap="round"
+              />
+              <line
+                x1="6"
+                y1="6"
+                x2="18"
+                y2="18"
+                stroke="currentColor"
+                strokeWidth="1"
+                strokeLinecap="round"
+              />
+            </svg>
           </button>
         </Link>
+
         <div className="logo-login">
           <img src={logo} alt="Logo" className="logo-img" />
         </div>
 
         <h2>¡Te damos la bienvenida!</h2>
         {error && <p className="error">{error}</p>}
+
         <form onSubmit={handleSubmit}>
           <ul>
             <li>
               <label htmlFor="email"></label>
-              <input type="email" required id="email" name="email" value={formState.email} onChange={handleChange} placeholder="Dirección de email " />
+              <input
+                type="email"
+                required
+                id="email"
+                name="email"
+                value={formState.email}
+                onChange={handleChange}
+                placeholder="Dirección de email"
+              />
             </li>
             <li className="password-li">
               <label htmlFor="password"></label>
-              <PasswordInput required id="password" name="password" value={formState.password} onChange={handleChange} placeholder="Contraseña" />
+              <PasswordInput
+                required
+                id="password"
+                name="password"
+                value={formState.password}
+                onChange={handleChange}
+                placeholder="Contraseña"
+              />
             </li>
           </ul>
-          <Link to="/changepassword">
-            <button className="change-pass-button">¿Has olvidado tu contraseña?</button>
+
+          <Link to="/forgot-password">
+            <button type="button" className="forgot-link">
+              ¿Has olvidado tu contraseña?
+            </button>
           </Link>
 
           <button type="submit" className="enter-button">

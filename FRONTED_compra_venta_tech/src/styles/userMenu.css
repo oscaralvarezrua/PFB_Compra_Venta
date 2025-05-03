@@ -1,0 +1,50 @@
+.user-menu {
+  display: flex;
+}
+
+.sidebar {
+  position: flex;
+
+  left: 0;
+  width: 240px;
+  background: white;
+  border-right: 1px solid #5e5b5b;
+
+  display: grid;
+
+  list-style: none;
+}
+
+.sidebar ul {
+  height: 100%;
+}
+.sidebar li {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.sidebar .menu-link {
+  display: block;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  width: 100%;
+  text-decoration: none;
+  color: #605f5f;
+  position: relative;
+  font-size: 1rem;
+  padding: 2rem;
+  margin: 0;
+}
+/* estado hover/activo */
+.sidebar .menu-link:hover,
+.sidebar .menu-link.active {
+  background: #e7c61b1a;
+
+  box-shadow: 1px 3px 5px -2px #605f5f;
+}
+
+.content-profile {
+  margin: 40px 0 40px 100px;
+  padding: 1rem;
+}
