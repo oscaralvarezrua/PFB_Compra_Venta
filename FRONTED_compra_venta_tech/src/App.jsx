@@ -17,6 +17,13 @@ import NotFound from "./pages/NotFound";
 import UserProfile from "./pages/UserProfile";
 import UserList from "./pages/UserList";
 import EditProduct from "./pages/EditProduct";
+//Páginas del Footer
+import AboutUs from "./pages/PagesFooter/AboutUs";
+import HowItWorks from "./pages/PagesFooter/HowItWorks";
+import HelpCenter from "./pages/PagesFooter/HelpCenter";
+import LegalNotice from "./pages/PagesFooter/LegalNotice";
+import PrivacyPolicy from "./pages/PagesFooter/PrivacyPolicy";
+import CookiePolicy from "./pages/PagesFooter/CookiePolicy";
 
 function App() {
   const location = useLocation();
@@ -51,6 +58,12 @@ function App() {
           <Route path="/usuarios/:id" element={<UserProfile />} />
           <Route path="/edit/:productId" element={<EditProduct />} />
           <Route path="*" element={<NotFound />} />
+          <Route path="/quienes-somos" element={<AboutUs />} />
+          <Route path="/como-funciona" element={<HowItWorks />} />
+          <Route path="/centro-de-ayuda" element={<HelpCenter />} />
+          <Route path="/aviso-legal" element={<LegalNotice />} />
+          <Route path="/politica-de-privacidad" element={<PrivacyPolicy />} />
+          <Route path="/politica-de-cookies" element={<CookiePolicy />} />
         </Routes>
       </div>
 
