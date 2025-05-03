@@ -17,6 +17,10 @@ import NotFound from "./pages/NotFound";
 import UserProfile from "./pages/UserProfile";
 import UserList from "./pages/UserList";
 import EditProduct from "./pages/EditProduct";
+import UserMenu from "./pages/UserMenu";
+import ChangePassword from "./pages/ChangePassword";
+import ForgotPassword from "./pages/ForgotPassword";
+import RecoverPassword from "./pages/RecoverPassword";
 //Páginas del Footer
 import AboutUs from "./pages/PagesFooter/AboutUs";
 import HowItWorks from "./pages/PagesFooter/HowItWorks";
@@ -30,14 +34,12 @@ function App() {
 
   return (
     <div className="app-layout">
-      {location.pathname !== "/register" &&
-        location.pathname !== "/login" &&
-        location.pathname !== "/changepassword" && (
-          <>
-            <Header />
-            <Menu />
-          </>
-        )}
+      {location.pathname !== "/register" && location.pathname !== "/login" && location.pathname !== "/changepassword" && (
+        <>
+          <Header />
+          <Menu />
+        </>
+      )}
 
       <div className="main-content">
         <Routes>
@@ -47,16 +49,15 @@ function App() {
           <Route path="/filtrados" element={<SearchFilteredProducts />} />
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/user" element={<UserDataAndChangePass />} />
-          <Route path="/changepassword" element={<UserDataAndChangePass />} />
-          <Route
-            path="/validate/:validationCode"
-            element={<UserValidation />}
-          />
+          <Route path="/user/*" element={<UserMenu />} />
+          <Route path="/validate/:validationCode" element={<UserValidation />} />
           <Route path="/producto/:productId" element={<ProductDetail />} />
           <Route path="/usuarios" element={<UserList />} />
           <Route path="/usuarios/:id" element={<UserProfile />} />
           <Route path="/edit/:productId" element={<EditProduct />} />
+          <Route path="/changepassword" element={<ChangePassword />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/recover/:recoveryCode" element={<RecoverPassword />} />
           <Route path="*" element={<NotFound />} />
           <Route path="/quienes-somos" element={<AboutUs />} />
           <Route path="/como-funciona" element={<HowItWorks />} />
@@ -67,13 +68,10 @@ function App() {
         </Routes>
       </div>
 
-      {location.pathname !== "/register" &&
-        location.pathname !== "/login" &&
-        location.pathname !== "/changepassword" && <Footer />}
+      {location.pathname !== "/register" && location.pathname !== "/login" && location.pathname !== "/changepassword" && 
+      location.pathname !== "/forgot-password" && <Footer />}
     </div>
   );
 }
 
 export default App;
-
-// prueba error
