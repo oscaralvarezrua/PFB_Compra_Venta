@@ -13,8 +13,8 @@ const transporter = nodemailer.createTransport({
     pass: SMTP_PASSWORD,
   },
   tls: {
-    rejectUnauthorized: false
-  }
+    rejectUnauthorized: false,
+  },
 });
 
 export async function sendMail(email, subject, html) {
@@ -119,7 +119,7 @@ export const sendRecoveryEmail = async (email, recoveryCode) => {
       apiKeyConfigured: "Sí",
     });
 
-    const recoveryUrl = `${BACKEND_URL}/users/recover/${recoveryCode}`;
+    const recoveryUrl = `${FRONTEND_URL}/recover/${recoveryCode}`;
 
     //Correo de recuperación
     const html = `
@@ -152,5 +152,3 @@ export const sendRecoveryEmail = async (email, recoveryCode) => {
     throw new Error("Error al enviar el correo de recuperación");
   }
 };
-
-// prueba error

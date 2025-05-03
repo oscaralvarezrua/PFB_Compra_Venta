@@ -18,20 +18,21 @@ import UserProfile from "./pages/UserProfile";
 import UserList from "./pages/UserList";
 import EditProduct from "./pages/EditProduct";
 import UserMenu from "./pages/UserMenu";
+import ChangePassword from "./pages/ChangePassword";
+import ForgotPassword from "./pages/ForgotPassword";
+import RecoverPassword from "./pages/RecoverPassword";
 
 function App() {
   const location = useLocation();
 
   return (
     <div className="app-layout">
-      {location.pathname !== "/register" &&
-        location.pathname !== "/login" &&
-        location.pathname !== "/changepassword" && (
-          <>
-            <Header />
-            <Menu />
-          </>
-        )}
+      {location.pathname !== "/register" && location.pathname !== "/login" && location.pathname !== "/changepassword" && (
+        <>
+          <Header />
+          <Menu />
+        </>
+      )}
 
       <div className="main-content">
         <Routes>
@@ -42,22 +43,20 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
           <Route path="/user/*" element={<UserMenu />} />
-          <Route path="/changepassword" element={<UserDataAndChangePass />} />
-          <Route
-            path="/validate/:validationCode"
-            element={<UserValidation />}
-          />
+          <Route path="/changepassword" element={<ChangePassword />} />
+          <Route path="/validate/:validationCode" element={<UserValidation />} />
           <Route path="/producto/:productId" element={<ProductDetail />} />
           <Route path="/usuarios" element={<UserList />} />
           <Route path="/usuarios/:id" element={<UserProfile />} />
           <Route path="/edit/:productId" element={<EditProduct />} />
+          <Route path="/changepassword" element={<ChangePassword />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/recover/:recoveryCode" element={<RecoverPassword />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </div>
 
-      {location.pathname !== "/register" &&
-        location.pathname !== "/login" &&
-        location.pathname !== "/changepassword" && <Footer />}
+      {location.pathname !== "/register" && location.pathname !== "/login" && location.pathname !== "/changepassword" && <Footer />}
     </div>
   );
 }
