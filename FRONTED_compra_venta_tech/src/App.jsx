@@ -56,7 +56,8 @@ function App() {
         </Routes>
       </div>
 
-      {location.pathname !== "/register" && location.pathname !== "/login" && location.pathname !== "/changepassword" && <Footer />}
+      {location.pathname !== "/register" && location.pathname !== "/login" && location.pathname !== "/changepassword" && 
+      location.pathname !== "/forgot-password" && <Footer />}
     </div>
   );
 }

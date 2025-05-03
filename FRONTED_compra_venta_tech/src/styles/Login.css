@@ -5,12 +5,13 @@
 }
 
 .login-page {
-  min-height: 70vh;
+  background-color: #FBFAFA;  
+  height: 100%;
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding-top: 8rem;
 }
 
 .login-page > div {
@@ -54,16 +55,16 @@
   padding: 1rem;
   margin-top: 1.5rem;
   background-color: #e7c61b;
-  border: 2px solid whitesmoke;
+  border: 2px solid white;
   border-radius: 30px;
   font-size: 1.1rem;
   font-weight: bold;
   cursor: pointer;
-  box-shadow: 0 3px 0 #c5c5c5;
+  box-shadow: 0 3px 0 #FBFAFA;
   transition: all 0.2s ease;
 }
 
-.login-page .change-pass-button {
+.login-page .forgot-link {
   border: none;
   background: none;
   font-size: 1rem;
@@ -71,14 +72,18 @@
   width: 100%;
 }
 
-.login-page .change-pass-button:hover {
-  background-color: transparent;
-  color: #e7c61b;
+.login-page .forgot-link:hover {
+  color: #E7C61B;
+  background: none;
+  transform: scale(1.04);
+
 }
 
-.login-page button:hover {
+.login-page .enter-button:hover {
   background-color: black;
   color: #e7c61b;
+  transform: scale(1.02);
+
 }
 
 .login-page .error {
@@ -106,23 +111,104 @@
   cursor: pointer;
   padding: 0;
   font-size: 1.2rem;
-  color: #555;
+  color: #605F5F;
 }
 
 .login-page .eye-button:hover {
   background-color: transparent;
 }
+
 .login-page .close-button {
   position: absolute;
-  top: 1rem;
-  right: 1rem;
+  top: 0rem;
+  right: 0.7rem;
   background: none;
   border: none;
-  font-size: 1.5rem;
+  font-size: 3rem;
+  font-weight: 200;
   cursor: pointer;
   color: #605f5f;
 }
 
 .login-page .close-button:hover {
+  color: #E7C61B;
   background-color: transparent;
+  transform: scale(1.2);
 }
+
+.login-page .close-icon-svg line {
+  stroke-width: 2.5px; 
+}
+
+.login-page .back-button {
+  position: absolute;
+  top: 1.34rem;
+  right: 19rem;         
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  color: #605f5f;
+  transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.login-page .back-icon-svg {
+  width: 1.8rem;
+  height: 1.8rem;
+}
+
+.login-page .back-button:hover {
+  color: #E7C61B;
+  transform: scale(1.2);
+}
+
+.login-page > div {
+  width: clamp(280px, 90%, 350px);
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  .login-page {
+    padding: 1rem;
+  }
+
+  .login-page > div {
+    padding: 1rem;
+  }
+
+  .login-page .logo-login img {
+    width: 40px;
+  }
+
+  .login-page h2 {
+    font-size: 1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .login-page input {
+    padding: 0.8rem 0.6rem;
+    font-size: 0.9rem;
+  }
+
+  .login-page .enter-button {
+    display: block;           
+    width: 180px;
+    margin: 1.5rem 0.7rem 0 auto;    
+    border-radius: 20px;
+    padding: 0.85em;
+    font-size: 0.7rem;
+  }
+  
+  .login-page .forgot-link {
+    font-size: 0.9rem;
+  }
+  .login-page .close-button {
+    top: 0rem;
+  }
+
+  .login-page .back-button {
+    right: 17.3rem;
+  }
+    }
+  
+

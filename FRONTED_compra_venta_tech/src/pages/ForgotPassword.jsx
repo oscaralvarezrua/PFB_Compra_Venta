@@ -1,4 +1,6 @@
+// src/pages/ForgotPassword.jsx
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import "../styles/ForgotPassword.css";
 
 const ForgotPassword = () => {
@@ -11,16 +13,24 @@ const ForgotPassword = () => {
     setMessage("");
     setError("");
     try {
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/users/recover`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email }),
-      });
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/users/recover`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email }),
+        }
+      );
       const data = await response.json();
       if (!response.ok) {
-        throw new Error(data.message || "No hay ninguna cuenta con ese correo");
+        throw new Error(
+          data.message || "No hay ninguna cuenta con ese correo"
+        );
       }
-      setMessage("Te hemos enviado un email con instrucciones para recuperar tu contraseña.");
+      setMessage(
+        "Te hemos enviado un email con instrucciones para recuperar tu contraseña."
+      );
+
     } catch (err) {
       setError(err.message);
     }
@@ -29,13 +39,29 @@ const ForgotPassword = () => {
   return (
     <main className="forgot-password-page">
       <div className="forgot-password-container">
+        {/* Botón Cerrar */}
+        <Link to="/">
+          <button className="close-button" type="button" aria-label="Cerrar">
+            &times;
+          </button>
+        </Link>
+
         <h2>Recuperar contraseña</h2>
         {message && <p className="success">{message}</p>}
         {error && <p className="error">{error}</p>}
         <form onSubmit={handleSubmit}>
           <div className="form-group">
             <label htmlFor="email">Correo electrónico</label>
-            <input type="email" id="email" name="email" required value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Introduce tu correo" />
+            <input
+              type="email"
+              id="email"
+              name="email"
+              required
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="Introduce tu correo"
+            />
+
           </div>
           <button type="submit" className="submit-button">
             Enviar
@@ -47,3 +73,4 @@ const ForgotPassword = () => {
 };
 
 export default ForgotPassword;
+
