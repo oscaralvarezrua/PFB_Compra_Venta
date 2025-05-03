@@ -21,6 +21,13 @@ import UserMenu from "./pages/UserMenu";
 import ChangePassword from "./pages/ChangePassword";
 import ForgotPassword from "./pages/ForgotPassword";
 import RecoverPassword from "./pages/RecoverPassword";
+//Páginas del Footer
+import AboutUs from "./pages/PagesFooter/AboutUs";
+import HowItWorks from "./pages/PagesFooter/HowItWorks";
+import HelpCenter from "./pages/PagesFooter/HelpCenter";
+import LegalNotice from "./pages/PagesFooter/LegalNotice";
+import PrivacyPolicy from "./pages/PagesFooter/PrivacyPolicy";
+import CookiePolicy from "./pages/PagesFooter/CookiePolicy";
 
 function App() {
   const location = useLocation();
@@ -52,6 +59,12 @@ function App() {
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/recover/:recoveryCode" element={<RecoverPassword />} />
           <Route path="*" element={<NotFound />} />
+          <Route path="/quienes-somos" element={<AboutUs />} />
+          <Route path="/como-funciona" element={<HowItWorks />} />
+          <Route path="/centro-de-ayuda" element={<HelpCenter />} />
+          <Route path="/aviso-legal" element={<LegalNotice />} />
+          <Route path="/politica-de-privacidad" element={<PrivacyPolicy />} />
+          <Route path="/politica-de-cookies" element={<CookiePolicy />} />
         </Routes>
       </div>
 
