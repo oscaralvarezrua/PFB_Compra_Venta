@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "./header.css";
 import logo from "../../assets/logo_negro.png";
@@ -12,16 +12,11 @@ import buscarIcon from "../../assets/buscar.png"; // Importa la imagen de búsqu
 const Header = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const navigate = useNavigate();
-
-  // Usamos el contexto de autenticación
-  const { token, logout } = useAuth(); // Obtenemos el estado del usuario desde el contexto
+  const { token, logout } = useAuth();
 
   // Cambios en el input
   const handleSearchChange = (e) => {
     setSearchQuery(e.target.value);
-    if (e.target.value === "") {
-      navigate("/");
-    }
   };
 
   // Enviar formulario
@@ -29,6 +24,7 @@ const Header = () => {
     e.preventDefault();
     if (searchQuery.trim() !== "") {
       navigate(`/search?query=${searchQuery}`);
+      setSearchQuery("");
     }
   };
 
@@ -37,6 +33,11 @@ const Header = () => {
     if (e.key === "Enter") {
       handleSearchSubmit(e);
     }
+  };
+
+  const handleLogout = () => {
+    logout();
+    navigate("/");
   };
 
   return (
@@ -82,7 +83,7 @@ const Header = () => {
             <Link to="/publicar">
               <button className="sell-button">Vender</button>
             </Link>
-            <button className="logout-button" onClick={logout}>
+            <button className="logout-button" onClick={handleLogout}>
               Cerrar sesión
             </button>
           </>

@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
+import { getProducts } from "../services/ProductServices";
+import "../styles/SearchResults.css";
 
 const SearchResults = () => {
   const location = useLocation();
@@ -7,42 +9,41 @@ const SearchResults = () => {
 
   const [results, setResults] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    // Si no hay query en la URL, no hacemos nada
-    if (!query) {
-      setResults([]); // Limpiamos los resultados si no hay búsqueda
-      return;
-    }
+    const fetchResults = async () => {
+      if (!query) {
+        setResults([]);
+        return;
+      }
 
-    setIsLoading(true);
-    // Simulación de búsqueda (esto debe ser reemplazado con una búsqueda real)
-    setTimeout(() => {
-      const mockResults = [
-        {
-          id: 1,
-          title: "Artículo 1",
-          description: "Descripción del artículo 1",
-        },
-        {
-          id: 2,
-          title: "Artículo 2",
-          description: "Descripción del artículo 2",
-        },
-      ];
-      const filteredResults = mockResults.filter((result) =>
-        result.title.toLowerCase().includes(query.toLowerCase())
-      );
-      setResults(filteredResults);
-      setIsLoading(false);
-    }, 1000);
-  }, [query]); // Dependencia de query para actualizar los resultados
+      setIsLoading(true);
+      setError(null);
+
+      try {
+        const products = await getProducts();
+        const filteredResults = products.filter((product) => product.name.toLowerCase().includes(query.toLowerCase()) || product.description.toLowerCase().includes(query.toLowerCase()));
+        setResults(filteredResults);
+      } catch (error) {
+        console.error("Error al buscar productos:", error);
+        setError("Error al cargar los resultados de búsqueda");
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchResults();
+  }, [query]);
 
   if (isLoading) {
-    return <p>Cargando resultados...</p>;
+    return <div className="search-results-loading">Buscando productos...</div>;
   }
 
-  // Si no hay búsqueda, no mostramos los resultados ni el mensaje
+  if (error) {
+    return <div className="search-results-error">{error}</div>;
+  }
+
   if (!query) {
     return null;
   }
@@ -51,16 +52,18 @@ const SearchResults = () => {
     <div className="search-results">
       <h2>Resultados para: "{query}"</h2>
       {results.length === 0 ? (
-        <p>No se encontraron coincidencias.</p>
+        <p className="no-results">No se encontraron coincidencias.</p>
       ) : (
-        <ul>
-          {results.map((result) => (
-            <li key={result.id} className="search-result-item">
-              <h3>{result.title}</h3>
-              <p>{result.description}</p>
-            </li>
+        <div className="results-grid">
+          {results.map((product) => (
+            <div key={product.id} className="product-card">
+              <img src={product.photo} alt={product.name} className="product-image" />
+              <h3>{product.name}</h3>
+              <p className="product-price">{product.price} €</p>
+              <p className="product-location">{product.locality}</p>
+            </div>
           ))}
-        </ul>
+        </div>
       )}
     </div>
   );
