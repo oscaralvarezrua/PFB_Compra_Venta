@@ -24,7 +24,9 @@ const Header = () => {
     e.preventDefault();
     if (searchQuery.trim() !== "") {
       navigate(`/search?query=${searchQuery}`);
-      setSearchQuery("");
+      //setSearchQuery(""); por si quieres poner el buscador en vacio
+    } else {
+      navigate("/");
     }
   };
 
