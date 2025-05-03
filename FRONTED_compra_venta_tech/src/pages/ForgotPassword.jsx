@@ -30,6 +30,7 @@ const ForgotPassword = () => {
       setMessage(
         "Te hemos enviado un email con instrucciones para recuperar tu contraseña."
       );
+
     } catch (err) {
       setError(err.message);
     }
@@ -60,6 +61,7 @@ const ForgotPassword = () => {
               onChange={(e) => setEmail(e.target.value)}
               placeholder="Introduce tu correo"
             />
+
           </div>
           <button type="submit" className="submit-button">
             Enviar
