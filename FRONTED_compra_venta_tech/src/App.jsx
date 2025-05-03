@@ -43,7 +43,6 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
           <Route path="/user/*" element={<UserMenu />} />
-          <Route path="/changepassword" element={<ChangePassword />} />
           <Route path="/validate/:validationCode" element={<UserValidation />} />
           <Route path="/producto/:productId" element={<ProductDetail />} />
           <Route path="/usuarios" element={<UserList />} />
