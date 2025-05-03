@@ -10,6 +10,7 @@ import ProductsList from "./ProductsList";
 import RequestList from "./RequestsList";
 import UserDataAndChangePass from "./UserDataAndChangePass";
 import useUserData from "../hooks/useUserData";
+import UserProfileView from "./UserProfileView";
 
 export default function UserMenu() {
   const { userData } = useUserData();
@@ -18,53 +19,27 @@ export default function UserMenu() {
       <aside className="sidebar">
         <ul>
           <li>
-            <NavLink
-              to="/user"
-              end
-              className={({ isActive }) =>
-                isActive ? "menu-link active" : "menu-link"
-              }
-            >
+            <NavLink to="/user" end className={({ isActive }) => (isActive ? "menu-link active" : "menu-link")}>
               Mi perfil
             </NavLink>
           </li>
           <li>
-            <NavLink
-              to="/user/buys-list"
-              className={({ isActive }) =>
-                isActive ? "menu-link active" : "menu-link"
-              }
-            >
+            <NavLink to="/user/buys-list" className={({ isActive }) => (isActive ? "menu-link active" : "menu-link")}>
               Compras
             </NavLink>
           </li>
           <li>
-            <NavLink
-              to="/user/sales-list"
-              className={({ isActive }) =>
-                isActive ? "menu-link active" : "menu-link"
-              }
-            >
+            <NavLink to="/user/sales-list" className={({ isActive }) => (isActive ? "menu-link active" : "menu-link")}>
               Ventas
             </NavLink>
           </li>
           <li>
-            <NavLink
-              to="/user/products-list"
-              className={({ isActive }) =>
-                isActive ? "menu-link active" : "menu-link"
-              }
-            >
+            <NavLink to="/user/products-list" className={({ isActive }) => (isActive ? "menu-link active" : "menu-link")}>
               Productos
             </NavLink>
           </li>
           <li>
-            <NavLink
-              to="/user/requests-list"
-              className={({ isActive }) =>
-                isActive ? "menu-link active" : "menu-link"
-              }
-            >
+            <NavLink to="/user/requests-list" className={({ isActive }) => (isActive ? "menu-link active" : "menu-link")}>
               Solicitudes
             </NavLink>
           </li>
@@ -72,7 +47,8 @@ export default function UserMenu() {
       </aside>
       <main className="content-profile">
         <Routes>
-          <Route index element={<UserDataAndChangePass />} />
+          <Route index element={<UserProfileView />} />
+          <Route path="edit" element={<UserDataAndChangePass />} />
           <Route path="buys-list" element={<BuysList />} />
           <Route path="sales-list" element={<SalesList />} />
           <Route path="products-list" element={<ProductsList />} />
