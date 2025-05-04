@@ -62,6 +62,41 @@ export async function getProductById(productId) {
   }
 }
 
+//Creamos función para obtener los detalles de un producto
+export async function getProductListById(userId) {
+  try {
+    const pool = await getPool();
+
+    const [result] = await pool.query(
+      `
+    SELECT 
+      id,
+      name,
+      description,
+      price,
+      photo,
+      locality,
+      is_available,
+      is_accepted,
+      created_at,
+      updated_at
+    FROM product 
+    WHERE user_id = ? AND is_accepted = true
+    `,
+      [userId]
+    );
+
+    if (result.length === 0) {
+      throw generateError("No hay productos publicados", 404);
+    }
+
+    return result;
+  } catch (error) {
+    console.error("Productos no encontrados: ", error);
+    throw generateError("Productos no encontrados", 404);
+  }
+}
+
 //Creamos Función para la publicación de un producto
 export async function publishProduct(
   name,
@@ -140,8 +175,6 @@ export async function setProductAsSoldModel(productId) {
       "UPDATE product SET is_available = false WHERE id = ?",
       [productId]
     );
-    console.log(productId);
-
     return result[0];
   } catch (e) {
     console.error("Error al encontrar usuario: ", e);

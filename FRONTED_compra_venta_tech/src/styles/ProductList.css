@@ -1,0 +1,16 @@
+.product-list-image {
+  display: grid;
+  grid-row: 2/3;
+  align-items: center;
+  justify-content: space-around;
+  background-color: #ececec;
+  border-radius: 12px;
+  padding: 20px;
+}
+
+.product-list-image img {
+  width: 100%;
+  max-height: 100px;
+  object-fit: contain;
+  border-radius: 12px;
+}

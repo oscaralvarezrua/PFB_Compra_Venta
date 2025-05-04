@@ -120,6 +120,7 @@ const initDB = async () => {
         comment TINYTEXT,
         ratings ENUM("1", "2", "3", "4", "5"),
         user_id INT UNSIGNED NOT NULL,
+        username VARCHAR(20) NOT NULL,
         product_id INT UNSIGNED NOT NULL,
         created_at TIMESTAMP DEFAULT NOW(),
         update_at TIMESTAMP DEFAULT NOW(),
