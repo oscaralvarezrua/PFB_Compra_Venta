@@ -13,6 +13,7 @@ import useUserData from "../hooks/useUserData";
 import useAverageRating from "../hooks/useAverageRating";
 import ApiImage from "../components/Post/ApiImage";
 import Rating from "../components/Rating/Rating";
+import UserProfileView from "./UserProfileView";
 
 export default function UserMenu() {
   const { userData } = useUserData();
@@ -23,13 +24,7 @@ export default function UserMenu() {
       <aside className="sidebar">
         <ul>
           <li>
-            <NavLink
-              to="/user"
-              end
-              className={({ isActive }) =>
-                isActive ? "menu-link active" : "menu-link"
-              }
-            >
+            <NavLink to="/user" end className={({ isActive }) => (isActive ? "menu-link active" : "menu-link")}>
               <div className="current-avatar-menu">
                 <ApiImage
                   name={userData?.avatar}
@@ -54,8 +49,7 @@ export default function UserMenu() {
             </NavLink>
           </li>
           <li>
-            <NavLink
-              to="/user/buys-list"
+            <NavLink to="/user/buys-list"
               className={({ isActive }) =>
                 isActive ? "menu-link active" : "menu-link"
               }
@@ -69,8 +63,7 @@ export default function UserMenu() {
             </NavLink>
           </li>
           <li>
-            <NavLink
-              to="/user/sales-list"
+            <NavLink to="/user/sales-list"
               className={({ isActive }) =>
                 isActive ? "menu-link active" : "menu-link"
               }
@@ -84,8 +77,7 @@ export default function UserMenu() {
             </NavLink>
           </li>
           <li>
-            <NavLink
-              to="/user/products-list"
+            <NavLink to="/user/products-list"
               className={({ isActive }) =>
                 isActive ? "menu-link active" : "menu-link"
               }
@@ -99,8 +91,7 @@ export default function UserMenu() {
             </NavLink>
           </li>
           <li>
-            <NavLink
-              to="/user/requests-list"
+            <NavLink to="/user/requests-list"
               className={({ isActive }) =>
                 isActive ? "menu-link active" : "menu-link"
               }
@@ -117,7 +108,8 @@ export default function UserMenu() {
       </aside>
       <main className="content-profile">
         <Routes>
-          <Route index element={<UserDataAndChangePass />} />
+          <Route index element={<UserProfileView />} />
+          <Route path="edit" element={<UserDataAndChangePass />} />
           <Route path="buys-list" element={<BuysList />} />
           <Route path="sales-list" element={<SalesList />} />
           <Route path="products-list" element={<ProductsList />} />

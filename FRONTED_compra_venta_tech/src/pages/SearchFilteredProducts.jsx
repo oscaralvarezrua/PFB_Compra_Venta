@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import "../styles/SearchFilteredProducts.css";
+
 const { VITE_API_URL } = import.meta.env;
 
 const SearchFilteredProducts = () => {
@@ -22,11 +23,12 @@ const SearchFilteredProducts = () => {
   const [loading, setLoading] = useState(false);
   const [feedback, setFeedback] = useState({ message: "", type: "" });
 
+  // Maneja la búsqueda en base a los filtros de la URL
   useEffect(() => {
     const searchParams = new URLSearchParams(location.search);
+    const hasFilters = [...searchParams.entries()].length > 0;
 
-    // Si no hay filtros, no buscar nada
-    if (![...searchParams.entries()].length) {
+    if (!hasFilters) {
       setProducts([]);
       setFeedback({ message: "", type: "" });
       return;
@@ -42,9 +44,8 @@ const SearchFilteredProducts = () => {
         );
         const data = await res.json();
 
-        if (!res.ok) {
+        if (!res.ok)
           throw new Error(data.message || "Error al obtener productos");
-        }
 
         if (data.data.length === 0) {
           setProducts([]);
@@ -60,7 +61,7 @@ const SearchFilteredProducts = () => {
           });
         }
       } catch (error) {
-        console.error("Error al cargar productos:", error);
+        console.error("Error al obtener productos filtrados:", error);
         setFeedback({
           message: "Error al conectar con el servidor. Inténtalo más tarde.",
           type: "error",
@@ -75,10 +76,7 @@ const SearchFilteredProducts = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFilters((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+    setFilters((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleSubmit = (e) => {
@@ -93,7 +91,6 @@ const SearchFilteredProducts = () => {
   };
 
   const handleReset = () => {
-    // Reiniciar filtros y volver al Home
     setFilters({
       name: "",
       locality: "",
@@ -103,7 +100,13 @@ const SearchFilteredProducts = () => {
       order_by: "",
       order_direction: "asc",
     });
+    setProducts([]);
+    setFeedback({ message: "", type: "" });
     navigate("/");
+  };
+
+  const goToDetail = (id) => {
+    navigate(`/producto/${id}`);
   };
 
   return (
@@ -141,6 +144,7 @@ const SearchFilteredProducts = () => {
           value={filters.max_price}
           onChange={handleChange}
         />
+
         <select
           name="order_by"
           value={filters.order_by}
@@ -149,7 +153,10 @@ const SearchFilteredProducts = () => {
           <option value="">Ordenar por...</option>
           <option value="name">Nombre</option>
           <option value="price">Precio</option>
+          <option value="visits">Más buscados</option>
+          <option value="created_at">Novedades</option>
         </select>
+
         <select
           name="order_direction"
           value={filters.order_direction}
@@ -165,7 +172,6 @@ const SearchFilteredProducts = () => {
         </button>
       </form>
 
-      {/* Mensaje de feedback */}
       {feedback.message && (
         <p className={`feedback-message ${feedback.type}`}>
           {feedback.message}
@@ -176,10 +182,14 @@ const SearchFilteredProducts = () => {
 
       {loading ? (
         <p className="loading">Cargando productos filtrados...</p>
-      ) : location.search && products.length > 0 ? (
+      ) : products.length > 0 ? (
         <ul className="product-list">
           {products.map((prod) => (
-            <li key={prod.id} className="product-item">
+            <li
+              key={prod.id}
+              className="product-item"
+              onClick={() => goToDetail(prod.id)}
+            >
               <h3>{prod.name}</h3>
               <p>{prod.description}</p>
               <p>

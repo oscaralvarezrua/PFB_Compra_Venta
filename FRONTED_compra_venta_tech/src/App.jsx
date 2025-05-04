@@ -21,6 +21,13 @@ import UserMenu from "./pages/UserMenu";
 import ChangePassword from "./pages/ChangePassword";
 import ForgotPassword from "./pages/ForgotPassword";
 import RecoverPassword from "./pages/RecoverPassword";
+//Páginas del Footer
+import AboutUs from "./pages/PagesFooter/AboutUs";
+import HowItWorks from "./pages/PagesFooter/HowItWorks";
+import HelpCenter from "./pages/PagesFooter/HelpCenter";
+import LegalNotice from "./pages/PagesFooter/LegalNotice";
+import PrivacyPolicy from "./pages/PagesFooter/PrivacyPolicy";
+import CookiePolicy from "./pages/PagesFooter/CookiePolicy";
 
 function App() {
   const location = useLocation();
@@ -44,12 +51,8 @@ function App() {
           <Route path="/filtrados" element={<SearchFilteredProducts />} />
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/user/*" element={<UserMenu />} />
-          <Route path="/changepassword" element={<ChangePassword />} />
-          <Route
-            path="/validate/:validationCode"
-            element={<UserValidation />}
-          />
+          <Route path="/user/*" element={<UserMenu />} />         
+          <Route path="/validate/:validationCode" element={<UserValidation />} />
           <Route path="/producto/:productId" element={<ProductDetail />} />
           <Route path="/usuarios" element={<UserList />} />
           <Route path="/usuarios/:id" element={<UserProfile />} />
@@ -57,13 +60,18 @@ function App() {
           <Route path="/changepassword" element={<ChangePassword />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/recover/:recoveryCode" element={<RecoverPassword />} />
+          <Route path="/quienes-somos" element={<AboutUs />} />
+          <Route path="/como-funciona" element={<HowItWorks />} />
+          <Route path="/centro-de-ayuda" element={<HelpCenter />} />
+          <Route path="/aviso-legal" element={<LegalNotice />} />
+          <Route path="/politica-de-privacidad" element={<PrivacyPolicy />} />
+          <Route path="/politica-de-cookies" element={<CookiePolicy />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </div>
+      {location.pathname !== "/register" && location.pathname !== "/login" && location.pathname !== "/changepassword" && 
+      location.pathname !== "/forgot-password" && <Footer />}
 
-      {location.pathname !== "/register" &&
-        location.pathname !== "/login" &&
-        location.pathname !== "/changepassword" && <Footer />}
     </div>
   );
 }
