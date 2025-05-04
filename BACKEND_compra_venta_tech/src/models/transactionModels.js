@@ -4,15 +4,16 @@ import getPool from "../db/getPool.js";
 //import bcrypt from "bcryptjs";
 import { generateError } from "../utils/helpers.js";
 //import { encodeXText } from "nodemailer/lib/shared/index.js";
+import { setProductAsSoldModel } from "./productModels.js";
 
-async function createTransaction(buyerId, productId) {
+async function createTransaction(buyerId, buyerName, productId) {
   try {
     const pool = await getPool();
     //crear transaccion
     const [result] = await pool.query(
-      `INSERT INTO transaction (status, user_id, product_id)
-            VALUES (?, ?, ?)`,
-      ["pending", buyerId, productId]
+      `INSERT INTO transaction (status, user_id, username, product_id)
+            VALUES (?, ?, ?, ?)`,
+      ["pending", buyerId, buyerName, productId]
     );
 
     return result;
@@ -27,7 +28,7 @@ async function getTransaction(buyerId, productId) {
     const pool = await getPool();
 
     const [result] = await pool.query(
-      `SELECT * FROM transaction WHERE user_id = ? AND product_id = ?`,
+      `SELECT * FROM transaction WHERE user_id = ? AND product_id = ? AND status = "pending"`,
       [buyerId, productId]
     );
 
@@ -66,6 +67,7 @@ async function getSalesTransactionsModel(userId, status) {
         t.comment,
         t.ratings,
         t.user_id AS buyer_id,
+        t.username AS buyer_name,
         t.product_id,
         t.created_at AS transaction_created_at,
         t.update_at AS transaction_updated_at,
@@ -146,6 +148,14 @@ async function setTransactionStateModel(transID, status) {
       "UPDATE transaction SET status = ? WHERE id = ?",
       [status, transID]
     );
+    if (status === "accepted") {
+      const [productId] = await pool.query(
+        "SELECT product_id FROM transaction WHERE id = ?",
+        [transID]
+      );
+
+      setProductAsSoldModel(productId[0].product_id);
+    }
     return result;
   } catch (e) {
     console.error("Error al encontrar transacción: ", e);

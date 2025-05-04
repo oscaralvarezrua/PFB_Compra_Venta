@@ -14,6 +14,7 @@ export async function initTransactionController(req, res, next) {
   try {
     const { productId, productName } = req.body;
     const buyerId = req.user.id;
+    const buyerName = req.user.username;
 
     //verificamos si ya existe una transacción abierta
     const verifyTransaction = await getTransaction(buyerId, productId);
@@ -44,7 +45,7 @@ export async function initTransactionController(req, res, next) {
     }
 
     //Iniciamos proceso de compra
-    const transID = await createTransaction(buyerId, productId);
+    const transID = await createTransaction(buyerId, buyerName, productId);
 
     //enviamos petición por email
     const sellerEmail = await getSellerEmail(productId);
@@ -110,7 +111,6 @@ export async function setTransactionState(req, res, next) {
     const transID = Number(req.params.id);
     const status = req.body.status;
     const transaction = await setTransactionStateModel(transID, status);
-    console.log(transaction);
 
     if (transaction.affectedRows === 0) {
       return res.status(404).send({

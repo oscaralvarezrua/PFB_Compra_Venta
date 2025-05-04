@@ -180,7 +180,7 @@ GET /transactions/pendingsale: lista solicitudes de compra (4 tipos, según Vend
     - GET /transactions?type=buys&status=pending
     - GET /transactions?type=buys&status=cancelled
 
-PATCH /products/:id Aceptar o Cancelar publicación de artículo (Vendedor)
+PATCH /transactions/:id Aceptar o Cancelar publicación de artículo (Vendedor)
 
      -    Autenticación obligatoria
      -    "status": "cancelled/accepted"
