@@ -2,7 +2,10 @@
 import express from "express";
 import authUserController from "../middlewares/authUserController.js";
 import checkAdmin from "../middlewares/checkAdmin.js";
-import acceptProductController from "../controllers/acceptProductController.js";
+import {
+  acceptProductController,
+  noAcceptProductController,
+} from "../controllers/acceptProductController.js";
 import {
   getProductDetails,
   getProductListController,
@@ -27,6 +30,9 @@ router.put(
   checkAdmin,
   acceptProductController
 );
+
+//cuando editamos un producto para a revisión de nuevo
+router.put("/:id/no-accept", authUserController, noAcceptProductController);
 
 //Ruta para filtros de búsqueda
 router.get("/search", checkOptionalAuth, getFilteredProductsController);

@@ -16,6 +16,21 @@ export async function acceptProduct(productId) {
   }
 }
 
+//volvemos a poner en revisión cuando se edita un producto
+export async function noAcceptProduct(productId) {
+  //Conexión con la base de datos
+  const pool = await getPool();
+  //actualizamos is_accepted del producto por su id
+  const [{ affectedRows }] = await pool.query(
+    `UPDATE product SET is_accepted = false WHERE id =?`,
+    [productId]
+  );
+  //si no se ha modificado ninfuna fila(affectedRows) es xq no existe el producto(404)
+  if (affectedRows === 0) {
+    throw generateError("El producto no ha sido encontrado", 404);
+  }
+}
+
 //Creamos función para obtener los detalles de un producto
 export async function getProductById(productId) {
   try {
@@ -81,7 +96,7 @@ export async function getProductListById(userId) {
       created_at,
       updated_at
     FROM product 
-    WHERE user_id = ? AND is_accepted = true
+    WHERE user_id = ?
     `,
       [userId]
     );

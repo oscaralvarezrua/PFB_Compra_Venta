@@ -63,7 +63,7 @@ export default function RequestsList() {
     <div className="requests-container">
       <h2>Solicitudes y notificaciones</h2>
       {tSalesPendingData?.length === 0 ? (
-        <p className="no-results">No se encontraron solicitudes de ventas.</p>
+        <p className="no-results">No se encontraron solicitudes de compras.</p>
       ) : (
         <ul className="request-list">
           {tSalesPendingData?.map((trans) => (
