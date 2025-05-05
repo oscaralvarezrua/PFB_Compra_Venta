@@ -25,6 +25,13 @@
   border: 2px solid black;
   font-family: "Inter", sans-serif;
 }
+.btn.delete {
+  background-color: #ccc;
+  color: black;
+  border: 2px solid black;
+  font-family: "Inter", sans-serif;
+  margin-left: 2rem;
+}
 
 .enventa,
 .vendidos .revision {

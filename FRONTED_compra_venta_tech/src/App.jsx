@@ -51,8 +51,11 @@ function App() {
           <Route path="/filtrados" element={<SearchFilteredProducts />} />
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/user/*" element={<UserMenu />} />         
-          <Route path="/validate/:validationCode" element={<UserValidation />} />
+          <Route path="/user/*" element={<UserMenu />} />
+          <Route
+            path="/validate/:validationCode"
+            element={<UserValidation />}
+          />
           <Route path="/producto/:productId" element={<ProductDetail />} />
           <Route path="/usuarios" element={<UserList />} />
           <Route path="/usuarios/:id" element={<UserProfile />} />
@@ -69,9 +72,10 @@ function App() {
           <Route path="*" element={<NotFound />} />
         </Routes>
       </div>
-      {location.pathname !== "/register" && location.pathname !== "/login" && location.pathname !== "/changepassword" && 
-      location.pathname !== "/forgot-password" && <Footer />}
-
+      {location.pathname !== "/register" &&
+        location.pathname !== "/login" &&
+        location.pathname !== "/changepassword" &&
+        location.pathname !== "/forgot-password" && <Footer />}
     </div>
   );
 }
