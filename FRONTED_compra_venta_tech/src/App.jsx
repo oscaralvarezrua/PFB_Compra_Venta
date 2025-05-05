@@ -1,26 +1,34 @@
-import { Route, Routes, useLocation } from "react-router-dom";
+// src/App.jsx
+import React, { useContext } from "react";
+import { Route, Routes, useLocation, Navigate } from "react-router-dom";
 import Header from "./components/Header/Header";
 import Menu from "./components/Menu/menu";
 import Footer from "./components/Footer/Footer";
+import AdminRoute from "./components/AdminRoute";
+import { AuthContext } from "./contexts/AuthContext";
 
-// Importa tus páginas
+// Páginas generales
 import Home from "./pages/Home";
 import SearchResults from "./pages/SearchResults";
 import PublishProduct from "./pages/PublishProduct";
 import SearchFilteredProducts from "./pages/SearchFilteredProducts";
 import Register from "./pages/Register";
 import Login from "./pages/Login";
-import UserDataAndChangePass from "./pages/UserDataAndChangePass";
-import ProductDetail from "./pages/ProductDetail";
-import UserValidation from "./pages/UserValidation";
-import NotFound from "./pages/NotFound";
-import UserProfile from "./pages/UserProfile";
-import UserList from "./pages/UserList";
-import EditProduct from "./pages/EditProduct";
 import UserMenu from "./pages/UserMenu";
 import ChangePassword from "./pages/ChangePassword";
+import UserValidation from "./pages/UserValidation";
+import ProductDetail from "./pages/ProductDetail";
+import UserList from "./pages/UserList";
+import UserProfile from "./pages/UserProfile";
+import EditProduct from "./pages/EditProduct";
 import ForgotPassword from "./pages/ForgotPassword";
 import RecoverPassword from "./pages/RecoverPassword";
+import NotFound from "./pages/NotFound";
+
+// Páginas admin
+import AdminDashboard from "./pages/AdminDashboard";
+import ProductApproval from "./pages/ProductApproval";
+
 //Páginas del Footer
 import AboutUs from "./pages/PagesFooter/AboutUs";
 import HowItWorks from "./pages/PagesFooter/HowItWorks";
@@ -30,27 +38,40 @@ import PrivacyPolicy from "./pages/PagesFooter/PrivacyPolicy";
 import CookiePolicy from "./pages/PagesFooter/CookiePolicy";
 
 function App() {
+  const { user } = useContext(AuthContext);
   const location = useLocation();
+  const hideLayoutPaths = ["/register", "/login", "/changepassword", "/forgot-password"];
+  const showLayout = !hideLayoutPaths.includes(location.pathname);
 
   return (
     <div className="app-layout">
-      {location.pathname !== "/register" &&
-        location.pathname !== "/login" &&
-        location.pathname !== "/changepassword" && (
-          <>
-            <Header />
-            <Menu />
-          </>
-        )}
+      {showLayout && (
+        <>
+          <Header />
+          <Menu />
+        </>
+      )}
 
       <div className="main-content">
         <Routes>
-          <Route path="/" element={<Home />} />
+          {/* Login y Registro */}
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+
+          {/* Home: redirige admin al dashboard */}
+          <Route
+            path="/"
+            element={
+              user?.is_admin
+                ? <Navigate to="/admin/dashboard" replace />
+                : <Home />
+            }
+          />
+
+          {/* Rutas públicas */}
           <Route path="/search" element={<SearchResults />} />
           <Route path="/publicar" element={<PublishProduct />} />
           <Route path="/filtrados" element={<SearchFilteredProducts />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/login" element={<Login />} />
           <Route path="/user/*" element={<UserMenu />} />
           <Route
             path="/validate/:validationCode"
@@ -60,9 +81,43 @@ function App() {
           <Route path="/usuarios" element={<UserList />} />
           <Route path="/usuarios/:id" element={<UserProfile />} />
           <Route path="/edit/:productId" element={<EditProduct />} />
-          <Route path="/changepassword" element={<ChangePassword />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/recover/:recoveryCode" element={<RecoverPassword />} />
+
+
+          {/* Panel de admin protegido */}
+          <Route
+            path="/admin/dashboard"
+            element={
+              <AdminRoute>
+                <AdminDashboard />
+              </AdminRoute>
+            }
+          />
+          <Route
+            path="/admin/users"
+            element={
+              <AdminRoute>
+                <UserList />
+              </AdminRoute>
+            }
+          />
+          <Route
+            path="/admin/products"
+            element={
+              <AdminRoute>
+                <ProductApproval />
+              </AdminRoute>
+            }
+          />
+
+          {/* 404 */}
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </div>
+
+      {showLayout && <Footer />}
+
           <Route path="/quienes-somos" element={<AboutUs />} />
           <Route path="/como-funciona" element={<HowItWorks />} />
           <Route path="/centro-de-ayuda" element={<HelpCenter />} />
@@ -76,6 +131,7 @@ function App() {
         location.pathname !== "/login" &&
         location.pathname !== "/changepassword" &&
         location.pathname !== "/forgot-password" && <Footer />}
+
     </div>
   );
 }
