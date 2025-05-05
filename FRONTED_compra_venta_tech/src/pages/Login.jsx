@@ -1,13 +1,28 @@
-import React from "react";
+import React, { useContext, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import useLogin from "../hooks/useLogin";
 import PasswordInput from "../components/Post/PasswordInput";
 import logo from "../assets/logo_negro_recortado.png";
 import "../styles/Login.css";
+import { AuthContext } from "../contexts/AuthContext";
 
 const Login = () => {
   const { error, formState, handleSubmit, handleChange } = useLogin();
-  const navigate = useNavigate();
+const navigate = useNavigate();
+const { user } = useContext(AuthContext);
+   
+useEffect(() => {
+  if (user?.is_admin) {
+    navigate("/admin/dashboard");
+  }
+}, [user, navigate]);
+  
+const onSubmit = async (e) => {
+  await handleSubmit(e);
+   if (user?.is_admin) {
+     navigate("/admin/dashboard");
+   }
+ };
 
   return (
     <main className="login-page">
@@ -74,10 +89,9 @@ const Login = () => {
         <h2>¡Te damos la bienvenida!</h2>
         {error && <p className="error">{error}</p>}
 
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={onSubmit}>
           <ul>
             <li>
-              <label htmlFor="email"></label>
               <input
                 type="email"
                 required
@@ -89,7 +103,6 @@ const Login = () => {
               />
             </li>
             <li className="password-li">
-              <label htmlFor="password"></label>
               <PasswordInput
                 required
                 id="password"
