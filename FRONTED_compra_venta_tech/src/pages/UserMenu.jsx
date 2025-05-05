@@ -24,7 +24,13 @@ export default function UserMenu() {
       <aside className="sidebar">
         <ul>
           <li>
-            <NavLink to="/user" end className={({ isActive }) => (isActive ? "menu-link active" : "menu-link")}>
+            <NavLink
+              to="/user"
+              end
+              className={({ isActive }) =>
+                isActive ? "menu-link active" : "menu-link"
+              }
+            >
               <div className="current-avatar-menu">
                 <ApiImage
                   name={userData?.avatar}
@@ -49,7 +55,8 @@ export default function UserMenu() {
             </NavLink>
           </li>
           <li>
-            <NavLink to="/user/buys-list"
+            <NavLink
+              to="/user/buys-list"
               className={({ isActive }) =>
                 isActive ? "menu-link active" : "menu-link"
               }
@@ -62,7 +69,7 @@ export default function UserMenu() {
               <span>Compras</span>
             </NavLink>
           </li>
-          <li>
+          {/* <li>
             <NavLink to="/user/sales-list"
               className={({ isActive }) =>
                 isActive ? "menu-link active" : "menu-link"
@@ -75,9 +82,10 @@ export default function UserMenu() {
               />
               <span>Ventas</span>
             </NavLink>
-          </li>
+          </li> */}
           <li>
-            <NavLink to="/user/products-list"
+            <NavLink
+              to="/user/products-list"
               className={({ isActive }) =>
                 isActive ? "menu-link active" : "menu-link"
               }
@@ -91,7 +99,8 @@ export default function UserMenu() {
             </NavLink>
           </li>
           <li>
-            <NavLink to="/user/requests-list"
+            <NavLink
+              to="/user/requests-list"
               className={({ isActive }) =>
                 isActive ? "menu-link active" : "menu-link"
               }

@@ -102,13 +102,22 @@ const EditProduct = () => {
         },
         body,
       });
+      if (res.ok) {
+        await fetch(`${VITE_API_URL}/products/${productId}/no-accept`, {
+          method: "PUT",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          body,
+        });
+      }
 
       const data = await res.json();
       if (!res.ok) throw new Error(data.message);
 
       setSubmitMessage("¡Producto actualizado correctamente! ✅");
       setPreview(null);
-      setTimeout(() => navigate("/user"), 2000);
+      setTimeout(() => navigate("/user/products-list"), 2000);
     } catch (error) {
       setSubmitMessage(error.message || "Error al actualizar el producto.");
     }
@@ -206,7 +215,7 @@ const EditProduct = () => {
           <button type="submit">Guardar cambios</button>
           <button
             type="button"
-            onClick={() => navigate("/user/notification")}
+            onClick={() => navigate("/user/products-list")}
             className="reset-button"
           >
             Cancelar
