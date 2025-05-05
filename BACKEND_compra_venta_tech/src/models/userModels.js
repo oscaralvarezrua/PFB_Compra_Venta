@@ -217,12 +217,14 @@ const getUserInf = async (userId) => {
 
     const [stats] = await pool.query(
       `SELECT
-        (SELECT COUNT(*) FROM product WHERE user_id = ?) as total_products,
-        (SELECT COUNT(*) FROM transaction WHERE user_id = ? AND status = 'acepted') as total_purchases,
-        (SELECT COUNT(*) FROM transaction t JOIN product p ON t.product_id = p.id WHERE p.user_id = ? AND t.status = 'acepted') as total_sales
-      FROM user
-      WHERE id = ?`,
-      [userId, userId, userId, userId]
+COUNT(t.ratings) AS total_ratings,
+AVG(t.ratings) AS average_ratings,
+COUNT(CASE WHEN t.status = 'accepted' THEN 1 END) AS total_sales,
+(SELECT COUNT(*) FROM product WHERE user_id = ?) AS total_products,
+(SELECT COUNT(*) FROM transaction WHERE user_id = ? AND status = 'accepted') AS total_purchases
+FROM transaction t
+WHERE t.seller_id = ?`,
+      [userId, userId, userId]
     );
 
     return {

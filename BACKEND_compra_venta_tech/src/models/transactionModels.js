@@ -6,14 +6,14 @@ import { generateError } from "../utils/helpers.js";
 //import { encodeXText } from "nodemailer/lib/shared/index.js";
 import { setProductAsSoldModel } from "./productModels.js";
 
-async function createTransaction(buyerId, buyerName, productId) {
+async function createTransaction(buyerId, buyerName, productId, sellerID) {
   try {
     const pool = await getPool();
     //crear transaccion
     const [result] = await pool.query(
-      `INSERT INTO transaction (status, user_id, username, product_id)
+      `INSERT INTO transaction (status, user_id, username, product_id, seller_id)
             VALUES (?, ?, ?, ?)`,
-      ["pending", buyerId, buyerName, productId]
+      ["pending", buyerId, buyerName, productId, sellerID]
     );
 
     return result;

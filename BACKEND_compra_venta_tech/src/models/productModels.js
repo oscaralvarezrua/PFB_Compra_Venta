@@ -57,14 +57,17 @@ export async function getProductById(productId) {
       u.username AS seller_username,
       u.email AS seller_email,
       u.avatar AS seller_avatar,
-      u.phone AS seller_phone
+      
+      COUNT(ratings) AS total_ratings, AVG(ratings) AS average_ratings
     FROM product p
     JOIN category c ON p.category_id = c.id
     JOIN user u ON p.user_id = u.id
+    LEFT JOIN transaction t ON t.seller_id = p.user_id
     WHERE p.id = ?
     `,
       [productId]
     );
+    console.log(result);
 
     if (result.length === 0) {
       throw generateError("Ese producto no existe", 404);

@@ -45,7 +45,12 @@ export async function initTransactionController(req, res, next) {
     }
 
     //Iniciamos proceso de compra
-    const transID = await createTransaction(buyerId, buyerName, productId);
+    const transID = await createTransaction(
+      buyerId,
+      buyerName,
+      productId,
+      sellerID
+    );
 
     //enviamos petición por email
     const sellerEmail = await getSellerEmail(productId);
