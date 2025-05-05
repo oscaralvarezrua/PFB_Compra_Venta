@@ -22,8 +22,8 @@ export default function useTransactionData(type) {
       case "buys-pending":
         url = "/transactions?type=buys&status=pending";
         break;
-      case "buys-finished":
-        url = "/transactions?type=buys&status=cancelled";
+      case "buys-accepted":
+        url = "/transactions?type=buys&status=accepted";
         break;
       default:
         console.warn(`Tipo de transacción desconocida: ${type}`);
@@ -59,7 +59,7 @@ export default function useTransactionData(type) {
         case "buys-pending":
           setBuysPendingData(data.data);
           break;
-        case "buys-finished":
+        case "buys-accepted":
           setBuysFinishedData(data.data);
           break;
       }

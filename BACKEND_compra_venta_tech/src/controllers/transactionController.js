@@ -8,6 +8,7 @@ import {
   setTransactionStateModel,
   isAvailable,
   getBuyTransactionsModel,
+  setReviewModel,
 } from "../models/transactionModels.js";
 
 export async function initTransactionController(req, res, next) {
@@ -126,6 +127,28 @@ export async function setTransactionState(req, res, next) {
     res.send({
       status: "succes",
       data: `Transacción ${status === "accepted" ? "aceptada" : "rechazada"}.`,
+    });
+  } catch (e) {
+    next(e);
+  }
+}
+
+export async function setReviewController(req, res, next) {
+  try {
+    const transID = Number(req.params.id);
+    const rating = req.body.ratings;
+    const comment = req.body.comment;
+    const transaction = await setReviewModel(transID, Number(rating), comment);
+
+    if (transaction.affectedRows === 0) {
+      return res.status(404).send({
+        status: "Error",
+        message: "Transacciones no encontradas",
+      });
+    }
+    res.send({
+      status: "succes",
+      transaction,
     });
   } catch (e) {
     next(e);

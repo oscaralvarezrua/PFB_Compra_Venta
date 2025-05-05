@@ -5,7 +5,7 @@ import { NavLink, Outlet } from "react-router-dom";
 import "../styles/userMenu.css";
 
 import BuysList from "./BuysList";
-import SalesList from "./SalesList";
+//import SalesList from "./SalesList";
 import ProductsList from "./ProductsList";
 import RequestList from "./RequestsList";
 import UserDataAndChangePass from "./UserDataAndChangePass";
@@ -15,6 +15,7 @@ import ApiImage from "../components/Post/ApiImage";
 import Rating from "../components/Rating/Rating";
 import UserProfileView from "./UserProfileView";
 import ConfirmDeleteProd from "./ConfirmDeleteProd";
+import Review from "./Review";
 
 export default function UserMenu() {
   const { userData } = useUserData();
@@ -121,10 +122,10 @@ export default function UserMenu() {
           <Route index element={<UserProfileView />} />
           <Route path="edit" element={<UserDataAndChangePass />} />
           <Route path="buys-list" element={<BuysList />} />
-          <Route path="sales-list" element={<SalesList />} />
           <Route path="products-list" element={<ProductsList />} />
           <Route path="requests-list" element={<RequestList />} />
           <Route path="confirm-delete/:id" element={<ConfirmDeleteProd />} />
+          <Route path="review/:id" element={<Review />} />
         </Routes>
       </main>
     </div>

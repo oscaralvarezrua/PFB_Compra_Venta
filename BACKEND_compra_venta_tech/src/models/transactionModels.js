@@ -12,7 +12,7 @@ async function createTransaction(buyerId, buyerName, productId, sellerID) {
     //crear transaccion
     const [result] = await pool.query(
       `INSERT INTO transaction (status, user_id, username, product_id, seller_id)
-            VALUES (?, ?, ?, ?)`,
+            VALUES (?, ?, ?, ?, ?)`,
       ["pending", buyerId, buyerName, productId, sellerID]
     );
 
@@ -163,6 +163,21 @@ async function setTransactionStateModel(transID, status) {
   }
 }
 
+async function setReviewModel(transID, rating, comment) {
+  try {
+    const pool = await getPool();
+    const [result] = await pool.query(
+      "UPDATE transaction SET ratings = ?, comment = ? WHERE id = ?",
+      [rating, comment, transID]
+    );
+
+    return result;
+  } catch (e) {
+    console.error("Error al encontrar transacción: ", e);
+    throw generateError("Error al encontrar transacción", 404);
+  }
+}
+
 async function isAvailable(product_id) {
   try {
     const pool = await getPool();
@@ -187,4 +202,5 @@ export {
   setTransactionStateModel,
   isAvailable,
   getBuyTransactionsModel,
+  setReviewModel,
 };
