@@ -29,7 +29,7 @@ import NotFound from "./pages/NotFound";
 import AdminDashboard from "./pages/AdminDashboard";
 import ProductApproval from "./pages/ProductApproval";
 
-//Páginas del Footer
+// Páginas del Footer
 import AboutUs from "./pages/PagesFooter/AboutUs";
 import HowItWorks from "./pages/PagesFooter/HowItWorks";
 import HelpCenter from "./pages/PagesFooter/HelpCenter";
@@ -40,7 +40,13 @@ import CookiePolicy from "./pages/PagesFooter/CookiePolicy";
 function App() {
   const { user } = useContext(AuthContext);
   const location = useLocation();
-  const hideLayoutPaths = ["/register", "/login", "/changepassword", "/forgot-password"];
+
+  const hideLayoutPaths = [
+    "/register",
+    "/login",
+    "/changepassword",
+    "/forgot-password",
+  ];
   const showLayout = !hideLayoutPaths.includes(location.pathname);
 
   return (
@@ -58,13 +64,15 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
 
-          {/* Home: redirige admin al dashboard */}
+          {/* Home: redirige al dashboard si es admin */}
           <Route
             path="/"
             element={
-              user?.is_admin
-                ? <Navigate to="/admin/dashboard" replace />
-                : <Home />
+              user?.is_admin ? (
+                <Navigate to="/admin/dashboard" replace />
+              ) : (
+                <Home />
+              )
             }
           />
 
@@ -73,6 +81,7 @@ function App() {
           <Route path="/publicar" element={<PublishProduct />} />
           <Route path="/filtrados" element={<SearchFilteredProducts />} />
           <Route path="/user/*" element={<UserMenu />} />
+          <Route path="/changepassword" element={<ChangePassword />} />
           <Route
             path="/validate/:validationCode"
             element={<UserValidation />}
@@ -82,10 +91,23 @@ function App() {
           <Route path="/usuarios/:id" element={<UserProfile />} />
           <Route path="/edit/:productId" element={<EditProduct />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
-          <Route path="/recover/:recoveryCode" element={<RecoverPassword />} />
+          <Route
+            path="/recover/:recoveryCode"
+            element={<RecoverPassword />}
+          />
 
+          {/* Rutas informativas */}
+          <Route path="/quienes-somos" element={<AboutUs />} />
+          <Route path="/como-funciona" element={<HowItWorks />} />
+          <Route path="/centro-de-ayuda" element={<HelpCenter />} />
+          <Route path="/aviso-legal" element={<LegalNotice />} />
+          <Route
+            path="/politica-de-privacidad"
+            element={<PrivacyPolicy />}
+          />
+          <Route path="/politica-de-cookies" element={<CookiePolicy />} />
 
-          {/* Panel de admin protegido */}
+          {/* Rutas admin protegidas */}
           <Route
             path="/admin/dashboard"
             element={
@@ -111,29 +133,15 @@ function App() {
             }
           />
 
-          {/* 404 */}
+          {/* Fallback 404 */}
           <Route path="*" element={<NotFound />} />
         </Routes>
       </div>
 
       {showLayout && <Footer />}
-
-          <Route path="/quienes-somos" element={<AboutUs />} />
-          <Route path="/como-funciona" element={<HowItWorks />} />
-          <Route path="/centro-de-ayuda" element={<HelpCenter />} />
-          <Route path="/aviso-legal" element={<LegalNotice />} />
-          <Route path="/politica-de-privacidad" element={<PrivacyPolicy />} />
-          <Route path="/politica-de-cookies" element={<CookiePolicy />} />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </div>
-      {location.pathname !== "/register" &&
-        location.pathname !== "/login" &&
-        location.pathname !== "/changepassword" &&
-        location.pathname !== "/forgot-password" && <Footer />}
-
     </div>
   );
 }
 
 export default App;
+
