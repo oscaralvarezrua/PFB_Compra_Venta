@@ -2,18 +2,25 @@ import React, { useState } from "react";
 import "../styles/ProductList.css";
 import useProductList from "../hooks/useProductList";
 import ApiImage from "../components/Post/ApiImage";
+
 import { Link, useNavigate } from "react-router-dom";
 
 export default function RequestsList() {
-  const { productsList, loading, error } = useProductList();
+  const { productsList, loading } = useProductList();
   const [showAvailable, setShowAvailable] = useState(true);
   const [showEnRevision, setShowEnRevision] = useState(false);
+
   const navigate = useNavigate();
 
   if (loading) return <p>Cargando productos…</p>;
-  if (error) return <p className="error">Error: {error}</p>;
-  if (productsList?.length === 0)
-    return <p className="no-results">No tienes productos publicados.</p>;
+  //if (error) return <p className="error">Error: {error}</p>;
+  if (productsList?.length === 0 || productsList === undefined)
+    return (
+      <div>
+        <h2>Tus Productos</h2>
+        <p className="no-results">No tienes productos publicados.</p>
+      </div>
+    );
 
   const formatDMY = (fecha) =>
     new Date(fecha).toLocaleDateString("es-ES", {
@@ -74,7 +81,7 @@ export default function RequestsList() {
                 </div>
                 <div className="request-text">
                   <p>
-                    <strong>{prod.price}</strong>{" "}
+                    <strong>{prod.price} €</strong>{" "}
                   </p>
                   <p>{prod.name} </p>
                 </div>
@@ -100,6 +107,11 @@ export default function RequestsList() {
                   >
                     Editar
                   </button>
+                  <Link to={"/user/confirm-delete/" + prod.id}>
+                    <button className="btn delete" type="button">
+                      Eliminar
+                    </button>
+                  </Link>
                 </div>
               </li>
             ))}
@@ -115,7 +127,7 @@ export default function RequestsList() {
                 </div>
                 <div className="request-text">
                   <p>
-                    <strong>{prod.price}</strong>{" "}
+                    <strong>{prod.price} €</strong>{" "}
                   </p>
                   <p>{prod.name} </p>
                 </div>
@@ -149,7 +161,7 @@ export default function RequestsList() {
                 </div>
                 <div className="request-text">
                   <p>
-                    <strong>{prod.price}</strong>{" "}
+                    <strong>{prod.price} €</strong>{" "}
                   </p>
                   <p>{prod.name} </p>
                 </div>

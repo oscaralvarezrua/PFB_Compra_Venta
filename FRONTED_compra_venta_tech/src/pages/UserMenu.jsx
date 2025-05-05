@@ -14,6 +14,7 @@ import useAverageRating from "../hooks/useAverageRating";
 import ApiImage from "../components/Post/ApiImage";
 import Rating from "../components/Rating/Rating";
 import UserProfileView from "./UserProfileView";
+import ConfirmDeleteProd from "./ConfirmDeleteProd";
 
 export default function UserMenu() {
   const { userData } = useUserData();
@@ -123,6 +124,7 @@ export default function UserMenu() {
           <Route path="sales-list" element={<SalesList />} />
           <Route path="products-list" element={<ProductsList />} />
           <Route path="requests-list" element={<RequestList />} />
+          <Route path="confirm-delete/:id" element={<ConfirmDeleteProd />} />
         </Routes>
       </main>
     </div>
