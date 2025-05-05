@@ -3,3 +3,45 @@
   padding: 0%;
   box-sizing: border-box;
 }
+
+.about-us-page {
+  max-width: 900px;
+  margin: 2rem auto;
+  padding: 1.5rem;
+  background-color: #fff;
+  border-radius: 15px;
+  border: 2px solid #e7c61b;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+  font-family: "Inter", sans-serif;
+}
+
+.about-us-page h1 {
+  text-align: center;
+  font-size: 1.8rem;
+  color: #222;
+  margin-bottom: 1.5rem;
+}
+
+.about-us-page p {
+  font-size: 1rem;
+  color: #444;
+  line-height: 1.6;
+  margin-bottom: 1rem;
+}
+
+/* Mobile first: ya optimizado */
+
+@media screen and (max-width: 600px) {
+  .about-us-page {
+    margin: 1rem;
+    padding: 1rem;
+  }
+
+  .about-us-page h1 {
+    font-size: 1.5rem;
+  }
+
+  .about-us-page p {
+    font-size: 0.95rem;
+  }
+}
