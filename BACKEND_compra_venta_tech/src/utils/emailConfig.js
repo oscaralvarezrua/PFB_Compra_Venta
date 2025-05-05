@@ -1,7 +1,16 @@
 import nodemailer from "nodemailer";
 import { generateError } from "./helpers.js";
 
-const { SMTP_HOST, SMTP_USER, SMTP_PASSWORD, SMTP_PORT, BACKEND_URL, FRONTEND_URL, SENDERS_EMAIL, COLOR_CODE } = process.env;
+const {
+  SMTP_HOST,
+  SMTP_USER,
+  SMTP_PASSWORD,
+  SMTP_PORT,
+  BACKEND_URL,
+  FRONTEND_URL,
+  SENDERS_EMAIL,
+  COLOR_CODE,
+} = process.env;
 
 // Configuración del transporter de nodemailer
 const transporter = nodemailer.createTransport({
@@ -93,17 +102,22 @@ export const sendValidationEmail = async (email, username, validationCode) => {
   }
 };
 
-export async function sendTransactionRequest(sellerEmail, buyerUser, productName, transactionId) {
+export async function sendTransactionRequest(
+  sellerEmail,
+  buyerUser,
+  productName,
+  transactionId
+) {
   let subject = "Nueva petición de compra";
   /*let text = `El usuario ${buyerUser} quiere comprar tu producto ${productName}.\nHaz click en el siguiente enlace para aceptar o rechazar la transacción:\n${BACKEND_URL}/request?transactionId=${transactionId}`;*/
   let html = `
                 <h1>¡Enhorabuena!</h1>
                 <p>El usuario <strong>${buyerUser}</strong>  quiere comprar tu producto <strong>${productName}</strong> .\nHaz click en el siguiente enlace para aceptar o rechazar la transacción:</p>
-                <a href="${FRONTEND_URL}/request?transactionId=${transactionId}" style="display: inline-block; padding: 10px 20px; background-color: #${COLOR_CODE}; color: black; text-decoration: none; border-radius: 5px; margin: 20px 0;">
+                <a href="${FRONTEND_URL}/user/requests-list" style="display: inline-block; padding: 10px 20px; background-color: #${COLOR_CODE}; color: black; text-decoration: none; border-radius: 5px; margin: 20px 0;">
                     Ver transacción
                 </a>
                 <p>Si el botón no funciona, puedes copiar y pegar el siguiente enlace en tu navegador:</p>
-                <p>${FRONTEND_URL}/request?transactionId=${transactionId}</p>
+                <p>${FRONTEND_URL}/user/requests-list</p>
                 <p>Si no has iniciado ninguna solicitud de compra en Segunda Tec, puedes ignorar este correo.</p>
             `;
 

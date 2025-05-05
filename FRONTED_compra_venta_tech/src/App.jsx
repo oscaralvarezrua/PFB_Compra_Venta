@@ -34,12 +34,14 @@ function App() {
 
   return (
     <div className="app-layout">
-      {location.pathname !== "/register" && location.pathname !== "/login" && location.pathname !== "/changepassword" && (
-        <>
-          <Header />
-          <Menu />
-        </>
-      )}
+      {location.pathname !== "/register" &&
+        location.pathname !== "/login" &&
+        location.pathname !== "/changepassword" && (
+          <>
+            <Header />
+            <Menu />
+          </>
+        )}
 
       <div className="main-content">
         <Routes>
@@ -49,7 +51,7 @@ function App() {
           <Route path="/filtrados" element={<SearchFilteredProducts />} />
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/user/*" element={<UserMenu />} />
+          <Route path="/user/*" element={<UserMenu />} />         
           <Route path="/validate/:validationCode" element={<UserValidation />} />
           <Route path="/producto/:productId" element={<ProductDetail />} />
           <Route path="/usuarios" element={<UserList />} />
@@ -58,18 +60,18 @@ function App() {
           <Route path="/changepassword" element={<ChangePassword />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/recover/:recoveryCode" element={<RecoverPassword />} />
-          <Route path="*" element={<NotFound />} />
           <Route path="/quienes-somos" element={<AboutUs />} />
           <Route path="/como-funciona" element={<HowItWorks />} />
           <Route path="/centro-de-ayuda" element={<HelpCenter />} />
           <Route path="/aviso-legal" element={<LegalNotice />} />
           <Route path="/politica-de-privacidad" element={<PrivacyPolicy />} />
           <Route path="/politica-de-cookies" element={<CookiePolicy />} />
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </div>
-
       {location.pathname !== "/register" && location.pathname !== "/login" && location.pathname !== "/changepassword" && 
       location.pathname !== "/forgot-password" && <Footer />}
+
     </div>
   );
 }

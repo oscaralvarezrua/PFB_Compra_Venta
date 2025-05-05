@@ -1,0 +1,16 @@
+.rating {
+  display: flex;
+  align-items: center;
+  font-size: 0.9rem;
+  color: #e7c61b;
+}
+.rating .stars {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+}
+.rating .count {
+  margin-left: 0.4rem;
+  color: #605f5f;
+  font-size: 0.8rem;
+}

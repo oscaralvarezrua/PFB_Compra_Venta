@@ -9,6 +9,7 @@ import {
   deleteProductController,
   setProtucdAsSoldController,
   addVisitProductController,
+  getUserProductListController,
 } from "../controllers/productController.js";
 import {
   publishProductController,
@@ -29,6 +30,9 @@ router.put(
 
 //Ruta para filtros de búsqueda
 router.get("/search", checkOptionalAuth, getFilteredProductsController);
+
+//Ruta para obtener todos los productos del usuario
+router.get("/list/:id", authUserController, getUserProductListController);
 
 // Ruta para visualizar Lista de productos aceptados
 router.get("/", checkOptionalAuth, getProductListController);
