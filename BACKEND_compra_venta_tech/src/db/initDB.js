@@ -118,13 +118,17 @@ const initDB = async () => {
         id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
         status ENUM("accepted", "cancelled", "pending"),
         comment TINYTEXT,
-        ratings ENUM("1", "2", "3", "4", "5"),
+        ratings TINYINT,
         user_id INT UNSIGNED NOT NULL,
+        seller_id INT UNSIGNED NOT NULL,
+        username VARCHAR(20) NOT NULL,
         product_id INT UNSIGNED NOT NULL,
         created_at TIMESTAMP DEFAULT NOW(),
         update_at TIMESTAMP DEFAULT NOW(),
         FOREIGN KEY (user_id) REFERENCES user(id),
+        FOREIGN KEY (seller_id) REFERENCES user(id),
         FOREIGN KEY (product_id) REFERENCES product(id) ON DELETE CASCADE
+        
       )
     `);
 

@@ -4,14 +4,19 @@ import "../styles/ProductDetail.css"; // Estilos separados
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import ApiImage from "../components/Post/ApiImage";
+import { useAuth } from "../hooks/useAuth";
+import { useNavigate } from "react-router-dom";
 
 const { VITE_API_URL } = import.meta.env;
 console.log("VITE_API_URL:", VITE_API_URL);
 const ProductDetail = () => {
+  const { token } = useAuth();
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const { productId } = useParams(); // Asegúrate que en tu ruta usas :productId
+  const { productId } = useParams();
+  const [submitMessage, setSubmitMessage] = useState("");
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -21,7 +26,7 @@ const ProductDetail = () => {
           throw new Error("No se pudo obtener el producto");
         }
         const data = await response.json();
-        setProduct(data.data); // Asegúrate que tu API devuelve el producto dentro de "data"
+        setProduct(data.data);
       } catch (err) {
         setError(err.message);
       } finally {
@@ -31,6 +36,31 @@ const ProductDetail = () => {
 
     fetchProduct();
   }, [productId]);
+
+  const handleClickBuy = async (id, name) => {
+    try {
+      const res = await fetch(`${VITE_API_URL}/transactions`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ productId: id, productName: name }),
+      });
+
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.message);
+
+      setSubmitMessage("¡Solicitud de compra iniciada correctamente! ✅");
+      setTimeout(() => {
+        navigate("/user/buys-list");
+      }, 2000);
+    } catch (err) {
+      setSubmitMessage(
+        err.message || "Error al iniciar la compra, inténtelo de nuevo."
+      );
+    }
+  };
 
   if (loading) return <p>Cargando producto...</p>;
   if (error) return <p>Error: {error}</p>;
@@ -48,9 +78,23 @@ const ProductDetail = () => {
           <p className="description">{product.description}</p>
           <p className="locality">📍 {product.locality}</p>
           <p className="category">📂 {product.category_name}</p>
-          <button className="contact-btn">Solicitar compra</button>
+          <button
+            className="contact-btn"
+            onClick={() => handleClickBuy(product.id, product.name)}
+          >
+            Solicitar compra
+          </button>
         </div>
       </div>
+      {submitMessage && (
+        <p
+          className={`feedback-message ${
+            submitMessage.includes("✅") ? "success" : "error"
+          }`}
+        >
+          {submitMessage}
+        </p>
+      )}
     </div>
   );
 };

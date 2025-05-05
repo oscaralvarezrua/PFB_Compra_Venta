@@ -1,0 +1,52 @@
+.product-list-image {
+  background-color: #ececec;
+  border-radius: 12px;
+  padding: 20px;
+  margin-right: 1rem;
+}
+.seccion-btn-prod {
+  margin: 1rem;
+  display: flex;
+}
+.seccion-btn-prod button {
+  margin-left: 2rem;
+}
+
+.product-list-image img {
+  width: 100%;
+  max-height: 100px;
+  object-fit: contain;
+  border-radius: 12px;
+}
+
+.btn.editar {
+  background-color: #e7c61b;
+  color: black;
+  border: 2px solid black;
+  font-family: "Inter", sans-serif;
+}
+.btn.delete {
+  background-color: #ccc;
+  color: black;
+  border: 2px solid black;
+  font-family: "Inter", sans-serif;
+  margin-left: 2rem;
+}
+
+.enventa,
+.vendidos .revision {
+  background: #ccc;
+  color: #333;
+}
+
+.btn:hover:not(.active) {
+  filter: brightness(0.9);
+}
+
+.btn.active-prod {
+  background: #e7c61b;
+  color: #111;
+}
+.revision-message {
+  color: #b1981d;
+}

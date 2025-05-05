@@ -104,6 +104,8 @@ PUT /products/:id/accept Aceptar un producto por el Administrador
      -    Autenticación obligatoria
      -    Verificación de Administrador
 
+PUT /products/:id/no-accept Volver a poner el producto en revisión cuando se edita un producto por el usuario - Autenticación obligatoria
+
 GET /products/search Búsqueda de productos con filtros
 
           Filtrar por:
@@ -180,7 +182,7 @@ GET /transactions/pendingsale: lista solicitudes de compra (4 tipos, según Vend
     - GET /transactions?type=buys&status=pending
     - GET /transactions?type=buys&status=cancelled
 
-PATCH /products/:id Aceptar o Cancelar publicación de artículo (Vendedor)
+PATCH /transactions/:id Aceptar o Cancelar publicación de artículo (Vendedor)
 
      -    Autenticación obligatoria
      -    "status": "cancelled/accepted"

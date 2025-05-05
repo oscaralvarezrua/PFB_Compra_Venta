@@ -1,0 +1,47 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.help-center-page {
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 1.5rem;
+  font-family: "Inter", sans-serif;
+  background-color: white;
+  border: 2px solid #e7c61b;
+  border-radius: 15px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.help-center-page h1 {
+  font-size: 1.8rem;
+  color: #000;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.help-center-page p {
+  font-size: 1rem;
+  color: #444;
+  line-height: 1.6;
+  margin-bottom: 1rem;
+}
+
+.help-center-page ul {
+  margin-left: 1rem;
+  padding-left: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.help-center-page li {
+  margin-bottom: 0.6rem;
+  font-size: 1rem;
+  color: #333;
+  list-style: disc;
+}
+
+.help-center-page strong {
+  color: #000;
+}

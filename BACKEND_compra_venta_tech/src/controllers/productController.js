@@ -5,6 +5,7 @@ import {
   setProductAsSoldModel,
   getPendingProductListModel,
   addVisitProductModel,
+  getProductListById,
 } from "../models/productModels.js";
 import { deletePhoto } from "../utils/helpers.js";
 
@@ -20,6 +21,26 @@ export async function getProductListController(req, res, next) {
       products = await getAcceptProductListModel();
     }
 
+    if (!products) {
+      return res.status(404).send({
+        status: "Error",
+        message: "Productos no encontrados",
+      });
+    }
+    res.send({
+      status: "OK",
+      data: products,
+    });
+  } catch (e) {
+    next(e);
+  }
+}
+
+export async function getUserProductListController(req, res, next) {
+  try {
+    const userId = parseInt(req.params.id);
+    let products = [];
+    products = await getProductListById(userId);
     if (!products) {
       return res.status(404).send({
         status: "Error",

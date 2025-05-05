@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import "../styles/SearchFilteredProducts.css";
+import ApiImage from "../components/Post/ApiImage";
 
 const { VITE_API_URL } = import.meta.env;
 
@@ -23,7 +24,6 @@ const SearchFilteredProducts = () => {
   const [loading, setLoading] = useState(false);
   const [feedback, setFeedback] = useState({ message: "", type: "" });
 
-  // Maneja la búsqueda en base a los filtros de la URL
   useEffect(() => {
     const searchParams = new URLSearchParams(location.search);
     const hasFilters = [...searchParams.entries()].length > 0;
@@ -55,10 +55,6 @@ const SearchFilteredProducts = () => {
           });
         } else {
           setProducts(data.data);
-          setFeedback({
-            message: "Productos cargados correctamente ✅",
-            type: "success",
-          });
         }
       } catch (error) {
         console.error("Error al obtener productos filtrados:", error);
@@ -178,27 +174,36 @@ const SearchFilteredProducts = () => {
         </p>
       )}
 
-      <h2 className="title">Resultados</h2>
-
-      {loading ? (
-        <p className="loading">Cargando productos filtrados...</p>
-      ) : products.length > 0 ? (
-        <ul className="product-list">
-          {products.map((prod) => (
-            <li
-              key={prod.id}
-              className="product-item"
-              onClick={() => goToDetail(prod.id)}
-            >
-              <h3>{prod.name}</h3>
-              <p>{prod.description}</p>
-              <p>
-                {prod.price} € - {prod.locality}
-              </p>
-            </li>
-          ))}
-        </ul>
-      ) : null}
+      {products.length > 0 && (
+        <>
+          <h2 className="title">Resultados</h2>
+          {loading && <p className="loading">Cargando productos...</p>}
+          <div className="results-container">
+            <ul className="product-list">
+              {products.map((prod) => (
+                <li
+                  key={prod.id}
+                  className="product-item"
+                  onClick={() => goToDetail(prod.id)}
+                >
+                  <div className="product-preview">
+                    <div className="product-img-wrapper">
+                      <ApiImage name={prod.photo} alt={prod.name} />
+                    </div>
+                    <div className="product-text">
+                      <h3>{prod.name}</h3>
+                      <p>{prod.description}</p>
+                      <p>
+                        {prod.price} € - {prod.locality}
+                      </p>
+                    </div>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </>
+      )}
     </div>
   );
 };

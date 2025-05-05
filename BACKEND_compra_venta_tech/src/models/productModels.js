@@ -16,6 +16,21 @@ export async function acceptProduct(productId) {
   }
 }
 
+//volvemos a poner en revisión cuando se edita un producto
+export async function noAcceptProduct(productId) {
+  //Conexión con la base de datos
+  const pool = await getPool();
+  //actualizamos is_accepted del producto por su id
+  const [{ affectedRows }] = await pool.query(
+    `UPDATE product SET is_accepted = false WHERE id =?`,
+    [productId]
+  );
+  //si no se ha modificado ninfuna fila(affectedRows) es xq no existe el producto(404)
+  if (affectedRows === 0) {
+    throw generateError("El producto no ha sido encontrado", 404);
+  }
+}
+
 //Creamos función para obtener los detalles de un producto
 export async function getProductById(productId) {
   try {
@@ -42,14 +57,17 @@ export async function getProductById(productId) {
       u.username AS seller_username,
       u.email AS seller_email,
       u.avatar AS seller_avatar,
-      u.phone AS seller_phone
+      
+      COUNT(ratings) AS total_ratings, AVG(ratings) AS average_ratings
     FROM product p
     JOIN category c ON p.category_id = c.id
     JOIN user u ON p.user_id = u.id
+    LEFT JOIN transaction t ON t.seller_id = p.user_id
     WHERE p.id = ?
     `,
       [productId]
     );
+    console.log(result);
 
     if (result.length === 0) {
       throw generateError("Ese producto no existe", 404);
@@ -59,6 +77,41 @@ export async function getProductById(productId) {
   } catch (error) {
     console.error("Producto no encontrado: ", error);
     throw generateError("Producto no encontrado", 404);
+  }
+}
+
+//Creamos función para obtener los detalles de un producto
+export async function getProductListById(userId) {
+  try {
+    const pool = await getPool();
+
+    const [result] = await pool.query(
+      `
+    SELECT 
+      id,
+      name,
+      description,
+      price,
+      photo,
+      locality,
+      is_available,
+      is_accepted,
+      created_at,
+      updated_at
+    FROM product 
+    WHERE user_id = ?
+    `,
+      [userId]
+    );
+
+    if (result.length === 0) {
+      throw generateError("No hay productos publicados", 404);
+    }
+
+    return result;
+  } catch (error) {
+    console.error("Productos no encontrados: ", error);
+    throw generateError("Productos no encontrados", 404);
   }
 }
 
@@ -140,8 +193,6 @@ export async function setProductAsSoldModel(productId) {
       "UPDATE product SET is_available = false WHERE id = ?",
       [productId]
     );
-    console.log(productId);
-
     return result[0];
   } catch (e) {
     console.error("Error al encontrar usuario: ", e);
