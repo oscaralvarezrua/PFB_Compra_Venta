@@ -73,7 +73,9 @@ const PublishProduct = () => {
       const data = await res.json();
       if (!res.ok) throw new Error(data.message);
 
-      setSubmitMessage("¡Producto publicado correctamente! ✅");
+      setSubmitMessage(
+        "¡Producto publicado correctamente! ✅ Pronto un Administrador revisará su producto y, una vez aprobada, estará disponible para la venta."
+      );
       setFormData({
         name: "",
         description: "",

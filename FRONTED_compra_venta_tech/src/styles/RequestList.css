@@ -82,6 +82,10 @@
   text-align: center;
   margin-top: 1rem;
 }
+.image-nada {
+  width: 40%;
+  height: 40%;
+}
 
 /* @media (min-width: 600px) {
   .request-page li {

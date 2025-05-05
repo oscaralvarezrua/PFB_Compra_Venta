@@ -19,6 +19,14 @@ export default function RequestsList() {
       <div>
         <h2>Tus Productos</h2>
         <p className="no-results">No tienes productos publicados.</p>
+        <div>
+          <img
+            src="/src/assets/No_hay_nada.png"
+            alt="No tienes productos publicados."
+            className="image-nada"
+          />
+          <p>No tienes productos publicados.</p>
+        </div>
       </div>
     );
 
@@ -173,7 +181,7 @@ export default function RequestsList() {
                 </div>
                 <div className="request-text">
                   <p>
-                    <strong>Modificado</strong>{" "}
+                    <strong>Fecha de venta</strong>{" "}
                   </p>
                   <p>{formatDMY(prod.updated_at)} </p>
                 </div>

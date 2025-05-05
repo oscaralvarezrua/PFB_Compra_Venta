@@ -53,16 +53,16 @@ export default function ConfirmDeleteProd() {
             Cancelar
           </button>
         </div>
+        {submitMessage && (
+          <p
+            className={`feedback-message ${
+              submitMessage.includes("✅") ? "success" : "error"
+            }`}
+          >
+            {submitMessage}
+          </p>
+        )}
       </div>
-      {submitMessage && (
-        <p
-          className={`feedback-message ${
-            submitMessage.includes("✅") ? "success" : "error"
-          }`}
-        >
-          {submitMessage}
-        </p>
-      )}
     </div>
   );
 }
