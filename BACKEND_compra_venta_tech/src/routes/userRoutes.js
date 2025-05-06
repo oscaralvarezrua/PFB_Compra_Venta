@@ -2,19 +2,7 @@
 
 import express from "express";
 
-import {
-  userContoler,
-  validateUserController,
-  userLogin,
-  getUserListController,
-  getUserDetailController,
-  rateSellerController,
-  changePass,
-  getUserInfo,
-  requestPassRecovery,
-  changePassWithRecovery,
-  updateUserContoler,
-} from "../controllers/userController.js";
+import { userContoler, validateUserController, userLogin, getUserListController, getUserDetailController, rateSellerController, changePass, getUserInfo, requestPassRecovery, changePassWithRecovery, updateUserContoler, deleteUserController } from "../controllers/userController.js";
 
 import authUserController from "../middlewares/authUserController.js";
 
@@ -50,5 +38,8 @@ router.post("/recover/:recoveryCode", changePassWithRecovery);
 
 // Detalle de usuario con histórico
 router.get("/:id", getUserDetailController);
+
+// Boorar usuario
+router.delete("/users/:id", authUserController, deleteUserController);
 
 export default router;

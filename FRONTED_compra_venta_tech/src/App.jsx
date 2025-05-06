@@ -24,6 +24,7 @@ import EditProduct from "./pages/EditProduct";
 import ForgotPassword from "./pages/ForgotPassword";
 import RecoverPassword from "./pages/RecoverPassword";
 import NotFound from "./pages/NotFound";
+import CategoryProducts from "./pages/CategoryProducts";
 
 // Páginas admin
 import AdminDashboard from "./pages/AdminDashboard";
@@ -41,12 +42,7 @@ function App() {
   const { user } = useContext(AuthContext);
   const location = useLocation();
 
-  const hideLayoutPaths = [
-    "/register",
-    "/login",
-    "/changepassword",
-    "/forgot-password",
-  ];
+  const hideLayoutPaths = ["/register", "/login", "/changepassword", "/forgot-password"];
   const showLayout = !hideLayoutPaths.includes(location.pathname);
 
   return (
@@ -65,16 +61,7 @@ function App() {
           <Route path="/register" element={<Register />} />
 
           {/* Home: redirige al dashboard si es admin */}
-          <Route
-            path="/"
-            element={
-              user?.is_admin ? (
-                <Navigate to="/admin/dashboard" replace />
-              ) : (
-                <Home />
-              )
-            }
-          />
+          <Route path="/" element={user?.role === "admin" ? <Navigate to="/admin/dashboard" replace /> : <Home />} />
 
           {/* Rutas públicas */}
           <Route path="/search" element={<SearchResults />} />
@@ -82,40 +69,25 @@ function App() {
           <Route path="/filtrados" element={<SearchFilteredProducts />} />
           <Route path="/user/*" element={<UserMenu />} />
           <Route path="/changepassword" element={<ChangePassword />} />
-          <Route
-            path="/validate/:validationCode"
-            element={<UserValidation />}
-          />
+          <Route path="/validate/:validationCode" element={<UserValidation />} />
           <Route path="/producto/:productId" element={<ProductDetail />} />
           <Route path="/usuarios" element={<UserList />} />
           <Route path="/usuarios/:id" element={<UserProfile />} />
           <Route path="/edit/:productId" element={<EditProduct />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
-          <Route
-            path="/recover/:recoveryCode"
-            element={<RecoverPassword />}
-          />
+          <Route path="/recover/:recoveryCode" element={<RecoverPassword />} />
+          <Route path="/categoria/:id" element={<CategoryProducts />} />
 
           {/* Rutas informativas */}
           <Route path="/quienes-somos" element={<AboutUs />} />
           <Route path="/como-funciona" element={<HowItWorks />} />
           <Route path="/centro-de-ayuda" element={<HelpCenter />} />
           <Route path="/aviso-legal" element={<LegalNotice />} />
-          <Route
-            path="/politica-de-privacidad"
-            element={<PrivacyPolicy />}
-          />
+          <Route path="/politica-de-privacidad" element={<PrivacyPolicy />} />
           <Route path="/politica-de-cookies" element={<CookiePolicy />} />
 
           {/* Rutas admin protegidas */}
-          <Route
-            path="/admin/dashboard"
-            element={
-              <AdminRoute>
-                <AdminDashboard />
-              </AdminRoute>
-            }
-          />
+          <Route path="/admin/dashboard" element={<AdminDashboard />} />
           <Route
             path="/admin/users"
             element={
@@ -144,4 +116,3 @@ function App() {
 }
 
 export default App;
-

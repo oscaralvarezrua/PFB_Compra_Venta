@@ -1,13 +1,6 @@
-import {
-  getAcceptProductListModel,
-  getProductById,
-  deleteProductModel,
-  setProductAsSoldModel,
-  getPendingProductListModel,
-  addVisitProductModel,
-  getProductListById,
-} from "../models/productModels.js";
+import { getAcceptProductListModel, getProductById, deleteProductModel, setProductAsSoldModel, getPendingProductListModel, addVisitProductModel, getProductListById } from "../models/productModels.js";
 import { deletePhoto } from "../utils/helpers.js";
+import { sendProductRejectionEmail } from "../utils/emailConfig.js";
 
 export async function getProductListController(req, res, next) {
   try {
@@ -135,5 +128,24 @@ export async function addVisitProductController(req, res, next) {
     });
   } catch (err) {
     next(err);
+  }
+}
+
+export async function rejectProductController(req, res, next) {
+  try {
+    const { id } = req.params;
+
+    const product = await getProductById(id);
+    if (!product) {
+      return res.status(404).json({ status: "error", message: "Producto no encontrado" });
+    }
+
+    await deleteProductModel(id);
+
+    await sendProductRejectionEmail(product.user_email, product.user_name, product.name);
+
+    res.json({ status: "ok", message: "Producto rechazado y notificación enviada" });
+  } catch (e) {
+    next(e);
   }
 }

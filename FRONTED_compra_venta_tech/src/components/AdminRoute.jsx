@@ -6,7 +6,7 @@ function AdminRoute({ children }) {
   const { user } = useContext(AuthContext);
 
   // Si no hay usuario o no es admin, redirige a inicio
-  if (!user || !user.is_admin) {
+  if (!user || user.role !== "admin") {
     return <Navigate to="/" />;
   }
 

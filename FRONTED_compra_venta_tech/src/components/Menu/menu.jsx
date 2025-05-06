@@ -31,38 +31,34 @@ const Menu = () => {
   return (
     <div className="menu-container">
       <div className="menu-header">
-        <div
-          className={`hamburger ${isHamburgerHovered ? 'hamburger-hovered' : ''}`}
-          onClick={toggleMenu}
-          onMouseEnter={handleHamburgerMouseEnter}
-          onMouseLeave={handleHamburgerMouseLeave}
-        >
+        <div className={`hamburger ${isHamburgerHovered ? "hamburger-hovered" : ""}`} onClick={toggleMenu} onMouseEnter={handleHamburgerMouseEnter} onMouseLeave={handleHamburgerMouseLeave}>
           &#9776;
         </div>
-        <div className={`categories-title ${isHamburgerHovered ? 'hamburger-hovered' : ''}`}>
-          Todas las categorías
-        </div>
+        <div className={`categories-title ${isHamburgerHovered ? "hamburger-hovered" : ""}`}>Todas las categorías</div>
 
         <div className="categories-list">
-          <div className="category" onClick={() => navigate("/categoria/informatica")}>Informática</div>
-          <div className="category" onClick={() => navigate("/categoria/electronica")}>Electrónica</div>
-          <div className="category" onClick={() => navigate("/categoria/telefonia")}>Telefonía</div>
-          <div className="category" onClick={() => navigate("/categoria/gamer")}>Gamer</div>
-          <div className="category" onClick={() => navigate("/categoria/hogar")}>Hogar</div>
-
+          <div className="category" onClick={() => navigate("/categoria/informatica")}>
+            Informática
+          </div>
+          <div className="category" onClick={() => navigate("/categoria/electronica")}>
+            Electrónica
+          </div>
+          <div className="category" onClick={() => navigate("/categoria/telefonia")}>
+            Telefonía
+          </div>
+          <div className="category" onClick={() => navigate("/categoria/gamer")}>
+            Gamer
+          </div>
+          <div className="category" onClick={() => navigate("/categoria/hogar")}>
+            Hogar
+          </div>
         </div>
       </div>
 
       {isMenuOpen && (
         <div className="dropdown-menu">
           {categories.map((cat) => (
-            <div
-              key={cat.id}
-              className="dropdown-category"
-              onClick={() =>
-                navigate(`/categoria/${cat.slug || cat.name.toLowerCase()}`)
-              }
-            >
+            <div key={cat.id} className="dropdown-category" onClick={() => navigate(`/categoria/${cat.id}`)}>
               {cat.name}
             </div>
           ))}

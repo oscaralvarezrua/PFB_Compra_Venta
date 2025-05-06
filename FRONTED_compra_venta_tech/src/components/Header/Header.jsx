@@ -4,15 +4,12 @@ import "./header.css";
 import logo from "../../assets/logo_negro.png";
 
 import { useAuth } from "../../contexts/AuthContext";
-//import notification from "../../assets/notification.png";
-//import user from "../../assets/user.png";
-
 import buscarIcon from "../../assets/buscar.png"; // Importa la imagen de búsqueda
 
 const Header = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const navigate = useNavigate();
-  const { token, logout } = useAuth();
+  const { token, logout, user } = useAuth(); // Añadido user
 
   // Cambios en el input
   const handleSearchChange = (e) => {
@@ -24,7 +21,6 @@ const Header = () => {
     e.preventDefault();
     if (searchQuery.trim() !== "") {
       navigate(`/search?query=${searchQuery}`);
-      //setSearchQuery(""); por si quieres poner el buscador en vacio
     } else {
       navigate("/");
     }
@@ -44,8 +40,6 @@ const Header = () => {
 
   return (
     <header className="header">
-      {" "}
-      {/* Asegúrate de tener esta clase en el header */}
       <div className="logo">
         <Link to="/">
           <img src={logo} alt="Logo" className="logo-img" />
@@ -54,7 +48,7 @@ const Header = () => {
       <div className="search-bar">
         <input type="text" placeholder="Buscar" className="search-input" value={searchQuery} onChange={handleSearchChange} onKeyDown={handleKeyPress} />
         <button className="search-btn" onClick={handleSearchSubmit}>
-          <img src={buscarIcon} alt="Buscar" /> {/* Usa la imagen importada */}
+          <img src={buscarIcon} alt="Buscar" />
         </button>
       </div>
       <div className="auth-buttons">
@@ -66,19 +60,25 @@ const Header = () => {
             <Link to="/login">
               <button className="register-button">Inicia sesión</button>
             </Link>
-
             <Link to="/login">
               <button className="sell-button">Vender</button>
             </Link>
           </>
         ) : (
           <>
+            {user?.role === "admin" && (
+              <div className="admin-dropdown">
+                <Link to="/admin/users">
+                  <button className="usuarios-button">Usuarios</button>
+                </Link>
+                <Link to="/admin/products">
+                  <button className="productos-button">Productos</button>
+                </Link>
+              </div>
+            )}
             <Link to="/user/requests-list">
               <button className="notifications-button">Notificaciones</button>
             </Link>
-            {/* <Link to="/favorites">
-              <button className="favorites-button">Favoritos</button>
-            </Link> */}
             <Link to="/user">
               <button className="profile-button">Mi perfil</button>
             </Link>

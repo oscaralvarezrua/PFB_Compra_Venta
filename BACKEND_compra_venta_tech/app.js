@@ -32,6 +32,15 @@ app.use("/users", userRoutes);
 app.use("/products", productRoutes);
 app.use("/transactions", transactionRoutes);
 app.use("/categories", categoryRoutes);
+app.use("/uploads", express.static(UPLOADS_DIR));
+
+app.use((err, req, res, next) => {
+  console.error(err);
+  res.status(err.status || 500).json({
+    status: "error",
+    message: err.message || "Error interno del servidor",
+  });
+});
 
 //Middleware al que entra si no parado en un endpoint
 app.use(error404Controller);

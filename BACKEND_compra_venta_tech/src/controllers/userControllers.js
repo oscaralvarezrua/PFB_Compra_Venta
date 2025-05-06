@@ -1,4 +1,4 @@
-import { getUserListModel, getUserDetailModel, rateSellerModel } from "../models/userModels.js";
+import { getUserListModel, getUserDetailModel, rateSellerModel, deleteUserModel } from "../models/userModels.js";
 
 // Controlador para listar usuarios
 export async function getUserListController(req, res, next) {
@@ -28,7 +28,6 @@ export async function getUserDetailController(req, res, next) {
   }
 }
 
-
 // Controlador para valorar al vendedor
 export async function rateSellerController(req, res, next) {
   try {
@@ -42,6 +41,20 @@ export async function rateSellerController(req, res, next) {
       status: "ok",
       message: "Valoración registrada correctamente",
     });
+  } catch (e) {
+    next(e);
+  }
+}
+
+export async function deleteUserController(req, res, next) {
+  try {
+    // Solo admin puede eliminar usuarios
+    if (req.user.role !== "admin") {
+      return res.status(403).json({ status: "error", message: "No autorizado" });
+    }
+    const { id } = req.params;
+    await deleteUserModel(id);
+    res.json({ status: "ok", message: "Usuario eliminado" });
   } catch (e) {
     next(e);
   }

@@ -29,7 +29,7 @@ export default function useLogin() {
       const { data } = await loginService(formState);
 
       console.log(data.token);
-      login(data.token);
+      login(data.token, data.user);
 
       navigate("/");
     } catch (e) {

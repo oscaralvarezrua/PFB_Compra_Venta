@@ -81,6 +81,30 @@
   background-color: black;
 }
 
+.seller-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 12px;
+  margin-bottom: 18px;
+}
+.seller-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 2px solid #e7c61b;
+  object-fit: cover;
+}
+.seller-header strong {
+  font-size: 1.1rem;
+  color: #222;
+}
+.seller-header span {
+  font-size: 0.95rem;
+  margin-right: 8px;
+}
+
 /* Responsive: cambia a 1 sola columna en móviles */
 @media screen and (max-width: 768px) {
   .product-detail-card {

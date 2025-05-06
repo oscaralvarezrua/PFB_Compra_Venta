@@ -32,24 +32,40 @@ export default function useRegister() {
     setSuccess("");
 
     try {
-      const formData = new FormData();
-      Object.entries(formState).forEach(([key, value]) => {
-        formData.append(key, value);
-      });
+      let response;
 
       if (avatar) {
+        // Si hay avatar, usamos FormData
+        const formData = new FormData();
+        Object.entries(formState).forEach(([key, value]) => {
+          formData.append(key, value);
+        });
         formData.append("avatar", avatar);
+
+        response = await fetch(`${import.meta.env.VITE_API_URL}/users/register`, {
+          method: "POST",
+          body: formData,
+        });
+      } else {
+        // Si no hay avatar, enviamos JSON
+        response = await fetch(`${import.meta.env.VITE_API_URL}/users/register`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formState),
+        });
       }
 
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/users/register`, {
-        method: "POST",
-        body: formData,
-      });
-
-      const json = await response.json();
+      let json;
+      try {
+        json = await response.json();
+      } catch (error) {
+        throw new Error("Error al procesar la respuesta del servidor");
+      }
 
       if (!response.ok) {
-        throw new Error(json.message);
+        throw new Error(json.message || "Error en el registro");
       }
 
       setSuccess("¡Registro exitoso! Por favor, revisa tu correo electrónico para validar tu cuenta.");
