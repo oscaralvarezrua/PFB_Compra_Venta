@@ -3,57 +3,93 @@
   padding: 0;
   box-sizing: border-box;
 }
-
+.how-it-works-wrapper {
+  background-color: #d9d9d9;
+  padding: 2rem 0;  
+}
 .how-it-works-page {
-  max-width: 900px;
-  margin: 2rem auto;
-  padding: 1.5rem;
-  background-color: #fff;
+  max-width: 80%;
+  width: 100%;
+  margin: 5rem auto;
+  padding: 2rem;
+  background-color: white;
   border-radius: 15px;
   border: 2px solid #e7c61b;
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
   font-family: "Inter", sans-serif;
-}
-
+ }
 .how-it-works-page h1 {
   text-align: center;
   font-size: 1.8rem;
-  color: #222;
-  margin-bottom: 2rem;
-}
-
-.how-it-works-page section {
+  color: black;
   margin-bottom: 1.5rem;
 }
-
 .how-it-works-page h2 {
-  font-size: 1.2rem;
-  color: #000;
-  margin-bottom: 0.5rem;
+  font-size: 1.3rem;
+  color: black;
+  margin-bottom: 1.2rem;
 }
-
 .how-it-works-page p {
   font-size: 1rem;
-  color: #444;
+  color: #605F5F;
   line-height: 1.6;
+  margin-bottom: 1rem;
 }
 
-/* Mobile first adjustments */
-@media screen and (max-width: 600px) {
+/* Responsive */
+@media (max-width: 768px) {
   .how-it-works-page {
-    margin: 1rem;
-    padding: 1rem;
+    max-width: 90%;                  
+    margin: 3rem auto;             
+    padding: 1.2rem;                 
+    background-color: white;          
+    border-radius: 14px;             
+    border: 1.5px solid #e7c61b;     
+    box-shadow: 0 4px 10px rgba(0,0,0,0.08); 
   }
 
   .how-it-works-page h1 {
-    font-size: 1.5rem;
-  }
-
-  .how-it-works-page h2 {
-    font-size: 1rem;
+    font-size: 1.5rem;               
+    margin-bottom: 1rem;             
+    line-height: 1.2;               
   }
 
   .how-it-works-page p {
-    font-size: 0.95rem;
+    font-size: 0.95rem;              
+    line-height: 1.6;                
+    margin-bottom: 0.8rem;           
+    text-align: left;                
   }
 }
+
+@media (max-width: 480px) {
+  .how-it-works-page {
+    max-width: 90%;            
+    margin: 2rem auto;          
+    padding: 1rem;             
+    border-radius: 12px;        
+    border: 1.5px solid #e7c61b;  
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1); 
+  }
+  .how-it-works-page h1 {
+    text-align: center;
+    font-size: 1rem;
+    color: black;
+    margin-bottom: 1.5rem;
+  }
+  .how-it-works-page h2 {
+    font-size: 0.85rem;
+    color: black;
+    margin-bottom: 1.2rem;
+  }
+
+  .how-it-works-page p {
+    font-size: 0.75rem;          
+    line-height: 1.6;           
+    margin-bottom: 0.75rem;     
+    text-align: justify;        
+  }
+}
+
+
+

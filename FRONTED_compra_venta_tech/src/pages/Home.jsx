@@ -45,7 +45,6 @@ const Home = () => {
           En esta sección verás las últimas novedades, los productos más
           recientes ¡para que no se te escape nada!
         </p>
-        <button className="novedades-btn">Ver todo</button>
 
         <ProductSlider products={newProducts.slice(0, 10)} />
       </section>
@@ -56,7 +55,6 @@ const Home = () => {
         <p className="buscados-text">
           ¿No sabes qué quieres? Echa un vistazo a los más buscados
         </p>
-        <button className="buscados-btn">Ver todo</button>
 
         <ProductSlider products={popularProducts.slice(0, 10)} />
       </section>

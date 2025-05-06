@@ -63,12 +63,14 @@
   font-size: 0.9rem;
 }
 
-.stat-link {
+.stat-item {
   text-decoration: none;
   color: inherit;
   transition: transform 0.1s;
+  background: none;
+  border: none;
 }
-.stat-link:hover .stat-item {
+.stat-item:hover .stat-item {
   box-shadow: 0 2px 8px #e7c61b44;
   transform: translateY(-2px) scale(1.04);
   background: #fffbe6;
@@ -126,6 +128,11 @@
   text-align: center;
   padding: 2rem;
   color: #dc3545;
+}
+
+.user-profile-image {
+  width: 30%;
+  height: 30%;
 }
 
 @media (max-width: 768px) {

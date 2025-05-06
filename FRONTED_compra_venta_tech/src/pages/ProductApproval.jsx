@@ -5,6 +5,13 @@ import "../styles/ProductApproval.css";
 const { VITE_API_URL } = import.meta.env;
 
 const ProductApproval = () => {
+import React, { useEffect, useState } from "react";
+import ApiImage from "../components/Post/ApiImage";
+import "../styles/ProductApproval.css";
+
+const { VITE_API_URL } = import.meta.env;
+
+const ProductApproval = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);

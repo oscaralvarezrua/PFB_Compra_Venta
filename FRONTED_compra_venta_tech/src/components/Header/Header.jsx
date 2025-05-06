@@ -2,8 +2,13 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "./header.css";
 import logo from "../../assets/logo_negro.png";
+import buscarIcon from "../../assets/buscar.png";
 
 import { useAuth } from "../../contexts/AuthContext";
+
+// >>> MODAL LOGOUT
+import LogoutModal from "../Modals/LogoutModal";
+// <<<
 import buscarIcon from "../../assets/buscar.png"; // Importa la imagen de búsqueda
 
 const Header = () => {
@@ -11,12 +16,19 @@ const Header = () => {
   const navigate = useNavigate();
   const { token, logout, user } = useAuth(); // Añadido user
 
-  // Cambios en el input
+  // >>> MODAL LOGOUT
+  const [showModal, setShowModal] = useState(false);
+  const confirmLogout = () => {
+    logout();
+    navigate("/");
+    setShowModal(false);
+  };
+  // <<<
+
   const handleSearchChange = (e) => {
     setSearchQuery(e.target.value);
   };
 
-  // Enviar formulario
   const handleSearchSubmit = (e) => {
     e.preventDefault();
     if (searchQuery.trim() !== "") {
@@ -26,19 +38,81 @@ const Header = () => {
     }
   };
 
-  // Enter en input
   const handleKeyPress = (e) => {
     if (e.key === "Enter") {
       handleSearchSubmit(e);
     }
   };
 
-  const handleLogout = () => {
-    logout();
-    navigate("/");
-  };
-
   return (
+    <>
+      <header className="header">
+        <div className="logo">
+          <Link to="/">
+            <img src={logo} alt="Logo" className="logo-img" />
+          </Link>
+        </div>
+
+        <div className="search-bar">
+          <input
+            type="text"
+            placeholder="Buscar"
+            className="search-input"
+            value={searchQuery}
+            onChange={handleSearchChange}
+            onKeyDown={handleKeyPress}
+          />
+          <button className="search-btn" onClick={handleSearchSubmit}>
+            <img src={buscarIcon} alt="Buscar" />
+          </button>
+        </div>
+
+        <div className="auth-buttons">
+          {!token ? (
+            <>
+              <Link to="/register">
+                <button className="register-button">Regístrate</button>
+              </Link>
+              <Link to="/login">
+                <button className="register-button">Inicia sesión</button>
+              </Link>
+              <Link to="/login">
+                <button className="sell-button">Vender</button>
+              </Link>
+            </>
+          ) : (
+            <>
+              <Link to="/user/requests-list">
+                <button className="notifications-button">Notificaciones</button>
+              </Link>
+              <Link to="/user">
+                <button className="profile-button">Mi perfil</button>
+              </Link>
+              <Link to="/publicar">
+                <button className="sell-button">Vender</button>
+              </Link>
+              {/* >>> MODAL LOGOUT */}
+              <button
+                className="logout-button"
+                onClick={() => setShowModal(true)}
+              >
+                Cerrar sesión
+              </button>
+              {/* <<< */}
+            </>
+          )}
+        </div>
+      </header>
+
+      {/* >>> MODAL LOGOUT */}
+      {showModal && (
+        <LogoutModal
+          onConfirm={confirmLogout}
+          onCancel={() => setShowModal(false)}
+        />
+      )}
+      {/* <<< */}
+    </>
     <header className="header">
       <div className="logo">
         <Link to="/">

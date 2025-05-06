@@ -3,6 +3,7 @@ import "../../styles/stylesFooter/HelpCenter.css";
 
 const HelpCenter = () => {
   return (
+    <div className="help-center-wrapper">
     <main className="help-center-page">
       <h1>Centro de Ayuda</h1>
       <p>
@@ -24,6 +25,7 @@ const HelpCenter = () => {
         puedes escribirnos a: <strong>soporte@segundatec.com</strong>
       </p>
     </main>
+  </div>
   );
 };
 
