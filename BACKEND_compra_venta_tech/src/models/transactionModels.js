@@ -1,5 +1,4 @@
 //Interactuar con la base de datos
-
 import getPool from "../db/getPool.js";
 //import bcrypt from "bcryptjs";
 import { generateError } from "../utils/helpers.js";
@@ -12,7 +11,7 @@ async function createTransaction(buyerId, buyerName, productId, sellerID) {
     //crear transaccion
     const [result] = await pool.query(
       `INSERT INTO transaction (status, user_id, username, product_id, seller_id)
-            VALUES (?, ?, ?, ?)`,
+            VALUES (?, ?, ?, ?, ?)`,
       ["pending", buyerId, buyerName, productId, sellerID]
     );
 
