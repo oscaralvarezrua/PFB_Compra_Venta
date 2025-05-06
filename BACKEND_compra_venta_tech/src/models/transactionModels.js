@@ -1,5 +1,4 @@
 //Interactuar con la base de datos
-
 import getPool from "../db/getPool.js";
 //import bcrypt from "bcryptjs";
 import { generateError } from "../utils/helpers.js";

@@ -1,55 +1,108 @@
-import { useEffect, useState } from "react";
-import { getPendingProducts, approveProduct, rejectProduct } from "../services/ProductServices";
+import React, { useEffect, useState } from "react";
+import ApiImage from "../components/Post/ApiImage";
+import "../styles/ProductApproval.css";
 
-function ProductApproval() {
+const { VITE_API_URL } = import.meta.env;
+
+const ProductApproval = () => {
   const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    // Trae productos con is_accepted = false
-    (async () => {
-      const list = await getPendingProducts();
-      setProducts(list);
-    })();
+    const fetchPendingProducts = async () => {
+      try {
+        const res = await fetch(`${VITE_API_URL}/products?is_accepted=false`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        });
+        const data = await res.json();
+        if (data.status === "error") throw new Error(data.message);
+        setProducts(data.data);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchPendingProducts();
   }, []);
 
+  const handleApprove = async (productId) => {
+    try {
+      const res = await fetch(`${VITE_API_URL}/products/${productId}/accept`, {
+        method: "PUT",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+      const data = await res.json();
+      if (data.status === "error") throw new Error(data.message);
+
+      // Actualizar la lista de productos
+      setProducts(products.filter((product) => product.id !== productId));
+    } catch (err) {
+      setError(err.message);
+    }
+  };
+
+  const handleReject = async (productId) => {
+    try {
+      const res = await fetch(`${VITE_API_URL}/products/${productId}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+      const data = await res.json();
+      if (data.status === "error") throw new Error(data.message);
+
+      // Actualizar la lista de productos
+      setProducts(products.filter((product) => product.id !== productId));
+    } catch (err) {
+      setError(err.message);
+    }
+  };
+
+  if (loading) return <div className="loading">Cargando productos pendientes...</div>;
+  if (error) return <div className="error">Error: {error}</div>;
+
   return (
-    <div style={{ padding: "20px" }}>
-      <h2>Productos pendientes de aprobación</h2>
+    <div className="validate-products-page">
+      <h2>Productos pendientes de validación</h2>
       {products.length === 0 ? (
-        <p>No hay productos por aprobar.</p>
+        <p className="no-products">No hay productos pendientes de validación.</p>
       ) : (
-        products.map((p) => (
-          <div
-            key={p.id}
-            style={{
-              border: "1px solid #ccc",
-              borderRadius: "8px",
-              padding: "10px",
-              margin: "10px 0",
-            }}
-          >
-            <h3>{p.title}</h3>
-            <p>{p.description}</p>
-            <button onClick={async () => {
-              await approveProduct(p.id);
-              setProducts(products.filter((x) => x.id !== p.id));
-            }}>
-              Aprobar
-            </button>
-            <button
-              onClick={async () => {
-                await rejectProduct(p.id);
-                setProducts(products.filter((x) => x.id !== p.id));
-              }}
-              style={{ marginLeft: "10px" }}
-            >
-              Rechazar
-            </button>
-          </div>
-        ))
+        <div className="products-grid">
+          {products.map((product) => (
+            <div key={product.id} className="product-card">
+              <div className="product-image">
+                <ApiImage name={product.photo} alt={product.name} />
+              </div>
+              <div className="product-info">
+                <h3>{product.name}</h3>
+                <p className="price">{product.price}€</p>
+                <p className="description">{product.description}</p>
+                <div className="seller-info">
+                  <p>Vendedor: {product.seller?.username}</p>
+                </div>
+                <div className="validation-buttons">
+                  <button className="validate-button accept" onClick={() => handleApprove(product.id)}>
+                    Aprobar
+                  </button>
+                  <button className="validate-button reject" onClick={() => handleReject(product.id)}>
+                    Rechazar
+                  </button>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
       )}
     </div>
   );
-}
+};
 
 export default ProductApproval;
