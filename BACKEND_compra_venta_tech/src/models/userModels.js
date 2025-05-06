@@ -340,11 +340,33 @@ export async function getUserDetailModel(userId) {
   if (user.length === 0) {
     throw generateError("Usuario no encontrado", 404);
   }
+  const [stats] = await pool.query(
+    `SELECT
+COUNT(t.ratings) AS total_ratings,
+AVG(t.ratings) AS average_ratings,
+COUNT(CASE WHEN t.status = 'accepted' THEN 1 END) AS total_sales,
+(SELECT COUNT(*) FROM product WHERE user_id = ?) AS total_products,
+(SELECT COUNT(*) FROM transaction WHERE user_id = ? AND status = 'accepted') AS total_purchases
+FROM transaction t
+WHERE t.seller_id = ?`,
+    [userId, userId, userId]
+  );
+
+  const [productos] = await pool.query(
+    `SELECT 
+    name,
+    price,
+    photo
+     FROM product 
+     WHERE user_id = ? AND is_available = true`,
+    [userId]
+  );
 
   const [ventas] = await pool.query(
     `SELECT 
        t.id AS transaccion_id,
        p.name AS producto,
+       p.photo AS photo,
        t.status,
        t.ratings,
        t.comment,
@@ -356,8 +378,9 @@ export async function getUserDetailModel(userId) {
   );
 
   const [compras] = await pool.query(
-    `SELECT 
+    `SELECT
        t.id AS transaccion_id,
+       p.photo AS photo,
        p.name AS producto,
        t.status,
        t.ratings,
@@ -371,8 +394,10 @@ export async function getUserDetailModel(userId) {
 
   return {
     usuario: user[0],
+    stats: stats,
     historico_ventas: ventas,
     historico_compras: compras,
+    productos,
   };
 }
 
