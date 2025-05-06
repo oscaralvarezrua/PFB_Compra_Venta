@@ -91,20 +91,14 @@ function App() {
           <Route path="/usuarios/:id" element={<UserProfile />} />
           <Route path="/edit/:productId" element={<EditProduct />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
-          <Route
-            path="/recover/:recoveryCode"
-            element={<RecoverPassword />}
-          />
+          <Route path="/recover/:recoveryCode" element={<RecoverPassword />} />
 
           {/* Rutas informativas */}
           <Route path="/quienes-somos" element={<AboutUs />} />
           <Route path="/como-funciona" element={<HowItWorks />} />
           <Route path="/centro-de-ayuda" element={<HelpCenter />} />
           <Route path="/aviso-legal" element={<LegalNotice />} />
-          <Route
-            path="/politica-de-privacidad"
-            element={<PrivacyPolicy />}
-          />
+          <Route path="/politica-de-privacidad" element={<PrivacyPolicy />} />
           <Route path="/politica-de-cookies" element={<CookiePolicy />} />
 
           {/* Rutas admin protegidas */}
@@ -144,4 +138,3 @@ function App() {
 }
 
 export default App;
-
