@@ -2,96 +2,116 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "./header.css";
 import logo from "../../assets/logo_negro.png";
+import buscarIcon from "../../assets/buscar.png";
 
 import { useAuth } from "../../contexts/AuthContext";
-//import notification from "../../assets/notification.png";
-//import user from "../../assets/user.png";
 
-import buscarIcon from "../../assets/buscar.png"; // Importa la imagen de búsqueda
+// >>> MODAL LOGOUT
+import LogoutModal from "../Modals/LogoutModal";
+// <<<
 
 const Header = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const navigate = useNavigate();
   const { token, logout } = useAuth();
 
-  // Cambios en el input
+  // >>> MODAL LOGOUT
+  const [showModal, setShowModal] = useState(false);
+  const confirmLogout = () => {
+    logout();
+    navigate("/");
+    setShowModal(false);
+  };
+  // <<<
+
   const handleSearchChange = (e) => {
     setSearchQuery(e.target.value);
   };
 
-  // Enviar formulario
   const handleSearchSubmit = (e) => {
     e.preventDefault();
     if (searchQuery.trim() !== "") {
       navigate(`/search?query=${searchQuery}`);
-      //setSearchQuery(""); por si quieres poner el buscador en vacio
     } else {
       navigate("/");
     }
   };
 
-  // Enter en input
   const handleKeyPress = (e) => {
     if (e.key === "Enter") {
       handleSearchSubmit(e);
     }
   };
 
-  const handleLogout = () => {
-    logout();
-    navigate("/");
-  };
-
   return (
-    <header className="header">
-      {" "}
-      {/* Asegúrate de tener esta clase en el header */}
-      <div className="logo">
-        <Link to="/">
-          <img src={logo} alt="Logo" className="logo-img" />
-        </Link>
-      </div>
-      <div className="search-bar">
-        <input type="text" placeholder="Buscar" className="search-input" value={searchQuery} onChange={handleSearchChange} onKeyDown={handleKeyPress} />
-        <button className="search-btn" onClick={handleSearchSubmit}>
-          <img src={buscarIcon} alt="Buscar" /> {/* Usa la imagen importada */}
-        </button>
-      </div>
-      <div className="auth-buttons">
-        {!token ? (
-          <>
-            <Link to="/register">
-              <button className="register-button">Regístrate</button>
-            </Link>
-            <Link to="/login">
-              <button className="register-button">Inicia sesión</button>
-            </Link>
+    <>
+      <header className="header">
+        <div className="logo">
+          <Link to="/">
+            <img src={logo} alt="Logo" className="logo-img" />
+          </Link>
+        </div>
 
-            <Link to="/login">
-              <button className="sell-button">Vender</button>
-            </Link>
-          </>
-        ) : (
-          <>
-            <Link to="/user/requests-list">
-              <button className="notifications-button">Notificaciones</button>
-            </Link>
-            {/* <Link to="/favorites">
-              <button className="favorites-button">Favoritos</button>
-            </Link> */}
-            <Link to="/user">
-              <button className="profile-button">Mi perfil</button>
-            </Link>
-            <Link to="/publicar">
-              <button className="sell-button">Vender</button>
-            </Link>
-            <button className="logout-button" onClick={handleLogout}>
-              Cerrar sesión
-            </button>
-          </>
-        )}
-      </div>
-    </header>
+        <div className="search-bar">
+          <input
+            type="text"
+            placeholder="Buscar"
+            className="search-input"
+            value={searchQuery}
+            onChange={handleSearchChange}
+            onKeyDown={handleKeyPress}
+          />
+          <button className="search-btn" onClick={handleSearchSubmit}>
+            <img src={buscarIcon} alt="Buscar" />
+          </button>
+        </div>
+
+        <div className="auth-buttons">
+          {!token ? (
+            <>
+              <Link to="/register">
+                <button className="register-button">Regístrate</button>
+              </Link>
+              <Link to="/login">
+                <button className="register-button">Inicia sesión</button>
+              </Link>
+              <Link to="/login">
+                <button className="sell-button">Vender</button>
+              </Link>
+            </>
+          ) : (
+            <>
+              <Link to="/user/requests-list">
+                <button className="notifications-button">Notificaciones</button>
+              </Link>
+              <Link to="/user">
+                <button className="profile-button">Mi perfil</button>
+              </Link>
+              <Link to="/publicar">
+                <button className="sell-button">Vender</button>
+              </Link>
+              {/* >>> MODAL LOGOUT */}
+              <button
+                className="logout-button"
+                onClick={() => setShowModal(true)}
+              >
+                Cerrar sesión
+              </button>
+              {/* <<< */}
+            </>
+          )}
+        </div>
+      </header>
+
+      {/* >>> MODAL LOGOUT */}
+      {showModal && (
+        <LogoutModal
+          onConfirm={confirmLogout}
+          onCancel={() => setShowModal(false)}
+        />
+      )}
+      {/* <<< */}
+    </>
   );
 };
 
