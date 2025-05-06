@@ -3,19 +3,69 @@ import React from "react";
 import useRegister from "../hooks/useRegister";
 import PasswordInput from "../components/Post/PasswordInput";
 import logo from "../assets/logo_negro_recortado.png";
-import close from "../assets/close.png";
-import { Link } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import "../styles/Register.css";
 
 const Register = () => {
   const { error, success, formState, handleSubmit, handleChange, handleFileChange } = useRegister();
-
+  const navigate = useNavigate();
+  
   return (
-    <main className="login-page">
+    <main className="register-page">
+      <div className="data-box">
       <div>
         <Link to="/">
-          <button className="close-button">
-            <img src={close} alt="Cerrar" />
+        <button
+          type="button"
+          className="back-button"
+          onClick={() => navigate(-1)}
+          aria-label="Volver atrás"
+        >
+          <svg
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+            className="back-icon-svg"
+          >
+            <path
+              d="M15 18l-6-6 6-6"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
+        </button>
+
+        <button className="close-button" type="button" aria-label="Cerrar">
+            <svg
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+              className="close-icon-svg"
+            >
+              <line
+                x1="18"
+                y1="6"
+                x2="6"
+                y2="18"
+                stroke="currentColor"
+                strokeWidth="1"
+                strokeLinecap="round"
+              />
+              <line
+                x1="6"
+                y1="6"
+                x2="18"
+                y2="18"
+                stroke="currentColor"
+                strokeWidth="1"
+                strokeLinecap="round"
+              />
+            </svg>
           </button>
         </Link>
         <div className="logo-login">
@@ -57,6 +107,7 @@ const Register = () => {
         <p className="login-link">
           ¿Ya tienes cuenta? <Link to="/login">Inicia sesión</Link>
         </p>
+        </div>
       </div>
     </main>
   );
