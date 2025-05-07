@@ -4,6 +4,7 @@ import { getFilteredProducts } from "../models/getFilteredProducts.js";
 export async function getFilteredProductsController(req, res, next) {
   try {
     const filters = {
+      query: req.query.query,
       name: req.query.name,
       category_id: req.query.category_id,
       locality: req.query.locality,

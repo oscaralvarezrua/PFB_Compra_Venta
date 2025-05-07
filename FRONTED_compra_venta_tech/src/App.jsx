@@ -90,6 +90,7 @@ function App() {
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/recover/:recoveryCode" element={<RecoverPassword />} />
           <Route path="/categoria/:id" element={<CategoryProducts />} />
+          <Route path="/categoria" element={<CategoryProducts />} />
 
           {/* Rutas usuarios loguedaos */}
           <Route

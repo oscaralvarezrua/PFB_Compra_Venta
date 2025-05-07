@@ -1,4 +1,4 @@
-import { createUser, getUserByEmail, getUserByUsername, getUserByPhone, getUserByValidationCode, trustPass, getUserListModel, getUserDetailModel, rateSellerModel, updatePass, getUserInf, userValidation, generateRecoverCode, verifyRecoverCode, updatePassWithRecovery, getUserById, updateUserModel, deleteUserModel } from "../models/userModels.js";
+import { createUser, getUserByEmail, getUserByUsername, getUserByPhone, getUserByValidationCode, trustPass, getUserListModel, getUserDetailModel, rateSellerModel, updatePass, getUserInf, userValidation, generateRecoverCode, verifyRecoverCode, updatePassWithRecovery, getUserById, updateUserModel, deleteUserModel, updateUserAccountModel } from "../models/userModels.js";
 import Joi from "joi";
 import jwt from "jsonwebtoken";
 import crypto from "crypto";
@@ -68,6 +68,21 @@ const UpdateUserSchema = Joi.object({
     }),
 
   biography: Joi.string().allow("").max(500).optional(),
+});
+
+const UpdateAccountSchema = Joi.object({
+  email: Joi.string().email().required().messages({
+    "string.email": "Debes escribir un email válido.",
+    "any.required": "El campo email es obligatorio",
+  }),
+  phone: Joi.string()
+    .pattern(/^[0-9]{9,15}$/)
+    .required()
+    .messages({
+      "string.pattern.base": "El teléfono debe contener solo números",
+      "any.required": "El campo teléfono es obligatorio.",
+    }),
+  newPassword: Joi.string().allow("").min(10).optional(),
 });
 
 //Control el registro de usuario
@@ -572,3 +587,53 @@ export async function deleteUserController(req, res, next) {
     next(e);
   }
 }
+
+export const updateUserAccountController = async (req, res, next) => {
+  try {
+    const { error, value } = UpdateAccountSchema.validate(req.body);
+
+    if (error) {
+      return res.status(400).json({
+        status: "error",
+        message: error.details[0].message,
+      });
+    }
+
+    const { email, phone, newPassword } = value;
+    const userId = req.user.id;
+
+    const oldDataUser = await getUserById(userId);
+
+    // Verifica si el email ya existe en otro usuario
+    if (email !== oldDataUser.email) {
+      const verifyEmail = await getUserByEmail(email);
+      if (verifyEmail) {
+        return res.status(409).json({
+          status: "error",
+          message: "El email no está disponible",
+        });
+      }
+    }
+
+    // Verifica si el teléfono ya existe en otro usuario
+    if (phone !== oldDataUser.phone) {
+      const verifyPhone = await getUserByPhone(phone);
+      if (verifyPhone) {
+        return res.status(409).json({
+          status: "error",
+          message: "El teléfono no está disponible",
+        });
+      }
+    }
+
+    // Actualiza los datos en la base de datos
+    await updateUserAccountModel(userId, email, phone, newPassword);
+
+    res.status(200).json({
+      status: "success",
+      message: "Datos de cuenta actualizados correctamente",
+    });
+  } catch (err) {
+    next(err);
+  }
+};

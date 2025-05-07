@@ -11,6 +11,12 @@ export async function getFilteredProducts(filters, isAdmin) {
 
   const values = [];
 
+  // Filtro por texto de búsqueda (si está presente)
+  if (filters.query) {
+    query += ` AND (name LIKE ? OR description LIKE ?)`;
+    values.push(`%${filters.query}%`, `%${filters.query}%`);
+  }
+
   // Filtro por nombre (si está presente)
   if (filters.name) {
     query += ` AND name LIKE ?`;

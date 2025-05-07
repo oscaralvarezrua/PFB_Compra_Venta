@@ -2,7 +2,7 @@
 
 import express from "express";
 
-import { userContoler, validateUserController, userLogin, getUserListController, getUserDetailController, rateSellerController, changePass, getUserInfo, requestPassRecovery, changePassWithRecovery, updateUserContoler, deleteUserController } from "../controllers/userController.js";
+import { userContoler, validateUserController, userLogin, getUserListController, getUserDetailController, rateSellerController, changePass, getUserInfo, requestPassRecovery, changePassWithRecovery, updateUserContoler, deleteUserController, updateUserAccountController } from "../controllers/userController.js";
 
 import authUserController from "../middlewares/authUserController.js";
 
@@ -41,5 +41,7 @@ router.get("/:id", getUserDetailController);
 
 // Boorar usuario
 router.delete("/users/:id", authUserController, deleteUserController);
+
+router.post("/account", authUserController, updateUserAccountController);
 
 export default router;
