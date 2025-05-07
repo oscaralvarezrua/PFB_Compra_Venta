@@ -1,49 +1,4 @@
-.request-list {
-  list-style: none;
-  padding: 0;
-  margin: 2rem 0;
-  background: #fdfdfd;
-  border: 1px solid #363434;
-  border-radius: 8px;
-  overflow: visible;
-  width: 900pt;
-}
-
-.request-item {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 1rem;
-
-  background: #e7c51b0c;
-}
-
-.request-item:last-child {
-  border-bottom: none;
-}
-
-.request-text {
-  margin: 0;
-  flex: 1;
-  color: #333;
-  font-size: 0.95rem;
-}
-
-.request-text strong {
-  color: #222;
-}
-
-.request-text em {
-  text-decoration: underline;
-  font-style: normal;
-}
-
-.request-actions {
-  display: flex;
-  gap: 0.5rem;
-  margin-left: 0rem;
-}
-
+/* Botones */
 .btn {
   padding: 0.4rem 1rem;
   border: none;
@@ -53,54 +8,21 @@
   box-shadow: 0 2px 0 rgba(0, 0, 0, 0.1);
 }
 
-.btn:active {
-  transform: translateY(1px);
-  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.1);
-}
-
-.accept {
-  background: #e7c61b;
-  color: #111;
-}
-
-.accept:hover {
-  background: #e5c100;
-}
-
-.reject {
-  background: #ccc;
-  color: #333;
-}
-
-.reject:hover {
-  background: #bbb;
-}
-
+/* Mensaje “no results” centrado */
 .no-results {
   color: #666;
   font-style: italic;
   text-align: center;
   margin-top: 1rem;
 }
-.image-nada {
-  width: 40%;
-  height: 40%;
-}
 
-/* @media (min-width: 600px) {
-  .request-page li {
-    flex-direction: row; 
-    align-items: center;
-    justify-content: space-between;
-  }
-  .request-actions {
-    flex: 0; 
-  }
-  .request-actions button {
-    flex: none;
-    width: auto;
-  }
-} */
+/* Imagen de “no hay nada” */
+.image-nada {
+  display: block;
+  margin: 2rem auto;
+  max-width: 200px;
+  width: 50%;
+}
 
 .requests-container {
   max-width: 1200px;
@@ -146,6 +68,7 @@
 .request-actions {
   padding: 15px;
   display: flex;
+  max-width: 25rem;
   gap: 10px;
   border-top: 1px solid #eee;
 }
@@ -162,21 +85,21 @@
 }
 
 .accept-button {
-  background-color: #4caf50;
-  color: white;
+  background-color: #e5c100;
+  color: #111;
 }
 
 .accept-button:hover {
-  background-color: #45a049;
+  background-color: #e5c100;
 }
 
 .reject-button {
-  background-color: #f44336;
-  color: white;
+  background-color: #ccc;
+  color: #333;
 }
 
 .reject-button:hover {
-  background-color: #da190b;
+  background-color: #ccc;
 }
 
 .submit-message {

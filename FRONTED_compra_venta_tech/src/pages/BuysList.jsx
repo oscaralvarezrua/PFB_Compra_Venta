@@ -59,49 +59,38 @@ export default function BuysList() {
         </button>
       </div>
       {showAvailable ? (
-        <ul className="request-list">
+        <div className="requests-list">
           {tBuysPendingData?.map((buy) => (
-            <li key={buy.transaction_id} className="request-item">
-              <div className="product-list-image">
-                <ApiImage name={buy.photo} alt={buy.name} />
+            <div key={buy.id} className="request-card">
+              <ApiImage name={buy.photo} alt={buy.name} />
+              <div className="request-info">
+                <h3>{buy.name}</h3>
+                <p>Precio: {buy.price}€</p>
+                {/* <p>Fecha publicación: {formatDMY(buy.created_at)}</p>
+                  <p>Fecha Modificación: {formatDMY(buy.updated_at)}</p> */}
               </div>
-              <div className="request-text">
+
+              <div className="request-actions">
                 <p>
-                  <strong>{buy.price} €</strong>{" "}
-                </p>
-                <p>{buy.name} </p>
-              </div>
-              <div className="revision-message">
-                <p>Compra en espera.</p>
-                <p>
-                  {" "}
                   La transacción está pendiente de aceptación por parte del
                   vendedor/a.
                 </p>
               </div>
-            </li>
+            </div>
           ))}
-        </ul>
+        </div>
       ) : (
-        <ul className="request-list">
+        <div className="requests-list">
           {tBuysFinishedData?.map((buy) => (
-            <li key={buy.transaction_id} className="request-item">
-              <div className="product-list-image">
-                <ApiImage name={buy.photo} alt={buy.name} />
+            <div key={buy.id} className="request-card">
+              <ApiImage name={buy.photo} alt={buy.name} />
+              <div className="request-info">
+                <h3>{buy.name}</h3>
+                <p>Precio: {buy.price}€</p>
+                <p>Fecha de Compra: {formatDMY(buy.product_updated_at)}</p>
               </div>
-              <div className="request-text">
-                <p>
-                  <strong>{buy.price} €</strong>{" "}
-                </p>
-                <p>{buy.name} </p>
-              </div>
-              <div className="request-text">
-                <p>
-                  <strong>Fecha de Compra</strong>{" "}
-                </p>
-                <p>{formatDMY(buy.product_updated_at)} </p>
-              </div>
-              <div>
+
+              <div className="request-actions">
                 {buy.ratings === null ? (
                   <Link to={"/user/review/" + buy.transaction_id}>
                     <button className="btn delete" type="button">
@@ -109,12 +98,12 @@ export default function BuysList() {
                     </button>
                   </Link>
                 ) : (
-                  <p>Valoración enviada "✅"</p>
+                  <p>Valoración enviada ✅</p>
                 )}
               </div>
-            </li>
+            </div>
           ))}
-        </ul>
+        </div>
       )}
     </div>
   );

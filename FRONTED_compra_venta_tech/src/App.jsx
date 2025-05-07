@@ -42,7 +42,12 @@ function App() {
   const { user } = useContext(AuthContext);
   const location = useLocation();
 
-  const hideLayoutPaths = ["/register", "/login", "/changepassword", "/forgot-password"];
+  const hideLayoutPaths = [
+    "/register",
+    "/login",
+    "/changepassword",
+    "/forgot-password",
+  ];
   const showLayout = !hideLayoutPaths.includes(location.pathname);
 
   return (
@@ -61,22 +66,41 @@ function App() {
           <Route path="/register" element={<Register />} />
 
           {/* Home: redirige al dashboard si es admin */}
-          <Route path="/" element={user?.role === "admin" ? <Navigate to="/admin/dashboard" replace /> : <Home />} />
+          <Route
+            path="/"
+            element={
+              user?.role === "admin" ? (
+                <Navigate to="/admin/dashboard" replace />
+              ) : (
+                <Home />
+              )
+            }
+          />
 
           {/* Rutas públicas */}
           <Route path="/search" element={<SearchResults />} />
-          <Route path="/publicar" element={<PublishProduct />} />
           <Route path="/filtrados" element={<SearchFilteredProducts />} />
-          <Route path="/user/*" element={<UserMenu />} />
           <Route path="/changepassword" element={<ChangePassword />} />
-          <Route path="/validate/:validationCode" element={<UserValidation />} />
+          <Route
+            path="/validate/:validationCode"
+            element={<UserValidation />}
+          />
           <Route path="/producto/:productId" element={<ProductDetail />} />
-          <Route path="/usuarios" element={<UserList />} />
           <Route path="/usuarios/:id" element={<UserProfile />} />
-          <Route path="/edit/:productId" element={<EditProduct />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/recover/:recoveryCode" element={<RecoverPassword />} />
           <Route path="/categoria/:id" element={<CategoryProducts />} />
+
+          {/* Rutas usuarios loguedaos */}
+          <Route
+            path="/publicar"
+            element={user ? <PublishProduct /> : <Register />}
+          />
+          <Route path="/user/*" element={user ? <UserMenu /> : <Register />} />
+          <Route
+            path="/edit/:productId"
+            element={user ? <EditProduct /> : <Register />}
+          />
 
           {/* Rutas informativas */}
           <Route path="/quienes-somos" element={<AboutUs />} />
@@ -87,6 +111,10 @@ function App() {
           <Route path="/politica-de-cookies" element={<CookiePolicy />} />
 
           {/* Rutas admin protegidas */}
+          <Route
+            path="/usuarios"
+            element={user?.role === "admin" ? <UserList /> : <Login />}
+          />
           <Route path="/admin/dashboard" element={<AdminDashboard />} />
           <Route
             path="/admin/users"
