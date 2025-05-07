@@ -4,21 +4,18 @@
   box-sizing: border-box;
 }
 
-/* Estilos básicos para la cabecera */
-.header {
-  /* Usa la clase "header" */
+.header { 
   background-color: white;
   padding: 10px 20px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  overflow: hidden; /* Evita el scroll horizontal */
-  width: 100%; /* Asegura que el header ocupe todo el ancho disponible */
-  box-sizing: border-box; /* Incluye el padding en el ancho total del header */
+  width: 100%; 
+  box-sizing: border-box; 
 }
 
 .header .logo img {
-  width: 200px; /* Reduzco un poco el tamaño inicial del logo */
+  width: 250px; 
   height: auto;
 }
 
@@ -29,8 +26,8 @@
   border-radius: 30px;
   padding: 5px 15px;
   margin: 0 15px;
-  flex: 1; /* Para que ocupe todo el espacio disponible */
-  max-width: 400px; /* Limita el tamaño máximo de la barra de búsqueda */
+  flex: 1; 
+  max-width: 400px; 
 }
 
 .header .search-bar input {
@@ -54,27 +51,26 @@
 
 .header .auth-buttons {
   display: flex;
-  gap: 10px; /* Reduzco el gap inicial */
+  gap: 10px; 
 }
 
 .header .auth-buttons button {
-  padding: 8px 12px; /* Reduzco el padding inicial de los botones */
+  padding: 8px 12px;
   background-color: transparent;
   color: black;
   font-weight: bold;
   border: 2px solid;
   cursor: pointer;
   border-radius: 30px;
-  transition: all 0.3s ease; /* Añadido para una transición suave en el hover */
-  font-size: 14px; /* Reduzco el tamaño de la fuente de los botones */
+  transition: all 0.3s ease; 
+  font-size: 13px; 
 }
 
-/* Botón de Registro o inicio */
 .header .auth-buttons .register-button {
   background-color: white;
   color: black;
   border: 2px solid #e7c61b;
-  font-family: "Inter", sans-serif;
+  font-family: 'Inter', sans-serif;
 }
 
 .header .auth-buttons .register-button:hover {
@@ -85,140 +81,110 @@
   outline: none;
 }
 
-/* Botón de Vender */
 .header .auth-buttons .sell-button {
   background-color: #e7c61b;
   color: black;
   border: 2px solid black;
-  font-family: "Inter", sans-serif;
+  font-family: 'Inter', sans-serif;
+  padding: 13px;
 }
-
 .header .auth-buttons .sell-button:hover {
   background-color: rgba(0, 0, 0, 0.8);
   color: #e7c61b;
   border: 2px solid #e7c61b;
 }
+.header .auth-buttons .notifications-button:hover,
+.header .auth-buttons .profile-button:hover,
+.header .auth-buttons .logout-button:hover {
+  background-color: rgba(231, 198, 27, 0.2);
+  border-color: #e7c61b; 
+}
+.header .auth-buttons button {
+  font-size: 12px !important;
+}
 
-.admin-dropdown {
-  position: relative;
-  display: inline-block;
-}
-.dropdown-btn {
-  background: #e7c61b;
-  border: none;
-  padding: 8px 16px;
-  font-weight: bold;
-  cursor: pointer;
-  border-radius: 5px 5px 0 0;
-}
-.dropdown-content {
-  display: none;
-  position: absolute;
-  background: white;
-  min-width: 120px;
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-  z-index: 999;
-}
-.admin-dropdown:hover .dropdown-content {
-  display: block;
-}
-.dropdown-content a {
-  color: black;
-  padding: 12px 16px;
-  text-decoration: none;
-  display: block;
-}
-.dropdown-content a:hover {
-  background: #e7c61b;
+.header .auth-buttons .icon-button {
+  width: 18px !important;
+  height: 18px !important;
 }
 
 /* Responsive */
-
 @media (max-width: 768px) {
   .header {
     padding: 10px 15px;
-    display: grid;
-    grid-template-columns: auto 1fr;
-    gap: 10px;
-    align-items: center;
+    display: grid; 
+    grid-template-columns: auto 1fr; 
+    gap: 10px; 
+    align-items: center; 
     justify-items: center;
   }
 
   .header .logo {
     width: auto;
-    margin-bottom: 0;
+    margin-bottom: 0; 
   }
 
   .header .logo img {
-    width: 200px;
+    width: 200px; 
   }
 
   .header .search-bar {
-    width: 100%;
+    width: 100%; 
     margin: 0;
     border-radius: 20px;
     padding: 8px 15px;
   }
 
   .header .auth-buttons {
-    grid-column: 1 / -1;
+    grid-column: 1 / -1; 
     display: flex;
     justify-content: center;
     gap: 8px;
-    margin-top: 5px;
+    margin-top: 5px; 
   }
 }
-@media (max-width: 480px) {
-  .header .logo img {
-    width: 150px;
-  }
 
-  .header .auth-buttons button {
-    font-size: 11px;
-    padding: 6px;
-    border-radius: 15px;
+/*Responsive 768px */
+@media (max-width: 768px) {
+  .header .auth-buttons button:not(.sell-button):not(.logout-button) {
+    font-size: 12px;
+    padding: 5px 8px;
+  }
+  .header .auth-buttons .sell-button {
+    font-size: 13px;
+    padding: 7px 10px;
+  }
+  .header .auth-buttons .logout-button {
+    font-size: 13px;
+    padding: 7px 10px;
   }
 }
+
+@media (max-width: 480px) {
+  .header .auth-buttons button:not(.sell-button):not(.logout-button) {
+    font-size: 8px;
+    padding: 2px 7px 2px;
+  }
+  .header .auth-buttons .sell-button {
+    font-size: 10px !important;
+    padding: 6.5px 4px;
+  }
+  .header .auth-buttons .logout-button {
+    font-size: 10px !important;
+    padding: 5px 7px;
+  }
+  .header .logo img {
+    width: 150px; 
+  }
 
 .header .search-bar {
   border-radius: 20px;
   padding: 6px 5px;
-}
+  }
 
 .header .search-bar input {
   font-size: 11px;
   padding: 5px;
+  }
 }
 
-.admin-dropdown {
-  position: relative;
-  display: inline-block;
-}
-.dropdown-btn {
-  background: #e7c61b;
-  border: none;
-  padding: 8px 16px;
-  font-weight: bold;
-  cursor: pointer;
-  border-radius: 5px 5px 0 0;
-}
-.dropdown-content {
-  display: none;
-  position: absolute;
-  background: white;
-  min-width: 120px;
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-  z-index: 999;
-}
-.admin-dropdown:hover .dropdown-content {
-  display: block;
-}
-.dropdown-content a {
-  color: black;
-  padding: 12px 16px;
-  text-decoration: none;
-  display: block;
-}
-.dropdown-content a:hover {
-  background: #e7c61b;
-}
