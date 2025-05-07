@@ -35,11 +35,13 @@ export async function getProductById(id) {
         u.username AS seller_name, 
         u.avatar AS seller_avatar,
         u.id AS seller_id,
+        c.name AS category_name,
         (SELECT COUNT(*) FROM transaction t WHERE t.seller_id = u.id AND t.status = 'accepted') AS sales_count,
         (SELECT COUNT(*) FROM transaction t WHERE t.seller_id = u.id AND t.ratings IS NOT NULL) AS reviews_count,
         (SELECT AVG(t.ratings) FROM transaction t WHERE t.seller_id = u.id AND t.ratings IS NOT NULL) AS avg_rating
       FROM product p
       JOIN user u ON p.user_id = u.id
+      JOIN category c ON p.category_id = c.id
       WHERE p.id = ?`,
       [id]
     );

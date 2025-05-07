@@ -38,6 +38,14 @@ const ProductDetail = () => {
   }, [productId]);
 
   const handleClickBuy = async (id, name) => {
+    if (!token) {
+      setSubmitMessage("Debes iniciar sesión para solicitar la compra de un producto.");
+      setTimeout(() => {
+        navigate("/login");
+      }, 2000);
+      return;
+    }
+
     try {
       const res = await fetch(`${VITE_API_URL}/transactions`, {
         method: "POST",
@@ -70,7 +78,11 @@ const ProductDetail = () => {
         <div className="seller-header">
           <img src={product.seller_avatar ? `${VITE_API_URL}/uploads/${product.seller_avatar}` : "/default-avatar.png"} alt={product.seller_name} className="seller-avatar" />
           <div>
-            <strong>{product.seller_name}</strong>
+            <strong>
+              <a href={`/usuarios/${product.seller_id}`} style={{ color: "#222", textDecoration: "none" }}>
+                {product.seller_name}
+              </a>
+            </strong>
             <div>
               {Array.from({ length: 5 }).map((_, i) => (
                 <span key={i} style={{ color: i < Math.round(product.avg_rating) ? "#e7c61b" : "#ccc" }}>
@@ -79,8 +91,8 @@ const ProductDetail = () => {
               ))}
             </div>
             <span>{product.sales_count} ventas</span>
-            <a href={`/usuario/${product.seller_id}/valoraciones`} style={{ color: "#e7c61b", marginLeft: 8 }}>
-              {product.reviews_count} valoración{product.reviews_count !== 1 ? "es" : ""}
+            <a href={`/usuarios/${product.seller_id}`} style={{ color: "#e7c61b", marginLeft: 8 }}>
+              {product.reviews_count} valoracion{product.reviews_count !== 1 ? "es" : ""}
             </a>
           </div>
         </div>
