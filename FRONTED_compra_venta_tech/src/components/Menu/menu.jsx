@@ -1,3 +1,4 @@
+// src/components/Menu.jsx
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./menu.css";
@@ -9,7 +10,8 @@ const Menu = () => {
   const [isHamburgerHovered, setIsHamburgerHovered] = useState(false);
   const navigate = useNavigate();
 
-  const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
+  const toggleMenu = () => setIsMenuOpen(o => !o);
+  const closeMenu = () => setIsMenuOpen(false);
 
   const handleHamburgerMouseEnter = () => setIsHamburgerHovered(true);
   const handleHamburgerMouseLeave = () => setIsHamburgerHovered(false);
@@ -17,39 +19,54 @@ const Menu = () => {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await fetch(VITE_API_URL + "/categories");
-        const data = await response.json();
-        setCategories(data.data);
-      } catch (error) {
-        console.error("Error al obtener las categorías:", error);
+        const resp = await fetch(`${VITE_API_URL}/categories`);
+        const json = await resp.json();
+        setCategories(json.data);
+      } catch (err) {
+        console.error("Error al obtener las categorías:", err);
       }
     };
-
     fetchCategories();
   }, []);
+
+  // Navega y cierra el menú
+  const goTo = path => {
+    navigate(path);
+    closeMenu();
+  };
 
   return (
     <div className="menu-container">
       <div className="menu-header">
-        <div className={`hamburger ${isHamburgerHovered ? "hamburger-hovered" : ""}`} onClick={toggleMenu} onMouseEnter={handleHamburgerMouseEnter} onMouseLeave={handleHamburgerMouseLeave}>
+        <div
+          className={`hamburger ${isHamburgerHovered ? "hamburger-hovered" : ""}`}
+          onClick={toggleMenu}
+          onMouseEnter={handleHamburgerMouseEnter}
+          onMouseLeave={handleHamburgerMouseLeave}
+        >
           &#9776;
         </div>
-        <div className={`categories-title ${isHamburgerHovered ? "hamburger-hovered" : ""}`}>Todas las categorías</div>
+        <div
+          className={`categories-title ${isHamburgerHovered ? "hamburger-hovered" : ""}`}
+        >
+          Todas las categorías
+        </div>
 
+        {/* Esta sección fija de categorías no cambia */}
         <div className="categories-list">
-          <div className="category" onClick={() => navigate("/categoria/informatica")}>
+          <div className="category" onClick={() => goTo("/categoria/informatica")}>
             Informática
           </div>
-          <div className="category" onClick={() => navigate("/categoria/electronica")}>
+          <div className="category" onClick={() => goTo("/categoria/electronica")}>
             Electrónica
           </div>
-          <div className="category" onClick={() => navigate("/categoria/telefonia")}>
+          <div className="category" onClick={() => goTo("/categoria/telefonia")}>
             Telefonía
           </div>
-          <div className="category" onClick={() => navigate("/categoria/gamer")}>
+          <div className="category" onClick={() => goTo("/categoria/gamer")}>
             Gamer
           </div>
-          <div className="category" onClick={() => navigate("/categoria/hogar")}>
+          <div className="category" onClick={() => goTo("/categoria/hogar")}>
             Hogar
           </div>
         </div>
@@ -57,8 +74,12 @@ const Menu = () => {
 
       {isMenuOpen && (
         <div className="dropdown-menu">
-          {categories.map((cat) => (
-            <div key={cat.id} className="dropdown-category" onClick={() => navigate(`/categoria/${cat.id}`)}>
+          {categories.map(cat => (
+            <div
+              key={cat.id}
+              className="dropdown-category"
+              onClick={() => goTo(`/categoria/${cat.id}`)}
+            >
               {cat.name}
             </div>
           ))}
