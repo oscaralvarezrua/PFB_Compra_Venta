@@ -16,6 +16,7 @@ import Rating from "../components/Rating/Rating";
 import UserProfileView from "./UserProfileView";
 import ConfirmDeleteProd from "./ConfirmDeleteProd";
 import Review from "./Review";
+const { VITE_USER_ICON } = import.meta.env;
 
 export default function UserMenu() {
   const { userData } = useUserData();
@@ -35,7 +36,7 @@ export default function UserMenu() {
             >
               <div className="current-avatar-menu">
                 <ApiImage
-                  name={userData?.avatar}
+                  name={userData?.avatar ? userData?.avatar : VITE_USER_ICON}
                   alt=""
                   className="profile-image-menu"
                 />

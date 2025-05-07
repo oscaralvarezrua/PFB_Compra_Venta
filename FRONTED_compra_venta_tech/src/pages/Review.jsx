@@ -13,10 +13,6 @@ export default function Review() {
   const [error, setError] = useState(null);
   const [submitting, setSubmitting] = useState(false);
 
-  // const handleCancel = () => {
-  //   navigate(-1);
-  // };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     setSubmitting(true);

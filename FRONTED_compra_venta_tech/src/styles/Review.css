@@ -1,8 +1,6 @@
 .feedback-page {
-  min-height: 100vh;
   display: flex;
-  justify-content: center;
-  align-items: center;
+
   background: #f7f7f7;
   padding: 1rem;
 }
@@ -17,7 +15,7 @@
 .feedback-card h2 {
   margin: 0 0 0.5rem;
   font-size: 1.6rem;
-  font-family: "Architects Daughter", cursive; /* si usas Google Fonts */
+  font-family: "Inter", sans-serif;
 }
 .feedback-card .subtitle {
   margin: 0 0 1.5rem;

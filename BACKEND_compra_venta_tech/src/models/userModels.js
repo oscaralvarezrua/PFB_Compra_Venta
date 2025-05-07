@@ -6,7 +6,15 @@ import crypto from "crypto";
 import { generateError } from "../utils/helpers.js";
 
 //Crea nuevos usuarios
-const createUser = async (username, email, password, phone, biography = null, avatar = null, validationCode) => {
+const createUser = async (
+  username,
+  email,
+  password,
+  phone,
+  biography = null,
+  avatar = null,
+  validationCode
+) => {
   try {
     const pool = await getPool();
 
@@ -32,7 +40,13 @@ const createUser = async (username, email, password, phone, biography = null, av
 };
 
 //Actualizar datos del usuario
-const updateUserModel = async (username, phone, biography = null, avatar = null, userID) => {
+const updateUserModel = async (
+  username,
+  phone,
+  biography = null,
+  avatar = null,
+  userID
+) => {
   try {
     console.log(username, phone, biography, avatar, userID);
 
@@ -63,7 +77,9 @@ const getUserByEmail = async (email) => {
   try {
     const pool = await getPool();
 
-    const [user] = await pool.query(`SELECT * FROM user WHERE email = ?`, [email]);
+    const [user] = await pool.query(`SELECT * FROM user WHERE email = ?`, [
+      email,
+    ]);
 
     return user[0];
   } catch (error) {
@@ -77,7 +93,9 @@ const getUserByUsername = async (username) => {
   try {
     const pool = await getPool();
 
-    const [user] = await pool.query(`SELECT * FROM user WHERE username = ?`, [username]);
+    const [user] = await pool.query(`SELECT * FROM user WHERE username = ?`, [
+      username,
+    ]);
 
     return user[0];
   } catch (error) {
@@ -91,7 +109,9 @@ const getUserByPhone = async (phone) => {
   try {
     const pool = await getPool();
 
-    const [user] = await pool.query(`SELECT * FROM user WHERE phone = ?`, [phone]);
+    const [user] = await pool.query(`SELECT * FROM user WHERE phone = ?`, [
+      phone,
+    ]);
 
     return user[0];
   } catch (error) {
@@ -130,7 +150,10 @@ const getUserByValidationCode = async (validationCode) => {
   try {
     const pool = await getPool();
 
-    const [user] = await pool.query(`SELECT * FROM user WHERE validation_code = ?`, [validationCode]);
+    const [user] = await pool.query(
+      `SELECT * FROM user WHERE validation_code = ?`,
+      [validationCode]
+    );
 
     return user[0];
   } catch (error) {
@@ -159,7 +182,10 @@ const updatePass = async (userId, newPass) => {
 
     const encriptedPass = await bcrypt.hash(newPass, 10);
 
-    await pool.query(`UPDATE user SET password = ?, updated_at = NOW() WHERE id = ?`, [encriptedPass, userId]);
+    await pool.query(
+      `UPDATE user SET password = ?, updated_at = NOW() WHERE id = ?`,
+      [encriptedPass, userId]
+    );
   } catch (error) {
     console.error("Error cambiando la contraseña: ", error);
     throw generateError("Contraseña no cambiada", 404);
@@ -207,7 +233,10 @@ WHERE t.seller_id = ?`,
     };
   } catch (error) {
     console.error("Error consultando la información del usuario: ", error);
-    throw generateError("No se ha podido obtener la información de este usuario", 404);
+    throw generateError(
+      "No se ha podido obtener la información de este usuario",
+      404
+    );
   }
 };
 
@@ -272,12 +301,29 @@ const updatePassWithRecovery = async (recoveryCode, newPassword) => {
   }
 };
 
-export { createUser, updateUserModel, getUserByEmail, getUserByUsername, trustPass, userValidation, getUserByValidationCode, getUserById, updatePass, getUserInf, getUserByPhone, generateRecoverCode, verifyRecoverCode, updatePassWithRecovery };
+export {
+  createUser,
+  updateUserModel,
+  getUserByEmail,
+  getUserByUsername,
+  trustPass,
+  userValidation,
+  getUserByValidationCode,
+  getUserById,
+  updatePass,
+  getUserInf,
+  getUserByPhone,
+  generateRecoverCode,
+  verifyRecoverCode,
+  updatePassWithRecovery,
+};
 
 // Modelo para obtener la lista de usuarios
 export async function getUserListModel() {
   const pool = await getPool();
-  const [users] = await pool.query("SELECT id, username, email, avatar FROM user");
+  const [users] = await pool.query(
+    "SELECT id, username, email, avatar FROM user"
+  );
 
   return users;
 }
@@ -286,7 +332,10 @@ export async function getUserListModel() {
 export async function getUserDetailModel(userId) {
   const pool = await getPool();
 
-  const [user] = await pool.query("SELECT id, username, email, biography, avatar FROM user WHERE id = ?", [userId]);
+  const [user] = await pool.query(
+    "SELECT id, username, email, biography, avatar FROM user WHERE id = ?",
+    [userId]
+  );
 
   if (user.length === 0) {
     throw generateError("Usuario no encontrado", 404);
@@ -296,7 +345,7 @@ export async function getUserDetailModel(userId) {
 COUNT(t.ratings) AS total_ratings,
 AVG(t.ratings) AS average_ratings,
 COUNT(CASE WHEN t.status = 'accepted' THEN 1 END) AS total_sales,
-(SELECT COUNT(*) FROM product WHERE user_id = ?) AS total_products,
+(SELECT COUNT(*) FROM product WHERE user_id = ? AND is_available = TRUE) AS total_products,
 (SELECT COUNT(*) FROM transaction WHERE user_id = ? AND status = 'accepted') AS total_purchases
 FROM transaction t
 WHERE t.seller_id = ?`,
@@ -339,7 +388,7 @@ WHERE t.seller_id = ?`,
        t.created_at
      FROM transaction t
      JOIN product p ON t.product_id = p.id
-     WHERE t.user_id = ?`,
+     WHERE t.user_id = ? AND t.status = "accepted"`,
     [userId]
   );
 
@@ -358,7 +407,10 @@ export async function rateSellerModel(transactionId, userId, ratings, comment) {
 
   // 1. Verificamos que la transacción exista, sea del usuario y esté aceptada
 
-  const [result] = await pool.query(`SELECT * FROM transaction WHERE id = ? AND user_id = ? AND status = 'aceptada'`, [transactionId, userId]);
+  const [result] = await pool.query(
+    `SELECT * FROM transaction WHERE id = ? AND user_id = ? AND status = 'aceptada'`,
+    [transactionId, userId]
+  );
 
   if (result.length === 0) {
     throw generateError("Transacción no válida o aún no aceptada.", 403);
@@ -371,7 +423,10 @@ export async function rateSellerModel(transactionId, userId, ratings, comment) {
 
   // 3. Actualizamos con la valoración y comentario
 
-  await pool.query(`UPDATE transaction SET ratings = ?, comment = ? WHERE id = ?`, [ratings, comment, transactionId]);
+  await pool.query(
+    `UPDATE transaction SET ratings = ?, comment = ? WHERE id = ?`,
+    [ratings, comment, transactionId]
+  );
 }
 
 export async function deleteUserModel(id) {

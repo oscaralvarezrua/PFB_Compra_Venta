@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import ApiImage from "../components/Post/ApiImage";
-import "../styles/UserProfileView.css";
+import "../styles/UserProfile.css";
 import Rating from "../components/Rating/Rating";
-const { VITE_API_URL } = import.meta.env;
+const { VITE_API_URL, VITE_USER_ICON } = import.meta.env;
 
 const UserProfile = () => {
   const [userData, seUserData] = useState(null);
@@ -25,6 +25,7 @@ const UserProfile = () => {
           throw new Error("No se pudo obtener información del usuario");
         }
         const data = await response.json();
+        console.log(data?.data);
 
         seUserData(data?.data.usuario);
         setSalesData(data?.data.historico_ventas);
@@ -66,7 +67,7 @@ const UserProfile = () => {
       <div className="profile-header">
         <div className="avatar-container">
           <ApiImage
-            name={userData?.avatar}
+            name={userData?.avatar ? userData.avatar : VITE_USER_ICON}
             alt="Foto de perfil"
             className="profile-avatar"
           />
@@ -185,7 +186,7 @@ const UserProfile = () => {
             </div>
           ) : (
             <div>
-              <p>Compras</p>
+              <h2>Compras</h2>
               {buysList.map((buy) => (
                 <li key={buy.transaction_id} className="request-item">
                   <div className="user-profile-image">

@@ -79,35 +79,23 @@ export default function RequestsList() {
         </button>
       </div>
       {showAvailable && !showEnRevision ? (
-        <ul className="request-list">
+        <div className="requests-list">
           {productsList
             ?.filter((prod) => prod.is_available && prod.is_accepted)
             .map((prod) => (
-              <li key={prod.id} className="request-item">
-                <div className="product-list-image">
-                  <ApiImage name={prod.photo} alt={prod.name} />
+              <div key={prod.id} className="request-card">
+                <ApiImage name={prod.photo} alt={prod.name} />
+
+                <div className="request-info">
+                  <h3>{prod.name}</h3>
+                  <p>Precio: {prod.price}€</p>
+                  <p>Fecha publicación: {formatDMY(prod.created_at)}</p>
+                  <p>Fecha Modificación: {formatDMY(prod.updated_at)}</p>
                 </div>
-                <div className="request-text">
-                  <p>
-                    <strong>{prod.price} €</strong>{" "}
-                  </p>
-                  <p>{prod.name} </p>
-                </div>
-                <div className="request-text">
-                  <p>
-                    <strong>Publicado</strong>{" "}
-                  </p>
-                  <p>{formatDMY(prod.created_at)} </p>
-                </div>
-                <div className="request-text">
-                  <p>
-                    <strong>Modificado</strong>{" "}
-                  </p>
-                  <p>{formatDMY(prod.updated_at)} </p>
-                </div>
-                <div>
+
+                <div className="request-actions">
                   <button
-                    className="btn editar"
+                    className="accept-button"
                     type="button"
                     onClick={() => {
                       navigate("/edit/" + prod.id);
@@ -115,79 +103,57 @@ export default function RequestsList() {
                   >
                     Editar
                   </button>
-                  <Link to={"/user/confirm-delete/" + prod.id}>
-                    <button className="btn delete" type="button">
-                      Eliminar
-                    </button>
-                  </Link>
+
+                  <button
+                    className="reject-button"
+                    type="button"
+                    onClick={() => {
+                      navigate("/user/confirm-delete/" + prod.id);
+                    }}
+                  >
+                    Eliminar
+                  </button>
                 </div>
-              </li>
+              </div>
             ))}
-        </ul>
+        </div>
       ) : showAvailable && showEnRevision ? (
-        <ul className="request-list">
+        <div className="requests-list">
           {productsList
             ?.filter((prod) => !prod.is_accepted)
             .map((prod) => (
-              <li key={prod.id} className="request-item">
-                <div className="product-list-image">
-                  <ApiImage name={prod.photo} alt={prod.name} />
+              <div key={prod.id} className="request-card">
+                <ApiImage name={prod.photo} alt={prod.name} />
+                <div className="request-info">
+                  <h3>{prod.name}</h3>
+                  <p>Precio: {prod.price}€</p>
+                  <p>Fecha publicación: {formatDMY(prod.created_at)}</p>
+                  <p>Fecha Modificación: {formatDMY(prod.updated_at)}</p>
                 </div>
-                <div className="request-text">
-                  <p>
-                    <strong>{prod.price} €</strong>{" "}
-                  </p>
-                  <p>{prod.name} </p>
-                </div>
-                <div className="request-text">
-                  <p>
-                    <strong>Publicado</strong>{" "}
-                  </p>
-                  <p>{formatDMY(prod.created_at)} </p>
-                </div>
-                <div className="request-text">
-                  <p>
-                    <strong>Modificado</strong>{" "}
-                  </p>
-                  <p>{formatDMY(prod.updated_at)} </p>
-                </div>
+
                 <div className="revision-message">
                   <p>Su producto está en proceso de revisión.</p>
                   <p>Una vez aprobado, estará disponible para la venta.</p>
                 </div>
-              </li>
+              </div>
             ))}
-        </ul>
+        </div>
       ) : (
-        <ul className="request-list">
+        <div className="requests-list">
           {productsList
             ?.filter((prod) => !prod.is_available)
             .map((prod) => (
-              <li key={prod.id} className="request-item">
-                <div className="product-list-image">
-                  <ApiImage name={prod.photo} alt={prod.name} />
+              <div key={prod.id} className="request-card">
+                <ApiImage name={prod.photo} alt={prod.name} />
+                <div className="request-info">
+                  <h3>{prod.name}</h3>
+                  <p>Precio: {prod.price}€</p>
+                  <p>Fecha publicación: {formatDMY(prod.created_at)}</p>
+                  <p>Fecha de venta: {formatDMY(prod.updated_at)}</p>
                 </div>
-                <div className="request-text">
-                  <p>
-                    <strong>{prod.price} €</strong>{" "}
-                  </p>
-                  <p>{prod.name} </p>
-                </div>
-                <div className="request-text">
-                  <p>
-                    <strong>Publicado</strong>{" "}
-                  </p>
-                  <p>{formatDMY(prod.created_at)} </p>
-                </div>
-                <div className="request-text">
-                  <p>
-                    <strong>Fecha de venta</strong>{" "}
-                  </p>
-                  <p>{formatDMY(prod.updated_at)} </p>
-                </div>
-              </li>
+              </div>
             ))}
-        </ul>
+        </div>
       )}
     </div>
   );
