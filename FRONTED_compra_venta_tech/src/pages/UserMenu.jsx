@@ -1,7 +1,6 @@
-//Mi perfil
+// src/components/UserMenu.jsx
 import React from "react";
-import { Route, Routes } from "react-router-dom";
-import { NavLink, Outlet } from "react-router-dom";
+import { Route, Routes, NavLink } from "react-router-dom";
 import "../styles/userMenu.css";
 
 import BuysList from "./BuysList";
@@ -23,6 +22,25 @@ export default function UserMenu() {
 
   return (
     <div className="user-menu">
+      {/* Mobile header: only shown ≤480px */}
+      <header className="mobile-header">
+        <nav className="mobile-nav">
+          <NavLink to="/user" end className="mobile-link">
+            Perfil
+          </NavLink>
+          <NavLink to="/user/buys-list" className="mobile-link">
+            Compras
+          </NavLink>
+          <NavLink to="/user/products-list" className="mobile-link">
+            Productos
+          </NavLink>
+          <NavLink to="/user/requests-list" className="mobile-link">
+            Solicitudes
+          </NavLink>
+        </nav>
+      </header>
+
+      {/* Sidebar: hidden in mobile, shown >480px */}
       <aside className="sidebar">
         <ul>
           <li>
@@ -36,14 +54,12 @@ export default function UserMenu() {
               <div className="current-avatar-menu">
                 <ApiImage
                   name={userData?.avatar}
-                  alt=""
+                  alt="Avatar"
                   className="profile-image-menu"
                 />
               </div>
               <div className="menu-rating">
-                <span>
-                  <strong>{userData?.username}</strong>
-                </span>
+                <strong>{userData?.username}</strong>
                 <Rating
                   className="rating"
                   value={averageUserRating}
@@ -65,26 +81,12 @@ export default function UserMenu() {
             >
               <img
                 src="/src/assets/icono_compras.png"
-                alt=""
+                alt="Compras"
                 className="menu-link__icon"
               />
               <span>Compras</span>
             </NavLink>
           </li>
-          {/* <li>
-            <NavLink to="/user/sales-list"
-              className={({ isActive }) =>
-                isActive ? "menu-link active" : "menu-link"
-              }
-            >
-              <img
-                src="/src/assets/icono_ventas.png"
-                alt=""
-                className="menu-link__icon"
-              />
-              <span>Ventas</span>
-            </NavLink>
-          </li> */}
           <li>
             <NavLink
               to="/user/products-list"
@@ -94,7 +96,7 @@ export default function UserMenu() {
             >
               <img
                 src="/src/assets/icono_productos.png"
-                alt=""
+                alt="Productos"
                 className="menu-link__icon"
               />
               <span>Productos</span>
@@ -109,7 +111,7 @@ export default function UserMenu() {
             >
               <img
                 src="/src/assets/icono_solicitudes.png"
-                alt=""
+                alt="Solicitudes"
                 className="menu-link__icon"
               />
               <span>Solicitudes</span>
@@ -117,6 +119,8 @@ export default function UserMenu() {
           </li>
         </ul>
       </aside>
+
+      {/* Main content area */}
       <main className="content-profile">
         <Routes>
           <Route index element={<UserProfileView />} />

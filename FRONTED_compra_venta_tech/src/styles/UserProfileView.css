@@ -1,152 +1,312 @@
-.user-profile-container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 2rem;
+.profile-wrapper {
+  background-color: #f4f4f4;
+  padding: 2rem 0;
 }
 
-.profile-header {
-  display: flex;
-  gap: 2rem;
-  margin-bottom: 2rem;
-  background: white;
-  padding: 2rem;
-  border-radius: 10px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.avatar-container {
-  flex-shrink: 0;
-}
-
-.profile-avatar {
-  width: 200px;
-  height: 200px;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 4px solid #e7c61b;
-}
-
-.profile-info {
-  flex-grow: 1;
-}
-
-.profile-info h1 {
-  margin: 0 0 1rem 0;
-  color: #333;
-  font-size: 2rem;
-}
-
-.biography {
-  color: #666;
-  margin-bottom: 2rem;
-  line-height: 1.6;
-}
-
-.stats {
-  display: flex;
-  gap: 2rem;
-}
-
-.stat-item {
-  text-align: center;
-}
-
-.stat-value {
-  display: block;
+.edit-profile-container h1 {
+  margin-bottom: 1.5rem;  
   font-size: 1.5rem;
-  font-weight: bold;
-  color: #e7c61b;
 }
 
-.stat-label {
-  color: #666;
+.profile-content {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0 1rem;
+  font-family: "Inter", sans-serif;
+}
+.page-title {
+  font-size: 1.5rem;       
+  color: black;
+  margin-bottom: 2rem;     
+}
+/* Botones */
+.tabs {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+  justify-content: flex-start;
+}
+.tab {
+  flex: 0 0 100px;
+  padding: 0.4rem 0;
+  text-align: center;
+  border-radius: 20px;
   font-size: 0.9rem;
 }
-
-.stat-item {
-  text-decoration: none;
-  color: inherit;
-  transition: transform 0.1s;
-  background: none;
-  border: none;
-}
-.stat-item:hover .stat-item {
-  box-shadow: 0 2px 8px #e7c61b44;
-  transform: translateY(-2px) scale(1.04);
-  background: #fffbe6;
-  border-radius: 8px;
-}
-
-.profile-actions {
-  margin-bottom: 2rem;
-  text-align: right;
-}
-
-.edit-profile-button {
-  display: inline-block;
-  padding: 0.8rem 1.5rem;
+.tab.active {
   background-color: #e7c61b;
-  color: white;
-  text-decoration: none;
-  border-radius: 5px;
-  font-weight: bold;
-  transition: background-color 0.3s;
+  color: black;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+.tab,
+.tab.active {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid transparent;  
+}
+.tab:focus {
+  outline: none;
+}
+/* Contenedor de las secciones */
+.tab-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
 }
 
-.edit-profile-button:hover {
-  background-color: #d4b219;
+/* Tarjetas */
+.card {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
-.profile-sections {
+.card-header {
+  font-family: "Permanent Marker", cursive;
+  font-size: 1.25rem;
+  padding: 1rem;
+  border-bottom: 1px solid #eee;
+}
+
+.card-body {
+  padding: 1rem 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+/* Imagen de perfil */
+.image-body {
+  justify-content: space-between;
+}
+.avatar {
+  width: 60px;
+  height: 60px;
+  border: 2px solid #e7c61b;
+  border-radius: 50%;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.btn.change-photo {
+  background: none;
+  border: 1px solid #e7c61b;
+  border-radius: 12px;
+  padding: 0.4rem 1rem;
+  color: #e7c61b;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+.note {
+  font-size: 0.8rem;
+  color: #777;
+  margin-top: 0.25rem;
+}
+
+/* Información pública */
+.info-body {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 2rem;
 }
-
-.sales-section,
-.ratings-section {
-  background: white;
-  padding: 2rem;
-  border-radius: 10px;
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+.form-group label {
+  font-size: 0.9rem;
+  color: #555;
+}
+.form-group input {
+  border: 1px solid #e7c61b;
+  border-radius: 6px;
+  padding: 0.6rem;
+  font-size: 0.95rem;
+  width: 100%;
+}
+.actions-footer {
+  text-align: center;
+  margin-top: 1rem;
+}
+.save-btn {
+  background-color: #e7c61b;
+  color: black;
+  border: none;
+  border-radius: 20px;
+  padding: 0.6rem 2rem;
+  font-size: 1rem;
+  cursor: pointer;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
-
-.sales-section h2,
-.ratings-section h2 {
-  margin: 0 0 1rem 0;
-  color: #333;
-  font-size: 1.5rem;
+.save-btn:hover {
+  background-color: black; 
+  color: #e7c61b;
+  transform: scale(1.05);
+}
+.edit-profile-container {
+  max-width: 900px;   
+  margin: 0 auto;     
+  padding: 0 1rem;     
 }
 
-.loading {
-  text-align: center;
-  padding: 2rem;
-  color: #666;
+.tab-content {
+  min-height: 400px;  
 }
 
-.error {
-  text-align: center;
-  padding: 2rem;
-  color: #dc3545;
+.card {
+  padding-bottom: 1.5rem;  
+}
+.account-card .card-body {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 }
 
-.user-profile-image {
-  width: 30%;
-  height: 30%;
+.delete-account-text {
+  color: #605F5F;
+  cursor: pointer;
+  transition: color 0.2s;
+  margin-top: 0.5rem;
+  text-align: center;  
 }
 
+.delete-account-text:hover {
+  color: #f44336;
+}
+
+/* Responsive */
 @media (max-width: 768px) {
-  .profile-header {
+  /* Contenedor principal */
+  .edit-profile-container {
+    width: 90%;
+    padding: 0 1rem;
+  }
+  .edit-profile-container h1 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+  }
+
+  /* Tabs */
+  .tabs {
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+  }
+  .tab {
+    flex: 1 1 calc(50% - 0.5rem);
+    padding: 0.5rem 0;
+    font-size: 0.85rem;
+  }
+
+  /* Contenido de la pestaña */
+  .tab-content {
+    gap: 1rem;
+  }
+
+  /* Tarjetas */
+  .card {
+    margin-bottom: 1rem;
+  }
+  .card-body {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  /* Imagen de perfil */
+  .image-body {
+    display: flex;
     flex-direction: column;
     align-items: center;
-    text-align: center;
+    gap: 0.75rem;
+  }
+  .avatar {
+    width: 80px;
+    height: 80px;
+  }
+  .change-photo {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.85rem;
   }
 
-  .stats {
-    justify-content: center;
+  /* Formularios */
+  .form-group input {
+    padding: 0.5rem;
+    font-size: 0.9rem;
   }
 
-  .profile-sections {
-    grid-template-columns: 1fr;
+  /* Botones de acción */
+  .actions-footer {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-top: 1rem;
+  }
+  .save-btn,
+  .delete-btn {
+    width: 100%;
+    font-size: 0.9rem;
+  }
+  .delete-account-text {
+    margin-top: 0.5rem;
+  }
+}
+
+/* ——— Móviles (≤480px) ——— */
+@media (max-width: 480px) {
+  /* Contenedor principal */
+  .edit-profile-container {
+    width: 95%;
+    padding: 0 0.5rem;
+  }
+  .edit-profile-container h1 {
+    font-size: 1.3rem;
+    margin-bottom: 0.8rem;
+  }
+
+  /* Tabs en columna */
+  .tabs {
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+  }
+  .tab {
+    padding: 0.4rem 0;
+    font-size: 0.8rem;
+  }
+
+  /* Imagen de perfil */
+  .avatar {
+    width: 60px;
+    height: 60px;
+  }
+  .change-photo {
+    padding: 0.3rem 0.6rem;
+    font-size: 0.8rem;
+  }
+
+  /* Formularios */
+  .form-group input {
+    padding: 0.4rem;
+    font-size: 0.9rem;
+  }
+
+  /* Botones de acción */
+  .actions-footer {
+    gap: 0.5rem;
+  }
+  .save-btn,
+  .delete-btn {
+    font-size: 0.9rem;
   }
 }
