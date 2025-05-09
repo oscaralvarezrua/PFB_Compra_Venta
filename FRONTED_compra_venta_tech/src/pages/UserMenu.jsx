@@ -54,10 +54,8 @@ export default function UserMenu() {
             >
               <div className="current-avatar-menu">
                 <ApiImage
-
                   name={userData?.avatar ? userData?.avatar : VITE_USER_ICON}
                   alt=""
-
                   className="profile-image-menu"
                 />
               </div>

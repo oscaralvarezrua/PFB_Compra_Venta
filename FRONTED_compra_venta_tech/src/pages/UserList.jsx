@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import ApiImage from "../components/Post/ApiImage";
 
-const { VITE_API_URL } = import.meta.env;
+const { VITE_API_URL, VITE_USER_ICON } = import.meta.env;
 
 const UserList = () => {
   const [users, setUsers] = useState([]);
@@ -40,8 +40,15 @@ const UserList = () => {
       <h2>Usuarios</h2>
       <ul>
         {users.map((user) => (
-          <li key={user.id} style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
-            <ApiImage name={user.avatar} alt={user.username} style={{ width: 50, height: 50, borderRadius: "50%" }} />
+          <li
+            key={user.id}
+            style={{ display: "flex", alignItems: "center", gap: "1rem" }}
+          >
+            <ApiImage
+              name={user?.avatar ? user?.avatar : VITE_USER_ICON}
+              alt={user.username}
+              style={{ width: 50, height: 50, borderRadius: "50%" }}
+            />
             {user.username} - {user.email}
             <button onClick={() => handleDelete(user.id)}>Eliminar</button>
           </li>

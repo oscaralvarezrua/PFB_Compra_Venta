@@ -1,7 +1,15 @@
 import nodemailer from "nodemailer";
 import { generateError } from "./helpers.js";
 
-const { SMTP_HOST, SMTP_USER, SMTP_PASSWORD, SMTP_PORT, FRONTEND_URL, SENDERS_EMAIL, COLOR_CODE } = process.env;
+const {
+  SMTP_HOST,
+  SMTP_USER,
+  SMTP_PASSWORD,
+  SMTP_PORT,
+  FRONTEND_URL,
+  SENDERS_EMAIL,
+  COLOR_CODE,
+} = process.env;
 
 // Configuración del transporter de nodemailer
 const transporter = nodemailer.createTransport({
@@ -114,7 +122,11 @@ export const sendValidationEmail = async (email, username, validationCode) => {
   }
 };
 
-export async function sendTransactionRequest(sellerEmail, buyerUser, productName) {
+export async function sendTransactionRequest(
+  sellerEmail,
+  buyerUser,
+  productName
+) {
   let subject = "Nueva petición de compra";
   /*let text = `El usuario ${buyerUser} quiere comprar tu producto ${productName}.\nHaz click en el siguiente enlace para aceptar o rechazar la transacción:\n${BACKEND_URL}/request?transactionId=${transactionId}`;*/
   let html = `
@@ -174,7 +186,11 @@ export const sendRecoveryEmail = async (email, recoveryCode) => {
   }
 };
 
-export async function sendProductRejectionEmail(userEmail, userName, productName) {
+export async function sendProductRejectionEmail(
+  userEmail,
+  userName,
+  productName
+) {
   try {
     console.log("Iniciando envío de correo de rechazo...");
     console.log("Configuración SMTP:", {
@@ -208,7 +224,13 @@ export async function sendProductRejectionEmail(userEmail, userName, productName
   }
 }
 
-export async function sendPurchaseRejectionEmail(buyerEmail, buyerName, productName, sellerName) {
+export async function sendPurchaseRejectionEmail(
+  buyerEmail,
+  buyerName,
+  productName,
+  sellerName,
+  reason
+) {
   try {
     console.log("Iniciando envío de correo de rechazo de compra...");
     console.log("Configuración SMTP:", {
@@ -219,7 +241,7 @@ export async function sendPurchaseRejectionEmail(buyerEmail, buyerName, productN
     const html = `
       <h1>Hola ${buyerName},</h1>
       <p>Tu solicitud de compra para el producto "<strong>${productName}</strong>" ha sido rechazada por el vendedor ${sellerName}.</p>
-      <p>Motivo: "El vendedor ha rechazado tu solicitud."}</p>
+      <p>Motivo: ${reason}</p>
       <p>Puedes buscar otros productos similares en nuestra plataforma.</p>
       <p>Saludos,<br>El equipo de Segunda Tec</p>
     `;
@@ -229,7 +251,11 @@ export async function sendPurchaseRejectionEmail(buyerEmail, buyerName, productN
       subject: "Tu solicitud de compra ha sido rechazada",
     });
 
-    await sendMail(buyerEmail, "Tu solicitud de compra ha sido rechazada", html);
+    await sendMail(
+      buyerEmail,
+      "Tu solicitud de compra ha sido rechazada",
+      html
+    );
 
     return true;
   } catch (error) {

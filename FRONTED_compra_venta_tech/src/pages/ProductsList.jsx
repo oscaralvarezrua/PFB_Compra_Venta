@@ -1,9 +1,10 @@
 import React, { useState } from "react";
-import "../styles/ProductList.css";
+import "../styles/ProfileProdList.css";
 import useProductList from "../hooks/useProductList";
-import ApiImage from "../components/Post/ApiImage";
+import ProductCardProfile from "../components/ProductCardProfile/ProductCardProfile";
+import NoResultsMessage from "../components/NoResultsMessage/NoResultsMessage";
 
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 export default function RequestsList() {
   const { productsList, loading } = useProductList();
@@ -13,31 +14,15 @@ export default function RequestsList() {
   const navigate = useNavigate();
 
   if (loading) return <p>Cargando productos…</p>;
-  //if (error) return <p className="error">Error: {error}</p>;
-  if (productsList?.length === 0 || productsList === undefined)
-    return (
-      <div>
-        <h2>Tus Productos</h2>
-        <p className="no-results">No tienes productos publicados.</p>
-        <div>
-          <img
-            src="/src/assets/No_hay_nada.png"
-            alt="No tienes productos publicados."
-            className="image-nada"
-          />
-          <p>No tienes productos publicados.</p>
-        </div>
-      </div>
-    );
 
-  const formatDMY = (fecha) =>
-    new Date(fecha).toLocaleDateString("es-ES", {
-      day: "2-digit",
-      month: "2-digit",
-      year: "numeric",
-    });
+  //filtramos todos los estados de los productos
+  const productsOnSale = productsList?.filter(
+    (prod) => prod.is_available && prod.is_accepted
+  );
+  const productsOnReview = productsList?.filter((prod) => !prod.is_accepted);
+  const productsSold = productsList?.filter((prod) => !prod.is_available);
 
-  //Mostramos productos en venta o Vendidos según el botón clicado
+  //Mostramos productos en venta, vendidos o en revisión según el botón clicado
   return (
     <div className="requests-container">
       <h2>Tus Productos</h2>
@@ -79,20 +64,17 @@ export default function RequestsList() {
         </button>
       </div>
       {showAvailable && !showEnRevision ? (
-        <div className="requests-list">
-          {productsList
-            ?.filter((prod) => prod.is_available && prod.is_accepted)
-            .map((prod) => (
-              <div key={prod.id} className="request-card">
-                <ApiImage name={prod.photo} alt={prod.name} />
-
-                <div className="request-info">
-                  <h3>{prod.name}</h3>
-                  <p>Precio: {prod.price}€</p>
-                  <p>Fecha publicación: {formatDMY(prod.created_at)}</p>
-                  <p>Fecha Modificación: {formatDMY(prod.updated_at)}</p>
-                </div>
-
+        productsOnSale?.length !== 0 ? (
+          <div className="requests-list">
+            {productsOnSale.map((prod) => (
+              <ProductCardProfile
+                photo={prod.photo}
+                name={prod.name}
+                price={prod.price}
+                created_at={prod.created_at}
+                updated_at={prod.updated_at}
+                date_type={"modificación"}
+              >
                 <div className="request-actions">
                   <button
                     className="accept-button"
@@ -114,46 +96,57 @@ export default function RequestsList() {
                     Eliminar
                   </button>
                 </div>
-              </div>
+              </ProductCardProfile>
             ))}
-        </div>
+          </div>
+        ) : (
+          <NoResultsMessage message={"No tienes productos a la venta."} />
+        )
       ) : showAvailable && showEnRevision ? (
+        productsList?.length !== 0 ? (
+          productsOnReview?.length !== 0 ? (
+            <div className="requests-list">
+              {productsOnReview.map((prod) => (
+                <ProductCardProfile
+                  photo={prod.photo}
+                  name={prod.name}
+                  price={prod.price}
+                  created_at={prod.created_at}
+                  updated_at={prod.updated_at}
+                  date_type={"modificación"}
+                >
+                  <div className="revision-message">
+                    <p>Su producto está en proceso de revisión.</p>
+                    <p>Una vez aprobado, estará disponible para la venta.</p>
+                  </div>
+                </ProductCardProfile>
+              ))}
+            </div>
+          ) : (
+            <NoResultsMessage message={"No tienes productos en revisión."} />
+          )
+        ) : (
+          <NoResultsMessage
+            message={"No tienes productos pendientes de revisión."}
+          />
+        )
+      ) : productsSold?.length !== 0 ? (
         <div className="requests-list">
-          {productsList
-            ?.filter((prod) => !prod.is_accepted)
+          {productsSold
+            ?.filter((prod) => !prod.is_available)
             .map((prod) => (
-              <div key={prod.id} className="request-card">
-                <ApiImage name={prod.photo} alt={prod.name} />
-                <div className="request-info">
-                  <h3>{prod.name}</h3>
-                  <p>Precio: {prod.price}€</p>
-                  <p>Fecha publicación: {formatDMY(prod.created_at)}</p>
-                  <p>Fecha Modificación: {formatDMY(prod.updated_at)}</p>
-                </div>
-
-                <div className="revision-message">
-                  <p>Su producto está en proceso de revisión.</p>
-                  <p>Una vez aprobado, estará disponible para la venta.</p>
-                </div>
-              </div>
+              <ProductCardProfile
+                photo={prod.photo}
+                name={prod.name}
+                price={prod.price}
+                created_at={prod.created_at}
+                updated_at={prod.updated_at}
+                date_type={"venta"}
+              />
             ))}
         </div>
       ) : (
-        <div className="requests-list">
-          {productsList
-            ?.filter((prod) => !prod.is_available)
-            .map((prod) => (
-              <div key={prod.id} className="request-card">
-                <ApiImage name={prod.photo} alt={prod.name} />
-                <div className="request-info">
-                  <h3>{prod.name}</h3>
-                  <p>Precio: {prod.price}€</p>
-                  <p>Fecha publicación: {formatDMY(prod.created_at)}</p>
-                  <p>Fecha de venta: {formatDMY(prod.updated_at)}</p>
-                </div>
-              </div>
-            ))}
-        </div>
+        <NoResultsMessage message={"No tienes productos vendidos."} />
       )}
     </div>
   );

@@ -39,7 +39,9 @@ const ProductDetail = () => {
 
   const handleClickBuy = async (id, name) => {
     if (!token) {
-      setSubmitMessage("Debes iniciar sesión para solicitar la compra de un producto.");
+      setSubmitMessage(
+        "Debes iniciar sesión para solicitar la compra de un producto."
+      );
       setTimeout(() => {
         navigate("/login");
       }, 2000);
@@ -64,7 +66,9 @@ const ProductDetail = () => {
         navigate("/user/buys-list");
       }, 2000);
     } catch (err) {
-      setSubmitMessage(err.message || "Error al iniciar la compra, inténtelo de nuevo.");
+      setSubmitMessage(
+        err.message || "Error al iniciar la compra, inténtelo de nuevo."
+      );
     }
   };
 
@@ -76,23 +80,44 @@ const ProductDetail = () => {
     <div className="product-detail-page">
       <div className="product-detail-card">
         <div className="seller-header">
-          <img src={product.seller_avatar ? `${VITE_API_URL}/uploads/${product.seller_avatar}` : "/default-avatar.png"} alt={product.seller_name} className="seller-avatar" />
+          <img
+            src={
+              product.seller_avatar
+                ? `${VITE_API_URL}/uploads/${product.seller_avatar}`
+                : "/default-avatar.png"
+            }
+            alt={product.seller_name}
+            className="seller-avatar"
+          />
           <div>
             <strong>
-              <a href={`/usuarios/${product.seller_id}`} style={{ color: "#222", textDecoration: "none" }}>
+              <a
+                href={`/usuarios/${product.seller_id}`}
+                style={{ color: "#222", textDecoration: "none" }}
+              >
                 {product.seller_name}
               </a>
             </strong>
             <div>
               {Array.from({ length: 5 }).map((_, i) => (
-                <span key={i} style={{ color: i < Math.round(product.avg_rating) ? "#e7c61b" : "#ccc" }}>
+                <span
+                  key={i}
+                  style={{
+                    color:
+                      i < Math.round(product.avg_rating) ? "#e7c61b" : "#ccc",
+                  }}
+                >
                   ★
                 </span>
               ))}
             </div>
             <span>{product.sales_count} ventas</span>
-            <a href={`/usuarios/${product.seller_id}`} style={{ color: "#e7c61b", marginLeft: 8 }}>
-              {product.reviews_count} valoracion{product.reviews_count !== 1 ? "es" : ""}
+            <a
+              href={`/usuarios/${product.seller_id}`}
+              style={{ color: "#e7c61b", marginLeft: 8 }}
+            >
+              {product.reviews_count} valoracion
+              {product.reviews_count !== 1 ? "es" : ""}
             </a>
           </div>
         </div>
@@ -105,12 +130,25 @@ const ProductDetail = () => {
           <p className="description">{product.description}</p>
           <p className="locality">📍 {product.locality}</p>
           <p className="category">📂 {product.category_name}</p>
-          <button className="contact-btn" onClick={() => handleClickBuy(product.id, product.name)}>
+          <button
+            className="contact-btn"
+            onClick={() => handleClickBuy(product.id, product.name)}
+          >
             Solicitar compra
           </button>
         </div>
       </div>
-      {submitMessage && <p className={`feedback-message ${submitMessage.includes("✅") ? "success" : "error"}`}>{submitMessage}</p>}
+      <div>
+        {submitMessage && (
+          <p
+            className={`feedback-message ${
+              submitMessage.includes("✅") ? "success" : "error"
+            }`}
+          >
+            {submitMessage}
+          </p>
+        )}
+      </div>
     </div>
   );
 };

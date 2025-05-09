@@ -48,14 +48,17 @@ function App() {
     "/changepassword",
     "/forgot-password",
   ];
+
   const showLayout = !hideLayoutPaths.includes(location.pathname);
+  const hideMenu = location.pathname.startsWith("/user");
+  const showMenu = !hideMenu;
 
   return (
     <div className="app-layout">
       {showLayout && (
         <>
           <Header />
-          <Menu />
+          {showMenu && <Menu />}
         </>
       )}
 
