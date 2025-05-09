@@ -1,5 +1,4 @@
 
-// Página de Filtros y Ordenaciones de productos
 import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import "../styles/SearchFilteredProducts.css";
@@ -129,7 +128,66 @@ const SearchFilteredProducts = () => {
       <h2 className="title">Buscar productos</h2>
 
       <form onSubmit={handleSubmit} className="filters-form">
+        <input
+          type="text"
+          name="name"
+          placeholder="Nombre del producto"
+          value={filters.name}
+          onChange={handleChange}
+        />
 
+        <div className="input-suggestions-wrapper">
+          <input
+            type="text"
+            name="locality"
+            placeholder="Escribe tu ciudad"
+            value={filters.locality}
+            onChange={(e) => {
+              handleChange(e);
+              setShowSuggestions(true);
+            }}
+            onFocus={() => setShowSuggestions(true)}
+            onBlur={() => setTimeout(() => setShowSuggestions(false), 100)}
+            autoComplete="off"
+          />
+          {showSuggestions && filters.locality && (
+            <ul className="suggestions">
+              {ciudades
+                .filter((city) =>
+                  city.toLowerCase().includes(filters.locality.toLowerCase())
+                )
+                .map((city) => (
+                  <li
+                    key={city}
+                    onClick={() => {
+                      setFilters({ ...filters, locality: city });
+                      setShowSuggestions(false);
+                    }}
+                  >
+                    {city}
+                  </li>
+                ))}
+            </ul>
+          )}
+        </div>
+
+        <input
+          type="number"
+          name="min_price"
+          placeholder="Precio mínimo"
+          min="0"
+          value={filters.min_price}
+          onChange={handleChange}
+        />
+
+        <input
+          type="number"
+          name="max_price"
+          placeholder="Precio máximo"
+          min="0"
+          value={filters.max_price}
+          onChange={handleChange}
+        />
 
         <select name="order_by" value={filters.order_by} onChange={handleChange}>
           <option value="">Ordenar por...</option>
@@ -169,7 +227,7 @@ const SearchFilteredProducts = () => {
                       <div className="product-text">
                         <h3>{prod.name}</h3>
                         <p>{prod.description}</p>
-
+                        <p>{prod.price} € - {prod.locality}</p>
                       </div>
                     </div>
                   </li>
