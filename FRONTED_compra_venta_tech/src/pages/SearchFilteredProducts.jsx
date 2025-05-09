@@ -1,3 +1,4 @@
+
 // Página de Filtros y Ordenaciones de productos
 import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -5,6 +6,12 @@ import "../styles/SearchFilteredProducts.css";
 import ApiImage from "../components/Post/ApiImage";
 
 const { VITE_API_URL } = import.meta.env;
+
+const ciudades = [
+  "Madrid", "Barcelona", "Valencia", "Sevilla", "Zaragoza",
+  "Málaga", "Murcia", "Salamanca", "Bilbao", "Alicante",
+  "Granada", "Vigo", "Oviedo", "Toledo"
+];
 
 const SearchFilteredProducts = () => {
   const location = useLocation();
@@ -23,12 +30,12 @@ const SearchFilteredProducts = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(false);
   const [feedback, setFeedback] = useState({ message: "", type: "" });
+  const [showSuggestions, setShowSuggestions] = useState(false);
 
   useEffect(() => {
     const searchParams = new URLSearchParams(location.search);
     const hasFilters = [...searchParams.entries()].length > 0;
 
-    // Actualizar los filtros con los valores de la URL
     const newFilters = {
       name: searchParams.get("name") || "",
       locality: searchParams.get("locality") || "",
@@ -122,10 +129,7 @@ const SearchFilteredProducts = () => {
       <h2 className="title">Buscar productos</h2>
 
       <form onSubmit={handleSubmit} className="filters-form">
-        <input type="text" name="name" placeholder="Nombre del producto" value={filters.name} onChange={handleChange} />
-        <input type="text" name="locality" placeholder="Localidad" value={filters.locality} onChange={handleChange} />
-        <input type="number" name="min_price" placeholder="Precio mínimo" min="0" value={filters.min_price} onChange={handleChange} />
-        <input type="number" name="max_price" placeholder="Precio máximo" min="0" value={filters.max_price} onChange={handleChange} />
+
 
         <select name="order_by" value={filters.order_by} onChange={handleChange}>
           <option value="">Ordenar por...</option>
@@ -148,8 +152,6 @@ const SearchFilteredProducts = () => {
 
       {feedback.message && <p className={`feedback-message ${feedback.type}`}>{feedback.message}</p>}
 
-      {loading && <p className="loading">Cargando productos...</p>}
-
       {!loading && (
         <>
           <h2 className="title">Resultados</h2>
@@ -167,9 +169,7 @@ const SearchFilteredProducts = () => {
                       <div className="product-text">
                         <h3>{prod.name}</h3>
                         <p>{prod.description}</p>
-                        <p>
-                          {prod.price} € - {prod.locality}
-                        </p>
+
                       </div>
                     </div>
                   </li>
