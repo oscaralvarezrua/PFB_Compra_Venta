@@ -1,0 +1,65 @@
+.feedback-page {
+  display: flex;
+
+  background: #f7f7f7;
+  padding: 1rem;
+}
+.feedback-card {
+  background: white;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+  width: 100%;
+  max-width: 500px;
+}
+.feedback-card h2 {
+  margin: 0 0 0.5rem;
+  font-size: 1.6rem;
+  font-family: "Inter", sans-serif;
+}
+.feedback-card .subtitle {
+  margin: 0 0 1.5rem;
+  color: #666;
+}
+.field {
+  margin-bottom: 1.25rem;
+}
+.rating-field .rating {
+  justify-content: flex-start;
+  gap: 0.5rem;
+  font-size: 1.5rem;
+  color: #e7c61b;
+  cursor: pointer;
+}
+.comment-field textarea {
+  width: 100%;
+  padding: 0.8rem;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  resize: vertical;
+  font-size: 1rem;
+  font-family: inherit;
+}
+.error {
+  color: #c00;
+  margin-bottom: 1rem;
+}
+.feedback-card button {
+  display: block;
+  width: 100%;
+  padding: 0.8rem;
+  background: #e7c61b;
+  color: #111;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: filter 0.2s;
+}
+.feedback-card button:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+.feedback-card button:not(:disabled):hover {
+  filter: brightness(0.9);
+}

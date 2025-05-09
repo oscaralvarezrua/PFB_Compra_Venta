@@ -1,5 +1,4 @@
 //Interactuar con la base de datos
-
 import getPool from "../db/getPool.js";
 //import bcrypt from "bcryptjs";
 import { generateError } from "../utils/helpers.js";
@@ -12,7 +11,7 @@ async function createTransaction(buyerId, buyerName, productId, sellerID) {
     //crear transaccion
     const [result] = await pool.query(
       `INSERT INTO transaction (status, user_id, username, product_id, seller_id)
-            VALUES (?, ?, ?, ?)`,
+            VALUES (?, ?, ?, ?, ?)`,
       ["pending", buyerId, buyerName, productId, sellerID]
     );
 
@@ -27,10 +26,7 @@ async function getTransaction(buyerId, productId) {
   try {
     const pool = await getPool();
 
-    const [result] = await pool.query(
-      `SELECT * FROM transaction WHERE user_id = ? AND product_id = ? AND status = "pending"`,
-      [buyerId, productId]
-    );
+    const [result] = await pool.query(`SELECT * FROM transaction WHERE user_id = ? AND product_id = ? AND status = "pending"`, [buyerId, productId]);
 
     return result[0];
   } catch (e) {
@@ -128,10 +124,7 @@ async function getSellerID(productId) {
   try {
     const pool = await getPool();
 
-    const [result] = await pool.query(
-      `SELECT p.user_id FROM product p WHERE p.id = ? `,
-      [productId]
-    );
+    const [result] = await pool.query(`SELECT p.user_id FROM product p WHERE p.id = ? `, [productId]);
 
     return result[0].user_id;
   } catch (e) {
@@ -144,18 +137,24 @@ async function setTransactionStateModel(transID, status) {
   try {
     const pool = await getPool();
 
-    const [result] = await pool.query(
-      "UPDATE transaction SET status = ? WHERE id = ?",
-      [status, transID]
-    );
+    const [result] = await pool.query("UPDATE transaction SET status = ? WHERE id = ?", [status, transID]);
     if (status === "accepted") {
-      const [productId] = await pool.query(
-        "SELECT product_id FROM transaction WHERE id = ?",
-        [transID]
-      );
+      const [productId] = await pool.query("SELECT product_id FROM transaction WHERE id = ?", [transID]);
 
       setProductAsSoldModel(productId[0].product_id);
     }
+    return result;
+  } catch (e) {
+    console.error("Error al encontrar transacción: ", e);
+    throw generateError("Error al encontrar transacción", 404);
+  }
+}
+
+async function setReviewModel(transID, rating, comment) {
+  try {
+    const pool = await getPool();
+    const [result] = await pool.query("UPDATE transaction SET ratings = ?, comment = ? WHERE id = ?", [rating, comment, transID]);
+
     return result;
   } catch (e) {
     console.error("Error al encontrar transacción: ", e);
@@ -167,10 +166,7 @@ async function isAvailable(product_id) {
   try {
     const pool = await getPool();
 
-    const [result] = await pool.query(
-      "SELECT is_available FROM product WHERE id = ?",
-      [product_id]
-    );
+    const [result] = await pool.query("SELECT is_available FROM product WHERE id = ?", [product_id]);
     return result[0];
   } catch (e) {
     console.error("Error al encontrar producto: ", e);
@@ -178,13 +174,31 @@ async function isAvailable(product_id) {
   }
 }
 
-export {
-  createTransaction,
-  getTransaction,
-  getSellerEmail,
-  getSalesTransactionsModel,
-  getSellerID,
-  setTransactionStateModel,
-  isAvailable,
-  getBuyTransactionsModel,
-};
+async function getTransactionDetails(transactionId) {
+  try {
+    const pool = await getPool();
+
+    const [result] = await pool.query(
+      `SELECT 
+        t.id,
+        t.user_id as buyer_id,
+        t.username as buyer_name,
+        p.name as product_name,
+        u.email as buyer_email,
+        s.username as seller_name
+      FROM transaction t
+      JOIN product p ON t.product_id = p.id
+      JOIN user u ON t.user_id = u.id
+      JOIN user s ON p.user_id = s.id
+      WHERE t.id = ?`,
+      [transactionId]
+    );
+
+    return result[0];
+  } catch (e) {
+    console.error("Error al obtener detalles de la transacción:", e);
+    throw generateError("Error al obtener detalles de la transacción", 404);
+  }
+}
+
+export { createTransaction, getTransaction, getSellerEmail, getSalesTransactionsModel, getSellerID, setTransactionStateModel, isAvailable, getBuyTransactionsModel, setReviewModel, getTransactionDetails };

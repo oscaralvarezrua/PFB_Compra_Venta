@@ -1,16 +1,7 @@
 import nodemailer from "nodemailer";
 import { generateError } from "./helpers.js";
 
-const {
-  SMTP_HOST,
-  SMTP_USER,
-  SMTP_PASSWORD,
-  SMTP_PORT,
-  BACKEND_URL,
-  FRONTEND_URL,
-  SENDERS_EMAIL,
-  COLOR_CODE,
-} = process.env;
+const { SMTP_HOST, SMTP_USER, SMTP_PASSWORD, SMTP_PORT, FRONTEND_URL, SENDERS_EMAIL, COLOR_CODE } = process.env;
 
 // Configuración del transporter de nodemailer
 const transporter = nodemailer.createTransport({
@@ -27,6 +18,15 @@ const transporter = nodemailer.createTransport({
 });
 
 export async function sendMail(email, subject, html) {
+  console.log("=== INICIO DE ENVÍO DE CORREO ===");
+  console.log("Variables de entorno:", {
+    SMTP_HOST,
+    SMTP_PORT,
+    SMTP_USER: SMTP_USER ? "Configurado" : "No configurado",
+    SMTP_PASSWORD: SMTP_PASSWORD ? "Configurado" : "No configurado",
+    SENDERS_EMAIL,
+  });
+
   let options = {
     from: {
       name: "Segunda Tec",
@@ -37,13 +37,25 @@ export async function sendMail(email, subject, html) {
     html,
   };
 
+  console.log("Opciones del correo:", {
+    from: options.from,
+    to: options.to,
+    subject: options.subject,
+  });
+
   try {
+    console.log("Intentando conectar al servidor SMTP...");
     const info = await transporter.sendMail(options);
-    console.log("Correo enviado exitosamente:", info.messageId);
+    console.log("=== CORREO ENVIADO EXITOSAMENTE ===");
+    console.log("MessageId:", info.messageId);
     console.log("Respuesta del servidor:", info.response);
+    return info;
   } catch (e) {
-    console.error("Error real al enviar el email:", e);
-    throw generateError("Error al enviar el email", 500);
+    console.error("=== ERROR AL ENVIAR EL CORREO ===");
+    console.error("Tipo de error:", e.name);
+    console.error("Mensaje de error:", e.message);
+    console.error("Stack completo:", e.stack);
+    throw generateError("Error al enviar el email: " + e.message, 500);
   }
 }
 
@@ -102,12 +114,7 @@ export const sendValidationEmail = async (email, username, validationCode) => {
   }
 };
 
-export async function sendTransactionRequest(
-  sellerEmail,
-  buyerUser,
-  productName,
-  transactionId
-) {
+export async function sendTransactionRequest(sellerEmail, buyerUser, productName) {
   let subject = "Nueva petición de compra";
   /*let text = `El usuario ${buyerUser} quiere comprar tu producto ${productName}.\nHaz click en el siguiente enlace para aceptar o rechazar la transacción:\n${BACKEND_URL}/request?transactionId=${transactionId}`;*/
   let html = `
@@ -166,3 +173,71 @@ export const sendRecoveryEmail = async (email, recoveryCode) => {
     throw new Error("Error al enviar el correo de recuperación");
   }
 };
+
+export async function sendProductRejectionEmail(userEmail, userName, productName) {
+  try {
+    console.log("Iniciando envío de correo de rechazo...");
+    console.log("Configuración SMTP:", {
+      host: SMTP_HOST,
+      apiKeyConfigured: "Sí",
+    });
+
+    const html = `
+      <h1>Hola ${userName},</h1>
+      <p>Tu producto "${productName}" ha sido rechazado por no cumplir las políticas de la web.</p>
+      <p>Motivo: No cumple las políticas de publicación.</p>
+      <p>Por favor, revisa nuestras políticas y vuelve a intentarlo.</p>
+      <p>Saludos,<br>El equipo de Segunda Tec</p>
+    `;
+
+    console.log("Opciones del correo de rechazo:", {
+      to: userEmail,
+      subject: "Tu producto ha sido rechazado",
+    });
+
+    await sendMail(userEmail, "Tu producto ha sido rechazado", html);
+
+    return true;
+  } catch (error) {
+    console.error("Error detallado al enviar el correo de rechazo:", {
+      message: error.message,
+      code: error.code,
+      stack: error.stack,
+    });
+    throw new Error("Error al enviar el correo de rechazo");
+  }
+}
+
+export async function sendPurchaseRejectionEmail(buyerEmail, buyerName, productName, sellerName) {
+  try {
+    console.log("Iniciando envío de correo de rechazo de compra...");
+    console.log("Configuración SMTP:", {
+      host: SMTP_HOST,
+      apiKeyConfigured: "Sí",
+    });
+
+    const html = `
+      <h1>Hola ${buyerName},</h1>
+      <p>Tu solicitud de compra para el producto "<strong>${productName}</strong>" ha sido rechazada por el vendedor ${sellerName}.</p>
+      <p>Motivo: "El vendedor ha rechazado tu solicitud."}</p>
+      <p>Puedes buscar otros productos similares en nuestra plataforma.</p>
+      <p>Saludos,<br>El equipo de Segunda Tec</p>
+    `;
+
+    console.log("Opciones del correo de rechazo de compra:", {
+      to: buyerEmail,
+      subject: "Tu solicitud de compra ha sido rechazada",
+    });
+
+    await sendMail(buyerEmail, "Tu solicitud de compra ha sido rechazada", html);
+
+    return true;
+  } catch (error) {
+    console.error("Error detallado al enviar el correo de rechazo de compra:", {
+      message: error.message,
+      code: error.code,
+      stack: error.stack,
+    });
+    throw new Error("Error al enviar el correo de rechazo de compra");
+  }
+}

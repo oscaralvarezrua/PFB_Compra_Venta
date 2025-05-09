@@ -1,8 +1,4 @@
-import {
-  getProductById,
-  publishProduct,
-  updateProductModel,
-} from "../models/productModels.js";
+import { getProductById, publishProduct, updateProductModel } from "../models/productModels.js";
 import { generateError, savePhoto, deletePhoto } from "../utils/helpers.js";
 import Joi from "joi";
 
@@ -62,15 +58,7 @@ export async function publishProductController(req, res, next) {
 
     const photoUrl = await savePhoto(photo);
 
-    const productId = await publishProduct(
-      name,
-      description,
-      price,
-      photoUrl,
-      locality,
-      userid,
-      category_id
-    );
+    const productId = await publishProduct(name, description, price, photoUrl, locality, userid, category_id);
 
     res.status(201).json({
       status: "OK",
@@ -100,39 +88,26 @@ export async function updateProductController(req, res, next) {
       });
     }
     const productId = req.params.id;
-    const photo = req.files.photo;
+    const photo = req.files?.photo;
     const { name, description, price, locality, category_id } = value;
 
-    if (!name || !price || !locality || !category_id || !photo) {
+    if (!name || !price || !locality || !category_id) {
       throw generateError("Faltan campos obligatorios", 400);
-    }
-    //aseguramos que el archivo es una imagen
-    if (!req.files || !req.files.photo) {
-      return res.status(400).json({
-        status: "error",
-        message: "No se ha subido ninguna foto.",
-      });
     }
 
     //obtenemos el producto actual
     const actualProduct = await getProductById(productId);
+    let photoUrl = actualProduct.photo;
 
-    if (actualProduct.photo) {
-      await deletePhoto(actualProduct.photo);
+    // Solo actualizamos la foto si se proporciona una nueva
+    if (photo) {
+      if (actualProduct.photo) {
+        await deletePhoto(actualProduct.photo);
+      }
+      photoUrl = await savePhoto(photo);
     }
 
-    //guardamos la nueva foto
-    const photoUrl = await savePhoto(photo);
-
-    const updatedProduct = await updateProductModel(
-      productId,
-      name,
-      description,
-      price,
-      locality,
-      photoUrl,
-      category_id
-    );
+    const updatedProduct = await updateProductModel(productId, name, description, price, locality, photoUrl, category_id);
 
     res.send({
       status: "ok",

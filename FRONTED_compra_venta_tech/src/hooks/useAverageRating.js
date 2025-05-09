@@ -12,9 +12,7 @@ export default function useAverageRating() {
     const fetchAverageData = async () => {
       try {
         const response = await fetch(
-          `${
-            import.meta.env.VITE_API_URL
-          }/transactions?type=sales&status=accepted`,
+          `${import.meta.env.VITE_API_URL}/users/info`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -26,13 +24,10 @@ export default function useAverageRating() {
           throw new Error("No existen las transacciones solicitadas");
         }
         const data = await response.json();
-        console.log(data.data);
+        console.log("Raating" + data?.data);
 
-        const ratingTotal = data.data.reduce((acc, transaction) => {
-          return acc + Number(transaction.ratings);
-        }, 0);
-        const count = data.data.length;
-        const ratingAvg = count > 0 ? ratingTotal / count : 0;
+        const count = data.data.stats.total_ratings;
+        const ratingAvg = data.data.stats.average_ratings;
         setNumberOfRatings(count);
         setAverageUserRating(ratingAvg);
       } catch (error) {

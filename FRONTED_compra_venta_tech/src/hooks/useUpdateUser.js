@@ -5,9 +5,11 @@ export default function useUpdateUser() {
   const { token } = useAuth();
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false);
+  const [lastMessage, setLastMessage] = useState(null);
 
   const updateUser = async (formData) => {
     try {
+      console.log("Llamando a updateUser");
       const response = await fetch(`${import.meta.env.VITE_API_URL}/users/update`, {
         method: "POST",
         headers: {
@@ -24,11 +26,13 @@ export default function useUpdateUser() {
 
       setSuccess(true);
       setError(null);
+      setLastMessage(data.message || null);
     } catch (error) {
       setError(error.message);
       setSuccess(false);
+      setLastMessage(null);
     }
   };
 
-  return { error, success, updateUser };
+  return { error, success, updateUser, lastMessage };
 }

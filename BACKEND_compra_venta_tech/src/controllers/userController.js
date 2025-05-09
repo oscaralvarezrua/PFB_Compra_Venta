@@ -1,4 +1,4 @@
-import { createUser, getUserByEmail, getUserByUsername, getUserByPhone, getUserByValidationCode, trustPass, getUserListModel, getUserDetailModel, rateSellerModel, updatePass, getUserInf, userValidation, generateRecoverCode, verifyRecoverCode, updatePassWithRecovery, getUserById, updateUserModel } from "../models/userModels.js";
+import { createUser, getUserByEmail, getUserByUsername, getUserByPhone, getUserByValidationCode, trustPass, getUserListModel, getUserDetailModel, rateSellerModel, updatePass, getUserInf, userValidation, generateRecoverCode, verifyRecoverCode, updatePassWithRecovery, getUserById, updateUserModel, deleteUserModel, updateUserAccountModel } from "../models/userModels.js";
 import Joi from "joi";
 import jwt from "jsonwebtoken";
 import crypto from "crypto";
@@ -68,6 +68,21 @@ const UpdateUserSchema = Joi.object({
     }),
 
   biography: Joi.string().allow("").max(500).optional(),
+});
+
+const UpdateAccountSchema = Joi.object({
+  email: Joi.string().email().required().messages({
+    "string.email": "Debes escribir un email válido.",
+    "any.required": "El campo email es obligatorio",
+  }),
+  phone: Joi.string()
+    .pattern(/^[0-9]{9,15}$/)
+    .required()
+    .messages({
+      "string.pattern.base": "El teléfono debe contener solo números",
+      "any.required": "El campo teléfono es obligatorio.",
+    }),
+  newPassword: Joi.string().allow("").min(10).optional(),
 });
 
 //Control el registro de usuario
@@ -331,9 +346,7 @@ const userLogin = async (req, res, next) => {
     }
 
     //Generar Token
-    const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
-      expiresIn: "1h",
-    });
+    const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET);
 
     res.status(200).json({
       status: "success",
@@ -345,6 +358,7 @@ const userLogin = async (req, res, next) => {
           username: user.username,
           email: user.email,
           avatar: user.avatar,
+          role: user.role,
         },
       },
     });
@@ -559,3 +573,67 @@ export async function rateSellerController(req, res, next) {
     next(e);
   }
 }
+
+export async function deleteUserController(req, res, next) {
+  try {
+    // Solo admin puede eliminar usuarios
+    if (req.user.role !== "admin") {
+      return res.status(403).json({ status: "error", message: "No autorizado" });
+    }
+    const { id } = req.params;
+    await deleteUserModel(id);
+    res.json({ status: "ok", message: "Usuario eliminado" });
+  } catch (e) {
+    next(e);
+  }
+}
+
+export const updateUserAccountController = async (req, res, next) => {
+  try {
+    const { error, value } = UpdateAccountSchema.validate(req.body);
+
+    if (error) {
+      return res.status(400).json({
+        status: "error",
+        message: error.details[0].message,
+      });
+    }
+
+    const { email, phone, newPassword } = value;
+    const userId = req.user.id;
+
+    const oldDataUser = await getUserById(userId);
+
+    // Verifica si el email ya existe en otro usuario
+    if (email !== oldDataUser.email) {
+      const verifyEmail = await getUserByEmail(email);
+      if (verifyEmail) {
+        return res.status(409).json({
+          status: "error",
+          message: "El email no está disponible",
+        });
+      }
+    }
+
+    // Verifica si el teléfono ya existe en otro usuario
+    if (phone !== oldDataUser.phone) {
+      const verifyPhone = await getUserByPhone(phone);
+      if (verifyPhone) {
+        return res.status(409).json({
+          status: "error",
+          message: "El teléfono no está disponible",
+        });
+      }
+    }
+
+    // Actualiza los datos en la base de datos
+    await updateUserAccountModel(userId, email, phone, newPassword);
+
+    res.status(200).json({
+      status: "success",
+      message: "Datos de cuenta actualizados correctamente",
+    });
+  } catch (err) {
+    next(err);
+  }
+};

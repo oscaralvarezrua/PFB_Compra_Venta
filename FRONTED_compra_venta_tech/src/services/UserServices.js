@@ -2,7 +2,6 @@ const { VITE_API_URL } = import.meta.env;
 
 //Llamadas al backend
 export async function loginService(userData) {
-  console.log(userData);
 
   let res = await fetch(VITE_API_URL + "/users/login", {
     method: "POST",

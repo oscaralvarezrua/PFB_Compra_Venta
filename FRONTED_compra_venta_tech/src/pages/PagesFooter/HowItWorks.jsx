@@ -4,6 +4,7 @@ import "../../styles/stylesFooter/HowItWorks.css";
 
 const HowItWorks = () => {
   return (
+    <div className="how-it-works-wrapper">
     <main className="how-it-works-page">
       <h1>¿Cómo funciona SegundaTec?</h1>
 
@@ -42,6 +43,7 @@ const HowItWorks = () => {
         </p>
       </section>
     </main>
+  </div>
   );
 };
 

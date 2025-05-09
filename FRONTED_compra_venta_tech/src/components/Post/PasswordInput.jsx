@@ -9,15 +9,21 @@ export default function PasswordInput({ ...attrs }) {
   }
 
   return (
-    <>
-      <input {...attrs} type={passwordVisible ? "text" : "password"} />
+    <div className="password-container">
+      <input
+        {...attrs}
+        type={passwordVisible ? "text" : "password"}
+      />
       <button
         type="button"
         onClick={togglePasswordVisibility}
         className="eye-button"
       >
-        {passwordVisible ? <img src={eye} /> : <img src={eyeOff} />}
+        <img
+          src={passwordVisible ? eye : eyeOff}
+          alt="Mostrar contraseña"
+        />
       </button>
-    </>
+    </div>
   );
 }

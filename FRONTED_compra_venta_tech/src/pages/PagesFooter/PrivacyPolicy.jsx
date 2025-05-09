@@ -3,6 +3,7 @@ import "../../styles/stylesFooter/PrivacyPolicy.css";
 
 const PrivacyPolicy = () => {
   return (
+    <div className="privacy-policy-wrapper">
     <main className="privacy-policy-page">
       <h1>Política de Privacidad</h1>
       <p>
@@ -25,6 +26,7 @@ const PrivacyPolicy = () => {
         entorno de aprendizaje, no dudes en contactar con nosotros.
       </p>
     </main>
+  </div>
   );
 };
 

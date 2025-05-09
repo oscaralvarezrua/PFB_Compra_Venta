@@ -5,7 +5,7 @@
 }
 
 .login-page {
-  background-color: #FBFAFA;  
+  background: #D9D9D9;
   height: 100%;
   min-height: 100vh;
   display: flex;
@@ -33,6 +33,7 @@
   margin-bottom: 2rem;
   padding-top: 1rem;
   font-size: 1.1rem;
+  font-weight: 600;
 }
 .login-page form ul {
   list-style: none;
@@ -44,26 +45,26 @@
   width: 100%;
   padding: 1rem 0.8rem;
   padding-right: 5rem;
-  border: 3px solid #e7c61b;
+  border: 1.5px solid #e7c61b;
   border-radius: 8px;
   font-size: 1rem;
   box-sizing: border-box;
 }
 
 .login-page .enter-button {
-  width: 100%;
-  padding: 1rem;
-  margin-top: 1.5rem;
+  width: auto;
+  padding: 0.75rem 2rem;
+  margin: 1.5rem auto 0;
+  display: block;
   background-color: #e7c61b;
-  border: 2px solid white;
+  border: 2px solid black;
   border-radius: 30px;
-  font-size: 1.1rem;
+  font-size: 1rem;
   font-weight: bold;
   cursor: pointer;
   box-shadow: 0 3px 0 #FBFAFA;
   transition: all 0.2s ease;
 }
-
 .login-page .forgot-link {
   border: none;
   background: none;
@@ -142,8 +143,8 @@
 
 .login-page .back-button {
   position: absolute;
-  top: 1.34rem;
-  right: 19rem;         
+  top: 1.22rem;
+  right: 19.5rem;         
   background: none;
   border: none;
   padding: 0;
@@ -196,7 +197,7 @@
     margin: 1.5rem 0.7rem 0 auto;    
     border-radius: 20px;
     padding: 0.85em;
-    font-size: 0.7rem;
+    font-size: 0.8rem;
   }
   
   .login-page .forgot-link {

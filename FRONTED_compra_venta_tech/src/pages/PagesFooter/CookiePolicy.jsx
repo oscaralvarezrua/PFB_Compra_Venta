@@ -1,9 +1,9 @@
-//
 import React from "react";
 import "../../styles/stylesFooter/CookiePolicy.css";
 
 const CookiePolicy = () => {
   return (
+  <div className="cookie-policy-wrapper">
     <main className="cookie-policy-page">
       <h1>Política de Cookies</h1>
       <p>
@@ -21,6 +21,7 @@ const CookiePolicy = () => {
         educativo.
       </p>
     </main>
+  </div>
   );
 };
 

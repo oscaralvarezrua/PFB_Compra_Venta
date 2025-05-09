@@ -104,6 +104,8 @@ PUT /products/:id/accept Aceptar un producto por el Administrador
      -    Autenticación obligatoria
      -    Verificación de Administrador
 
+PUT /products/:id/no-accept Volver a poner el producto en revisión cuando se edita un producto por el usuario - Autenticación obligatoria
+
 GET /products/search Búsqueda de productos con filtros
 
           Filtrar por:

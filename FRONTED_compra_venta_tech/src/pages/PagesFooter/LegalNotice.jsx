@@ -3,6 +3,7 @@ import "../../styles/stylesFooter/LegalNotice.css";
 
 const LegalNotice = () => {
   return (
+  <div className="legal-notice-wrapper">
     <main className="legal-notice-page">
       <h1>Aviso Legal</h1>
       <p>
@@ -26,6 +27,7 @@ const LegalNotice = () => {
         responsables del uso indebido del sitio fuera del entorno formativo.
       </p>
     </main>
+  </div>
   );
 };
 
