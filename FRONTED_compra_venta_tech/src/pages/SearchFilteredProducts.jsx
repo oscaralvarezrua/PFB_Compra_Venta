@@ -1,3 +1,4 @@
+
 // Página de Filtros y Ordenaciones de productos
 import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -5,6 +6,12 @@ import "../styles/SearchFilteredProducts.css";
 import ApiImage from "../components/Post/ApiImage";
 
 const { VITE_API_URL } = import.meta.env;
+
+const ciudades = [
+  "Madrid", "Barcelona", "Valencia", "Sevilla", "Zaragoza",
+  "Málaga", "Murcia", "Salamanca", "Bilbao", "Alicante",
+  "Granada", "Vigo", "Oviedo", "Toledo"
+];
 
 const SearchFilteredProducts = () => {
   const location = useLocation();
@@ -23,10 +30,22 @@ const SearchFilteredProducts = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(false);
   const [feedback, setFeedback] = useState({ message: "", type: "" });
+  const [showSuggestions, setShowSuggestions] = useState(false);
 
   useEffect(() => {
     const searchParams = new URLSearchParams(location.search);
     const hasFilters = [...searchParams.entries()].length > 0;
+
+    const newFilters = {
+      name: searchParams.get("name") || "",
+      locality: searchParams.get("locality") || "",
+      category_id: searchParams.get("category_id") || "",
+      min_price: searchParams.get("min_price") || "",
+      max_price: searchParams.get("max_price") || "",
+      order_by: searchParams.get("order_by") || "",
+      order_direction: searchParams.get("order_direction") || "asc",
+    };
+    setFilters(newFilters);
 
     if (!hasFilters) {
       setProducts([]);
@@ -39,13 +58,10 @@ const SearchFilteredProducts = () => {
       setFeedback({ message: "", type: "" });
 
       try {
-        const res = await fetch(
-          `${VITE_API_URL}/products/search${location.search}`
-        );
+        const res = await fetch(`${VITE_API_URL}/products/search${location.search}`);
         const data = await res.json();
 
-        if (!res.ok)
-          throw new Error(data.message || "Error al obtener productos");
+        if (!res.ok) throw new Error(data.message || "Error al obtener productos");
 
         if (data.data.length === 0) {
           setProducts([]);
@@ -55,6 +71,7 @@ const SearchFilteredProducts = () => {
           });
         } else {
           setProducts(data.data);
+          setFeedback({ message: "", type: "" });
         }
       } catch (error) {
         console.error("Error al obtener productos filtrados:", error);
@@ -105,6 +122,8 @@ const SearchFilteredProducts = () => {
     navigate(`/producto/${id}`);
   };
 
+  if (loading) return <p>Cargando productos...</p>;
+
   return (
     <div className="filtered-products-page">
       <h2 className="title">Buscar productos</h2>
@@ -117,13 +136,42 @@ const SearchFilteredProducts = () => {
           value={filters.name}
           onChange={handleChange}
         />
-        <input
-          type="text"
-          name="locality"
-          placeholder="Localidad"
-          value={filters.locality}
-          onChange={handleChange}
-        />
+
+        <div className="input-suggestions-wrapper">
+          <input
+            type="text"
+            name="locality"
+            placeholder="Escribe tu ciudad"
+            value={filters.locality}
+            onChange={(e) => {
+              handleChange(e);
+              setShowSuggestions(true);
+            }}
+            onFocus={() => setShowSuggestions(true)}
+            onBlur={() => setTimeout(() => setShowSuggestions(false), 100)}
+            autoComplete="off"
+          />
+          {showSuggestions && filters.locality && (
+            <ul className="suggestions">
+              {ciudades
+                .filter((city) =>
+                  city.toLowerCase().includes(filters.locality.toLowerCase())
+                )
+                .map((city) => (
+                  <li
+                    key={city}
+                    onClick={() => {
+                      setFilters({ ...filters, locality: city });
+                      setShowSuggestions(false);
+                    }}
+                  >
+                    {city}
+                  </li>
+                ))}
+            </ul>
+          )}
+        </div>
+
         <input
           type="number"
           name="min_price"
@@ -132,6 +180,7 @@ const SearchFilteredProducts = () => {
           value={filters.min_price}
           onChange={handleChange}
         />
+
         <input
           type="number"
           name="max_price"
@@ -141,11 +190,7 @@ const SearchFilteredProducts = () => {
           onChange={handleChange}
         />
 
-        <select
-          name="order_by"
-          value={filters.order_by}
-          onChange={handleChange}
-        >
+        <select name="order_by" value={filters.order_by} onChange={handleChange}>
           <option value="">Ordenar por...</option>
           <option value="name">Nombre</option>
           <option value="price">Precio</option>
@@ -153,11 +198,7 @@ const SearchFilteredProducts = () => {
           <option value="created_at">Novedades</option>
         </select>
 
-        <select
-          name="order_direction"
-          value={filters.order_direction}
-          onChange={handleChange}
-        >
+        <select name="order_direction" value={filters.order_direction} onChange={handleChange}>
           <option value="asc">Ascendente</option>
           <option value="desc">Descendente</option>
         </select>
@@ -168,40 +209,33 @@ const SearchFilteredProducts = () => {
         </button>
       </form>
 
-      {feedback.message && (
-        <p className={`feedback-message ${feedback.type}`}>
-          {feedback.message}
-        </p>
-      )}
+      {feedback.message && <p className={`feedback-message ${feedback.type}`}>{feedback.message}</p>}
 
-      {products.length > 0 && (
+      {!loading && (
         <>
           <h2 className="title">Resultados</h2>
-          {loading && <p className="loading">Cargando productos...</p>}
-          <div className="results-container">
-            <ul className="product-list">
-              {products.map((prod) => (
-                <li
-                  key={prod.id}
-                  className="product-item"
-                  onClick={() => goToDetail(prod.id)}
-                >
-                  <div className="product-preview">
-                    <div className="product-img-wrapper">
-                      <ApiImage name={prod.photo} alt={prod.name} />
+          {products.length === 0 ? (
+            <p>No hay productos que coincidan con los filtros.</p>
+          ) : (
+            <div className="results-container">
+              <ul className="product-list">
+                {products.map((prod) => (
+                  <li key={prod.id} className="product-item" onClick={() => goToDetail(prod.id)}>
+                    <div className="product-preview">
+                      <div className="product-img-wrapper">
+                        <ApiImage name={prod.photo} alt={prod.name} />
+                      </div>
+                      <div className="product-text">
+                        <h3>{prod.name}</h3>
+                        <p>{prod.description}</p>
+                        <p>{prod.price} € - {prod.locality}</p>
+                      </div>
                     </div>
-                    <div className="product-text">
-                      <h3>{prod.name}</h3>
-                      <p>{prod.description}</p>
-                      <p>
-                        {prod.price} € - {prod.locality}
-                      </p>
-                    </div>
-                  </div>
-                </li>
-              ))}
-            </ul>
-          </div>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
         </>
       )}
     </div>

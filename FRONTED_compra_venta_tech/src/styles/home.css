@@ -30,7 +30,7 @@
   margin-bottom: 1.5rem;
 }
 
-.novedades-btn {
+/*.novedades-btn {
   background-color: #e7c61b;
   color: black;
   font-weight: bold;
@@ -46,7 +46,7 @@
   color: #e7c61b;
   border-radius: 9999px;
   border-color: #e7c61b;
-}
+}*/
 
 /* Estilos de la sección de Más buscados */
 .buscados-title {
@@ -136,6 +136,31 @@
   right: 10px;
 }
 
+/*Botón filtros*//*desde aquí*/
+.filtros-btn-wrapper {
+  text-align: center;
+  margin: 2rem 0 3rem;
+}
+
+.go-to-filters-btn {
+  padding: 1rem 2rem;
+  background-color: #e7c61b;
+  border: 2px solid #000;
+  color: #000;
+  font-weight: bold;
+  font-size: 1.1rem;
+  border-radius: 40px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.go-to-filters-btn:hover {
+  background-color: #000;
+  color: #e7c61b;
+  border-color: #e7c61b;
+}
+/*hasta aqui*/
 /* Responsive */
 @media (max-width: 780px) {
   .novedades-title,
