@@ -1,5 +1,19 @@
-import { sendTransactionRequest, sendPurchaseRejectionEmail } from "../utils/emailConfig.js";
-import { getTransaction, createTransaction, getSellerEmail, getSalesTransactionsModel, getSellerID, setTransactionStateModel, isAvailable, getBuyTransactionsModel, setReviewModel, getTransactionDetails } from "../models/transactionModels.js";
+import {
+  sendTransactionRequest,
+  sendPurchaseRejectionEmail,
+} from "../utils/emailConfig.js";
+import {
+  getTransaction,
+  createTransaction,
+  getSellerEmail,
+  getSalesTransactionsModel,
+  getSellerID,
+  setTransactionStateModel,
+  isAvailable,
+  getBuyTransactionsModel,
+  setReviewModel,
+  getTransactionDetails,
+} from "../models/transactionModels.js";
 
 export async function initTransactionController(req, res, next) {
   try {
@@ -15,7 +29,8 @@ export async function initTransactionController(req, res, next) {
     if (verifyTransaction) {
       return res.status(409).json({
         status: "error",
-        message: "Ya existe una transacción abierta con tu usuario y el producto seleccionado",
+        message:
+          "Ya existe una transacción abierta con tu usuario y el producto seleccionado",
       });
     }
 
@@ -35,12 +50,22 @@ export async function initTransactionController(req, res, next) {
     }
 
     //Iniciamos proceso de compra
-    const transID = await createTransaction(buyerId, buyerName, productId, sellerID);
+    const transID = await createTransaction(
+      buyerId,
+      buyerName,
+      productId,
+      sellerID
+    );
 
     //enviamos petición por email
     const sellerEmail = await getSellerEmail(productId);
 
-    sendTransactionRequest(sellerEmail, req.user.username, productName, transID.insertId);
+    sendTransactionRequest(
+      sellerEmail,
+      req.user.username,
+      productName,
+      transID.insertId
+    );
 
     res.status(201).json({
       status: "success",
@@ -95,7 +120,7 @@ export async function setTransactionState(req, res, next) {
   try {
     const transID = Number(req.params.id);
     const status = req.body.status;
-    const reason = req.body || "El vendedor ha rechazado tu solicitud";
+    const reason = req.body.reason || "El vendedor ha rechazado tu solicitud";
     const transaction = await setTransactionStateModel(transID, status);
 
     if (transaction.affectedRows === 0) {
@@ -110,14 +135,21 @@ export async function setTransactionState(req, res, next) {
         const transactionDetails = await getTransactionDetails(transID);
 
         if (transactionDetails) {
-          await sendPurchaseRejectionEmail(transactionDetails.buyer_email, transactionDetails.buyer_name, transactionDetails.product_name, transactionDetails.seller_name, reason);
+          await sendPurchaseRejectionEmail(
+            transactionDetails.buyer_email,
+            transactionDetails.buyer_name,
+            transactionDetails.product_name,
+            transactionDetails.seller_name,
+            reason
+          );
         }
       } catch (emailError) {
         console.error("Error al enviar correo de rechazo:", emailError);
 
         return res.json({
           status: "success",
-          message: "Transacción rechazada pero no se pudo enviar la notificación",
+          message:
+            "Transacción rechazada pero no se pudo enviar la notificación",
           error: emailError.message,
         });
       }

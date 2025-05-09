@@ -7,6 +7,7 @@ export default function useTransactionData(type) {
   const [tSalesFinishedData, setSalesFinishedData] = useState([]);
   const [tBuysPendingData, setBuysPendingData] = useState([]);
   const [tBuysFinishedData, setBuysFinishedData] = useState([]);
+  const [tBuysCancelledData, setBuysCancelledData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -24,6 +25,9 @@ export default function useTransactionData(type) {
         break;
       case "buys-accepted":
         url = "/transactions?type=buys&status=accepted";
+        break;
+      case "buys-cancelled":
+        url = "/transactions?type=buys&status=cancelled";
         break;
       default:
         console.warn(`Tipo de transacción desconocida: ${type}`);
@@ -62,6 +66,9 @@ export default function useTransactionData(type) {
         case "buys-accepted":
           setBuysFinishedData(data.data);
           break;
+        case "buys-cancelled":
+          setBuysCancelledData(data.data);
+          break;
       }
     } catch (error) {
       setError(error.message);
@@ -79,6 +86,7 @@ export default function useTransactionData(type) {
     tSalesFinishedData,
     tBuysPendingData,
     tBuysFinishedData,
+    tBuysCancelledData,
     loading,
     error,
     reload: fetchTransData,
