@@ -108,7 +108,7 @@
 /* Extra responsive para móviles pequeños */
 @media (max-width: 480px) {
   .logo-img {
-    height: 35px;
+    height: 50px;
   }
 
   .footer-logo {
@@ -133,4 +133,13 @@
   .footer-link {
     font-size: 0.8em;
   }
+}
+
+.product-slider {
+  max-width: 900px;   
+  margin: 0 auto;      
+}
+
+.home-section {
+  align-items: center; 
 }

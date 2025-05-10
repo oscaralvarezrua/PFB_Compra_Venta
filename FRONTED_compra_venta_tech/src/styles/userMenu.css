@@ -2,7 +2,7 @@
   display: flex;
   flex-direction: row;
   align-items: stretch;
-  min-height: calc(100vh - 4rem - 2rem); /*Para solucionar línea lateral*/
+  min-height: calc(100dvh - 4rem - 2rem);
   border-top: 1px solid #605f5f;
 }
 aside.sidebar {

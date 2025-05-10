@@ -1,88 +1,76 @@
 import React, { useState, useEffect } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, Link } from "react-router-dom";
+import { getProducts } from "../services/ProductServices";
+import ApiImage from "../components/Post/ApiImage";
 import "../styles/SearchResults.css";
-
-const { VITE_API_URL } = import.meta.env;
 
 const SearchResults = () => {
   const location = useLocation();
-  const navigate = useNavigate();
-  const [products, setProducts] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const query = new URLSearchParams(location.search).get("query");
+
+  const [results, setResults] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    const searchParams = new URLSearchParams(location.search);
-    const query = searchParams.get("query");
+    const fetchResults = async () => {
+      if (!query) {
+        setResults([]);
+        return;
+      }
 
-    if (!query) {
-      setProducts([]);
-      return;
-    }
+      setIsLoading(true);
+      setError(null);
 
-    const fetchProducts = async () => {
       try {
-        const res = await fetch(
-          `${VITE_API_URL}/products/search?query=${query}`
-        );
-        const data = await res.json();
-
-        if (res.ok) {
-          setProducts(data.data);
-        } else {
-          setProducts([]);
-        }
-      } catch (err) {
-        console.error("Error cargando productos:", err);
-        setProducts([]);
+        const products = await getProducts();
+        const filteredResults = products.filter((product) => product.name.toLowerCase().includes(query.toLowerCase()) || product.description.toLowerCase().includes(query.toLowerCase()));
+        setResults(filteredResults);
+      } catch (error) {
+        console.error("Error al buscar productos:", error);
+        setError("Error al cargar los resultados de búsqueda");
       } finally {
-        setLoading(false);
+        setIsLoading(false);
       }
     };
 
-    fetchProducts();
-  }, [location.search]);
+    fetchResults();
+  }, [query]);
 
-  async function goToDetail(id) {
-    try {
-      await fetch(VITE_API_URL + "/products/" + id + "/addvisit", {
-        method: "PUT",
-      });
-      navigate(`/producto/${id}`);
-    } catch (error) {
-      console.error("Error al incrementar las visitas:", error);
-    }
+  if (isLoading) {
+    return <div className="search-results-loading">Buscando productos...</div>;
   }
 
-  if (loading)
-    return <p className="search-results-loading">Cargando productos...</p>;
+  if (error) {
+    return <div className="search-results-error">{error}</div>;
+  }
+
+  if (!query) {
+    return null;
+  }
 
   return (
     <div className="search-results">
-      <h2>Resultados de búsqueda</h2>
-      <div className="results-grid">
-        {products.map((prod) => (
-          <div
-            key={prod.id}
-            className="product-card"
-            onClick={() => goToDetail(prod.id)}
-          >
-            <div className="product-image-wrapper">
-              <img
-                src={`${VITE_API_URL}/uploads/${prod.photo}`}
-                alt={prod.name}
-              />
-            </div>
-            <div className="product-info">
-              <h3>{prod.name}</h3>
-              <p>{prod.description}</p>
-              <p className="product-price">{prod.price} €</p>
-              <p>📍 {prod.locality}</p>
-            </div>
-          </div>
-        ))}
-      </div>
+      <h2>Resultados para: "{query}"</h2>
+      {results.length === 0 ? (
+        <p className="no-results">No se encontraron productos que coincidan con tu búsqueda.</p>
+      ) : (
+        <div className="results-grid">
+          {results.map((product) => (
+            <Link to={`/producto/${product.id}`} key={product.id} className="product-link">
+              <div className="product-card">
+                <ApiImage name={product.photo} alt={product.name} className="product-image" />
+                <h3>{product.name}</h3>
+                <p className="product-price">{product.price} €</p>
+                <p className="product-location">{product.locality}</p>
+              </div>
+            </Link>
+          ))}
+        </div>
+      )}
     </div>
   );
 };
 
 export default SearchResults;
+
