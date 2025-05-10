@@ -21,7 +21,9 @@ const SearchResults = () => {
 
     const fetchProducts = async () => {
       try {
-        const res = await fetch(`${VITE_API_URL}/products/search?query=${query}`);
+        const res = await fetch(
+          `${VITE_API_URL}/products/search?query=${query}`
+        );
         const data = await res.json();
 
         if (res.ok) {
@@ -40,18 +42,35 @@ const SearchResults = () => {
     fetchProducts();
   }, [location.search]);
 
-  const goToDetail = (id) => navigate(`/producto/${id}`);
+  async function goToDetail(id) {
+    try {
+      await fetch(VITE_API_URL + "/products/" + id + "/addvisit", {
+        method: "PUT",
+      });
+      navigate(`/producto/${id}`);
+    } catch (error) {
+      console.error("Error al incrementar las visitas:", error);
+    }
+  }
 
-  if (loading) return <p className="search-results-loading">Cargando productos...</p>;
+  if (loading)
+    return <p className="search-results-loading">Cargando productos...</p>;
 
   return (
     <div className="search-results">
       <h2>Resultados de búsqueda</h2>
       <div className="results-grid">
         {products.map((prod) => (
-          <div key={prod.id} className="product-card" onClick={() => goToDetail(prod.id)}>
+          <div
+            key={prod.id}
+            className="product-card"
+            onClick={() => goToDetail(prod.id)}
+          >
             <div className="product-image-wrapper">
-              <img src={`${VITE_API_URL}/uploads/${prod.photo}`} alt={prod.name} />
+              <img
+                src={`${VITE_API_URL}/uploads/${prod.photo}`}
+                alt={prod.name}
+              />
             </div>
             <div className="product-info">
               <h3>{prod.name}</h3>

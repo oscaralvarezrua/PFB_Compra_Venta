@@ -116,29 +116,28 @@ const UserProfile = () => {
 
           <div className="ratings-list">
             {stats.total_ratings > 0 ? (
-              <div>
+              <ul className="ratings-ul">
                 {salesList
                   ?.filter((sale) => sale.ratings)
                   .map((sale) => (
                     <li key={sale.transaction_id} className="request-item">
                       <div className="request-text">
-                        <p>{sale.producto} </p>
+                        <p>
+                          <strong>Producto:</strong>{" "}
+                        </p>
+                        <p>{sale.producto}</p>
                       </div>
-                      <div className="request-text">
+                      <div className="request-rating">
                         <p>
                           <strong>Valoración</strong>{" "}
                         </p>
-                        <Rating
-                          className="rating"
-                          value={sale.ratings}
-                          count={sale.ratings}
-                        />
+                        <Rating className="rating" value={sale.ratings} />
                         <p>{sale.comment} </p>
                       </div>
                       <div></div>
                     </li>
                   ))}
-              </div>
+              </ul>
             ) : (
               <p>No hay valoraciones aún</p>
             )}
@@ -158,6 +157,9 @@ const UserProfile = () => {
                     />
                   </div>
                   <div className="request-text">
+                    <p>
+                      <strong>Nombre:</strong>{" "}
+                    </p>
                     <p>{sale.producto} </p>
                   </div>
                 </li>
@@ -176,9 +178,15 @@ const UserProfile = () => {
                     />
                   </div>
                   <div className="request-text">
+                    <p>
+                      <strong>Nombre:</strong>{" "}
+                    </p>
                     <p>{prod.name} </p>
                   </div>
                   <div className="request-text">
+                    <p>
+                      <strong>Precio:</strong>{" "}
+                    </p>
                     <p>{prod.price} €</p>
                   </div>
                 </li>
@@ -197,6 +205,9 @@ const UserProfile = () => {
                     />
                   </div>
                   <div className="request-text">
+                    <p>
+                      <strong>Nombre:</strong>{" "}
+                    </p>
                     <p>{buy.producto} </p>
                   </div>
 
