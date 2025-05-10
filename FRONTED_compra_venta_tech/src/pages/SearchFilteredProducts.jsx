@@ -7,9 +7,20 @@ import ApiImage from "../components/Post/ApiImage";
 const { VITE_API_URL } = import.meta.env;
 
 const ciudades = [
-  "Madrid", "Barcelona", "Valencia", "Sevilla", "Zaragoza",
-  "Málaga", "Murcia", "Salamanca", "Bilbao", "Alicante",
-  "Granada", "Vigo", "Oviedo", "Toledo"
+  "Madrid",
+  "Barcelona",
+  "Valencia",
+  "Sevilla",
+  "Zaragoza",
+  "Málaga",
+  "Murcia",
+  "Salamanca",
+  "Bilbao",
+  "Alicante",
+  "Granada",
+  "Vigo",
+  "Oviedo",
+  "Toledo",
 ];
 
 const SearchFilteredProducts = () => {
@@ -57,10 +68,13 @@ const SearchFilteredProducts = () => {
       setFeedback({ message: "", type: "" });
 
       try {
-        const res = await fetch(`${VITE_API_URL}/products/search${location.search}`);
+        const res = await fetch(
+          `${VITE_API_URL}/products/search${location.search}`
+        );
         const data = await res.json();
 
-        if (!res.ok) throw new Error(data.message || "Error al obtener productos");
+        if (!res.ok)
+          throw new Error(data.message || "Error al obtener productos");
 
         if (data.data.length === 0) {
           setProducts([]);
@@ -117,9 +131,16 @@ const SearchFilteredProducts = () => {
     navigate("/");
   };
 
-  const goToDetail = (id) => {
-    navigate(`/producto/${id}`);
-  };
+  async function goToDetail(id) {
+    try {
+      await fetch(VITE_API_URL + "/products/" + id + "/addvisit", {
+        method: "PUT",
+      });
+      navigate(`/producto/${id}`);
+    } catch (error) {
+      console.error("Error al incrementar las visitas:", error);
+    }
+  }
 
   if (loading) return <p>Cargando productos...</p>;
 
@@ -189,7 +210,11 @@ const SearchFilteredProducts = () => {
           onChange={handleChange}
         />
 
-        <select name="order_by" value={filters.order_by} onChange={handleChange}>
+        <select
+          name="order_by"
+          value={filters.order_by}
+          onChange={handleChange}
+        >
           <option value="">Ordenar por...</option>
           <option value="name">Nombre</option>
           <option value="price">Precio</option>
@@ -197,7 +222,11 @@ const SearchFilteredProducts = () => {
           <option value="created_at">Novedades</option>
         </select>
 
-        <select name="order_direction" value={filters.order_direction} onChange={handleChange}>
+        <select
+          name="order_direction"
+          value={filters.order_direction}
+          onChange={handleChange}
+        >
           <option value="asc">Ascendente</option>
           <option value="desc">Descendente</option>
         </select>
@@ -208,7 +237,11 @@ const SearchFilteredProducts = () => {
         </button>
       </form>
 
-      {feedback.message && <p className={`feedback-message ${feedback.type}`}>{feedback.message}</p>}
+      {feedback.message && (
+        <p className={`feedback-message ${feedback.type}`}>
+          {feedback.message}
+        </p>
+      )}
 
       {!loading && (
         <>
@@ -219,7 +252,11 @@ const SearchFilteredProducts = () => {
             <div className="results-container">
               <ul className="product-list">
                 {products.map((prod) => (
-                  <li key={prod.id} className="product-item" onClick={() => goToDetail(prod.id)}>
+                  <li
+                    key={prod.id}
+                    className="product-item"
+                    onClick={() => goToDetail(prod.id)}
+                  >
                     <div className="product-preview">
                       <div className="product-img-wrapper">
                         <ApiImage name={prod.photo} alt={prod.name} />
@@ -227,7 +264,9 @@ const SearchFilteredProducts = () => {
                       <div className="product-text">
                         <h3>{prod.name}</h3>
                         <p>{prod.description}</p>
-                        <p>{prod.price} € - {prod.locality}</p>
+                        <p>
+                          {prod.price} € - {prod.locality}
+                        </p>
                       </div>
                     </div>
                   </li>

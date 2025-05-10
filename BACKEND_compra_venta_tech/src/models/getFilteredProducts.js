@@ -24,8 +24,10 @@ export async function getFilteredProducts(filters, isAdmin) {
   }
 
   if (filters.category_id) {
-    query += ` AND category_id = ?`;
-    values.push(filters.category_id);
+    const categories = filters.category_id.split(",");
+    const placeholders = categories.map(() => "?").join(", ");
+    query += ` AND category_id IN (${placeholders})`;
+    values.push(...categories);
   }
 
   if (filters.locality) {
@@ -51,7 +53,6 @@ export async function getFilteredProducts(filters, isAdmin) {
       query += ` ORDER BY ${filters.order_by} ${direction}`;
     }
   }
-
   const [products] = await pool.query(query, values);
   return products;
 }

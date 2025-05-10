@@ -55,6 +55,7 @@ export default function CategoryProducts() {
         url += `&${key}=${value}`;
       }
     });
+    console.log(url);
 
     fetch(url)
       .then((res) => res.json())
@@ -116,9 +117,16 @@ export default function CategoryProducts() {
     navigate("/");
   };
 
-  const goToDetail = (id) => {
-    navigate(`/producto/${id}`);
-  };
+  async function goToDetail(id) {
+    try {
+      await fetch(VITE_API_URL + "/products/" + id + "/addvisit", {
+        method: "PUT",
+      });
+      navigate(`/producto/${id}`);
+    } catch (error) {
+      console.error("Error al incrementar las visitas:", error);
+    }
+  }
 
   if (loading) return <p>Cargando productos...</p>;
 
@@ -127,12 +135,42 @@ export default function CategoryProducts() {
       <h2 className="title">Productos de la categoría</h2>
 
       <form onSubmit={handleSubmit} className="filters-form">
-        <input type="text" name="name" placeholder="Nombre del producto" value={filters.name} onChange={handleChange} />
-        <input type="text" name="locality" placeholder="Localidad" value={filters.locality} onChange={handleChange} />
-        <input type="number" name="min_price" placeholder="Precio mínimo" min="0" value={filters.min_price} onChange={handleChange} />
-        <input type="number" name="max_price" placeholder="Precio máximo" min="0" value={filters.max_price} onChange={handleChange} />
+        <input
+          type="text"
+          name="name"
+          placeholder="Nombre del producto"
+          value={filters.name}
+          onChange={handleChange}
+        />
+        <input
+          type="text"
+          name="locality"
+          placeholder="Localidad"
+          value={filters.locality}
+          onChange={handleChange}
+        />
+        <input
+          type="number"
+          name="min_price"
+          placeholder="Precio mínimo"
+          min="0"
+          value={filters.min_price}
+          onChange={handleChange}
+        />
+        <input
+          type="number"
+          name="max_price"
+          placeholder="Precio máximo"
+          min="0"
+          value={filters.max_price}
+          onChange={handleChange}
+        />
 
-        <select name="order_by" value={filters.order_by} onChange={handleChange}>
+        <select
+          name="order_by"
+          value={filters.order_by}
+          onChange={handleChange}
+        >
           <option value="">Ordenar por...</option>
           <option value="name">Nombre</option>
           <option value="price">Precio</option>
@@ -140,7 +178,11 @@ export default function CategoryProducts() {
           <option value="created_at">Novedades</option>
         </select>
 
-        <select name="order_direction" value={filters.order_direction} onChange={handleChange}>
+        <select
+          name="order_direction"
+          value={filters.order_direction}
+          onChange={handleChange}
+        >
           <option value="asc">Ascendente</option>
           <option value="desc">Descendente</option>
         </select>
@@ -151,7 +193,11 @@ export default function CategoryProducts() {
         </button>
       </form>
 
-      {feedback.message && <p className={`feedback-message ${feedback.type}`}>{feedback.message}</p>}
+      {feedback.message && (
+        <p className={`feedback-message ${feedback.type}`}>
+          {feedback.message}
+        </p>
+      )}
 
       {loading && <p className="loading">Cargando productos...</p>}
 
@@ -164,7 +210,11 @@ export default function CategoryProducts() {
             <div className="results-container">
               <ul className="product-list">
                 {products.map((prod) => (
-                  <li key={prod.id} className="product-item" onClick={() => goToDetail(prod.id)}>
+                  <li
+                    key={prod.id}
+                    className="product-item"
+                    onClick={() => goToDetail(prod.id)}
+                  >
                     <div className="product-preview">
                       <div className="product-img-wrapper">
                         <ApiImage name={prod.photo} alt={prod.name} />

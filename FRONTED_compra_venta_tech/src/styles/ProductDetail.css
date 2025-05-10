@@ -1,6 +1,7 @@
 .product-detail-page {
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  align-items: center;
   padding: 2rem 1rem;
   background-color: #f9f9f9;
 }
@@ -83,7 +84,7 @@
 }
 
 .seller-header {
-  grid-column: 1 / -1; /* ocupa ambas columnas */
+  grid-column: 1 / -1;
   display: flex;
   align-items: center;
   gap: 1rem;
@@ -103,7 +104,8 @@
 .seller-details {
   display: flex;
   flex-direction: column;
-  gap: 0.25rem;
+
+  padding-left: 1rem;
 }
 
 .seller-details strong {
@@ -114,9 +116,49 @@
 .seller-details .stars {
   display: flex;
 }
+.review-count {
+  text-decoration: underline;
+}
 
-.seller-details .stars span {
-  margin-right: 2px;
+.product-top-info {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 8rem;
+}
+.visits {
+  display: flex;
+  flex-direction: column;
+  padding-top: 2rem;
+  align-items: center;
+}
+.visits-icon {
+  height: auto;
+}
+.visits-count {
+  padding-left: 0.2rem;
+}
+
+.product-top-info img {
+  width: 1.5rem;
+  height: auto;
+  margin-left: 0.25rem;
+  position: relative;
+  top: -0.25em;
+  z-index: 1;
+}
+
+.seller-details .sales-and-reviews {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1.1rem;
+  color: #313030;
+  padding-top: 0.4rem;
+}
+.seller-details .sales-and-reviews .review-count {
+  color: #e7c61b;
+  font-weight: 600;
 }
 
 .feedback-message {
@@ -131,6 +173,15 @@
 
 .feedback-message.error {
   color: red;
+}
+
+.seller-header .user-link {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: inherit;
+}
+.submit-message {
 }
 
 /* Responsive: una sola columna en móviles */

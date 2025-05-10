@@ -2,7 +2,7 @@ import React from "react";
 import { FaStar, FaStarHalfAlt, FaRegStar } from "react-icons/fa";
 import "./Rating.css";
 
-export default function Rating({ value = 0, count = 0 }) {
+export default function Rating({ value = 0, count = null }) {
   const stars = [];
   for (let i = 1; i <= 5; i++) {
     if (i <= Math.floor(value)) {
@@ -17,10 +17,12 @@ export default function Rating({ value = 0, count = 0 }) {
   return (
     <div className="rating">
       <span className="stars">{stars}</span>
-      <span className="count">
-        {" "}
-        {count} valorac{count === 1 ? "ión" : "iones"}
-      </span>
+      {count && (
+        <span className="count">
+          {" "}
+          {count} valorac{count === 1 ? "ión" : "iones"}
+        </span>
+      )}
     </div>
   );
 }

@@ -2,12 +2,13 @@
 
 import "../styles/ProductDetail.css"; // Estilos separados
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import ApiImage from "../components/Post/ApiImage";
 import { useAuth } from "../hooks/useAuth";
 import { useNavigate } from "react-router-dom";
+import Rating from "../components/Rating/Rating";
 
-const { VITE_API_URL } = import.meta.env;
+const { VITE_API_URL, VITE_USER_ICON } = import.meta.env;
 console.log("VITE_API_URL:", VITE_API_URL);
 const ProductDetail = () => {
   const { token } = useAuth();
@@ -35,7 +36,7 @@ const ProductDetail = () => {
     };
 
     fetchProduct();
-  }, [productId]);
+  }, [productId, product?.visits]);
 
   const handleClickBuy = async (id, name) => {
     if (!token) {
@@ -80,52 +81,46 @@ const ProductDetail = () => {
     <div className="product-detail-page">
       <div className="product-detail-card">
         <div className="seller-header">
-          <img
-            src={
-              product.seller_avatar
-                ? `${VITE_API_URL}/uploads/${product.seller_avatar}`
-                : "/default-avatar.png"
-            }
-            alt={product.seller_name}
-            className="seller-avatar"
-          />
-          <div>
-            <strong>
-              <a
-                href={`/usuarios/${product.seller_id}`}
-                style={{ color: "#222", textDecoration: "none" }}
-              >
-                {product.seller_name}
-              </a>
-            </strong>
-            <div>
-              {Array.from({ length: 5 }).map((_, i) => (
-                <span
-                  key={i}
-                  style={{
-                    color:
-                      i < Math.round(product.avg_rating) ? "#e7c61b" : "#ccc",
-                  }}
-                >
-                  ★
+          <Link to={`/usuarios/${product.seller_id}`} className="user-link">
+            <ApiImage
+              name={
+                product?.seller_avatar ? product?.seller_avatar : VITE_USER_ICON
+              }
+              alt=""
+              className="seller-avatar"
+            />
+            <div className="seller-details">
+              <strong>{product.seller_name}</strong>
+              <div>
+                <Rating className="rating" value={product.avg_rating} />
+              </div>
+              <div className="sales-and-reviews">
+                <span>{product.sales_count} ventas </span>
+                <span className="review-count">
+                  {product.reviews_count} valoracion
+                  {product.reviews_count !== 1 ? "es" : ""}
                 </span>
-              ))}
+              </div>
             </div>
-            <span>{product.sales_count} ventas</span>
-            <a
-              href={`/usuarios/${product.seller_id}`}
-              style={{ color: "#e7c61b", marginLeft: 8 }}
-            >
-              {product.reviews_count} valoracion
-              {product.reviews_count !== 1 ? "es" : ""}
-            </a>
-          </div>
+          </Link>
         </div>
+
         <div className="product-detail-image">
           <ApiImage name={product.photo} alt={product.name} />
         </div>
         <div className="product-detail-info">
-          <p className="price">{product.price} €</p>
+          <div className="product-top-info">
+            <p className="price">{product.price} €</p>
+            <div className="visits">
+              <img
+                src="/src/assets/eye.png"
+                alt="visitas"
+                className="visits-icon"
+              />
+              <span className="visits-count">{product.visits}</span>
+            </div>
+          </div>
+
           <h2>{product.name}</h2>
           <p className="description">{product.description}</p>
           <p className="locality">📍 {product.locality}</p>
@@ -138,7 +133,7 @@ const ProductDetail = () => {
           </button>
         </div>
       </div>
-      <div>
+      <div className="submit-message">
         {submitMessage && (
           <p
             className={`feedback-message ${
