@@ -1,68 +1,57 @@
 import React, { useRef } from "react";
-import "./ProductSlider.css";
-import ApiImage from "../Post/ApiImage";
 import { Link } from "react-router-dom";
+import ApiImage from "../Post/ApiImage";
+import "./ProductSlider.css";
+
 const { VITE_API_URL } = import.meta.env;
 
 const ProductSlider = ({ products }) => {
-  console.log(products);
-
-  const sliderRef = useRef();
+  const sliderRef = useRef(null);
+  const scrollAmount = () => sliderRef.current.offsetWidth * 0.25; // 4 items
 
   const scroll = (direction) => {
     if (!sliderRef.current) return;
-    const scrollAmount = sliderRef.current.offsetWidth / 3;
     sliderRef.current.scrollBy({
-      left: direction === "left" ? -scrollAmount : scrollAmount,
+      left: direction === "left" ? -scrollAmount() : scrollAmount(),
       behavior: "smooth",
     });
   };
 
-  //incrementar visitas
-  const handleClickProduct = async (productId) => {
+  const handleClickProduct = async (id) => {
     try {
-      const res = await fetch(
-        VITE_API_URL + "/products/" + productId + "/addvisit",
-        {
-          method: "PUT",
-        }
-      );
-      console.log("Visita incrementada" + res);
-    } catch (error) {
-      console.error("Error al incrementar las visitas:", error);
+      await fetch(`${VITE_API_URL}/products/${id}/addvisit`, { method: "PUT" });
+    } catch (e) {
+      console.error("Error incrementando visitas:", e);
     }
   };
 
   return (
     <div className="product-slider-wrapper">
-      <button
-        className="slider-arrow arrow-left"
-        onClick={() => scroll("left")}
-      >
+      <button className="slider-arrow arrow-left" onClick={() => scroll("left")}>
         ◀
       </button>
+
       <div className="product-slider" ref={sliderRef}>
-        {products.map((product) => (
-          <div key={product.id} className="product-slider-item">
-            <Link
-              to={"/producto/" + product.id}
-              onClick={() => handleClickProduct(product.id)}
-            >
+        {products.map((p) => (
+          <div key={p.id} className="product-slider-item">
+            <Link to={`/producto/${p.id}`} onClick={() => handleClickProduct(p.id)}>
               <ApiImage
-                name={product.photo}
-                alt={product.name}
-                className="w-full h-80 object-cover rounded-lg"
+                name={p.photo}
+                alt={p.name}
+                className="slider-img"
+                style={{
+                  width: "100%",
+                  height: "auto",         // elimina cualquier altura fija
+                  objectFit: "contain",   // muestra la imagen completa
+                }}
               />
             </Link>
-
-            <h3>{product.name}</h3>
+            <h3 className="product-name">{p.name}</h3>
           </div>
         ))}
       </div>
-      <button
-        className="slider-arrow arrow-right"
-        onClick={() => scroll("right")}
-      >
+
+      <button className="slider-arrow arrow-right" onClick={() => scroll("right")}>
         ▶
       </button>
     </div>
@@ -70,3 +59,4 @@ const ProductSlider = ({ products }) => {
 };
 
 export default ProductSlider;
+
