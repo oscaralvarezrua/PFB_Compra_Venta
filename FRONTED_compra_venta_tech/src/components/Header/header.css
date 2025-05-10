@@ -4,187 +4,213 @@
   box-sizing: border-box;
 }
 
-.header { 
-  background-color: white;
-  padding: 10px 20px;
+.header {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  width: 100%; 
-  box-sizing: border-box; 
+  justify-content: center;
+  gap: 100px;
+  background: #fff;
+  padding: 20px 20px;
 }
 
-.header .logo img {
-  width: 250px; 
+.logo img {
+  width: 250px;
   height: auto;
 }
 
-.header .search-bar {
+.search-bar {
   display: flex;
   align-items: center;
+  flex: 1;
+  margin: 0 15px;
   border: 1px solid #ccc;
   border-radius: 30px;
   padding: 5px 15px;
-  margin: 0 15px;
-  flex: 1; 
-  max-width: 400px; 
 }
-
-.header .search-bar input {
+.search-bar input {
+  flex: 1;
   border: none;
   outline: none;
-  padding: 8px;
   font-size: 13px;
-  flex: 1;
+  padding: 8px;
 }
-
-.header .search-bar button {
+.search-btn {
   background: none;
   border: none;
   cursor: pointer;
 }
-
 .search-btn img {
   width: 15px;
   height: auto;
 }
 
-.header .auth-buttons {
+/* Botonera */
+.auth-buttons {
   display: flex;
-  gap: 10px; 
+  align-items: center;
+  gap: 10px;
 }
 
-.header .auth-buttons button {
-  padding: 8px 12px;
-  background-color: transparent;
-  color: black;
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 40px;
+  padding: 0 12px;
+  font-size: 13px;
   font-weight: bold;
-  border: 2px solid;
-  cursor: pointer;
   border-radius: 30px;
-  transition: all 0.3s ease; 
-  font-size: 13px; 
-}
-
-.header .auth-buttons .register-button {
-  background-color: white;
-  color: black;
-  border: 2px solid #e7c61b;
+  border: 2px solid transparent;
+  background: transparent;
+  color: #000;
   font-family: 'Inter', sans-serif;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  cursor: pointer;
 }
 
-.header .auth-buttons .register-button:hover {
-  background-color: rgba(231, 198, 27, 0.2);
+.register-button {
+  border-color: #e7c61b;
+}
+.register-button:hover {
+  background: rgba(231, 198, 27, 0.2);
 }
 
-.header .auth-buttons button:focus {
-  outline: none;
+.sell-button {
+  background: #e7c61b;
+  border-color: #000;
+  color: #000;
 }
-
-.header .auth-buttons .sell-button {
-  background-color: #e7c61b;
-  color: black;
-  border: 2px solid black;
-  font-family: 'Inter', sans-serif;
-  padding: 13px;
-}
-.header .auth-buttons .sell-button:hover {
-  background-color: rgba(0, 0, 0, 0.8);
+.sell-button:hover {
+  background: #000;
   color: #e7c61b;
-  border: 2px solid #e7c61b;
-}
-.header .auth-buttons .notifications-button:hover,
-.header .auth-buttons .profile-button:hover,
-.header .auth-buttons .logout-button:hover {
-  background-color: rgba(231, 198, 27, 0.2);
-  border-color: #e7c61b; 
-}
-.header .auth-buttons button {
-  font-size: 12px !important;
+  border-color: #e7c61b;
 }
 
-.header .auth-buttons .icon-button {
-  width: 18px !important;
-  height: 18px !important;
+.logout-button {
+  border-color: #e7c61b;
+}
+.logout-button:hover {
+  background: rgba(231, 198, 27, 0.2);
 }
 
-/* Responsive */
+/* Admin */
+.admin-button {
+  background: #f0f0f0;
+  border-color: #ccc;
+  font-size: 12px;
+}
+.admin-button:hover {
+  background: #e7c61b;
+  color: #fff;
+  border-color: #e7c61b;
+}
+
+.icon-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border-radius: 50%;
+  border: none;
+  background: none;
+  transition: color 0.2s, transform 0.2s;
+  cursor: pointer;
+}
+.icon-button svg {
+  font-size: 1.5rem;
+  color: #000;
+}
+.icon-button:hover svg {
+  color: #e7c61b;
+  transform: scale(1.1);
+}
+
+.auth-buttons a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* Responsive Tablets */
 @media (max-width: 768px) {
   .header {
-    padding: 10px 15px;
-    display: grid; 
-    grid-template-columns: auto 1fr; 
-    gap: 10px; 
-    align-items: center; 
-    justify-items: center;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
   }
-
-  .header .logo {
-    width: auto;
-    margin-bottom: 0; 
+  .logo img {
+    width: 200px;
   }
-
-  .header .logo img {
-    width: 200px; 
-  }
-
-  .header .search-bar {
-    width: 100%; 
+  .search-bar {
+    width: 100%;
     margin: 0;
     border-radius: 20px;
     padding: 8px 15px;
   }
-
-  .header .auth-buttons {
-    grid-column: 1 / -1; 
-    display: flex;
+  .auth-buttons {
+    width: 100%;
     justify-content: center;
     gap: 8px;
-    margin-top: 5px; 
+    margin-top: 5px;
   }
-}
-
-/*Responsive 768px */
-@media (max-width: 768px) {
-  .header .auth-buttons button:not(.sell-button):not(.logout-button) {
+  .button:not(.sell-button):not(.logout-button) {
     font-size: 12px;
     padding: 5px 8px;
   }
-  .header .auth-buttons .sell-button {
-    font-size: 13px;
-    padding: 7px 10px;
-  }
-  .header .auth-buttons .logout-button {
+  .sell-button,
+  .logout-button {
     font-size: 13px;
     padding: 7px 10px;
   }
 }
 
+/* Responsive Móviles */
 @media (max-width: 480px) {
-  .header .auth-buttons button:not(.sell-button):not(.logout-button) {
+  .logo img {
+    width: 150px;
+  }
+  .search-bar {
+    border-radius: 20px;
+    padding: 6px 5px;
+  }
+  .search-bar input {
+    font-size: 11px;
+    padding: 5px;
+  }
+  .button:not(.sell-button):not(.logout-button) {
     font-size: 8px;
-    padding: 2px 7px 2px;
+    padding: 2px 7px;
   }
-  .header .auth-buttons .sell-button {
-    font-size: 10px !important;
-    padding: 6.5px 4px;
-  }
-  .header .auth-buttons .logout-button {
-    font-size: 10px !important;
+  .sell-button,
+  .logout-button {
+    font-size: 10px;
     padding: 5px 7px;
   }
-  .header .logo img {
-    width: 150px; 
+  .icon-button {
+    width: 36px;
+    height: 36px;
   }
-
-.header .search-bar {
-  border-radius: 20px;
-  padding: 6px 5px;
-  }
-
-.header .search-bar input {
-  font-size: 11px;
-  padding: 5px;
+  .icon-button svg {
+    font-size: 1.5rem;
   }
 }
+@media (max-width: 480px) {
+  .header {
+    display: flex !important;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 10px;
+  }
 
+  .search-bar {
+    width: 80%;
+    margin: 0;
+  }
+
+  .auth-buttons .button {
+    min-width: 70px;
+  }
+}

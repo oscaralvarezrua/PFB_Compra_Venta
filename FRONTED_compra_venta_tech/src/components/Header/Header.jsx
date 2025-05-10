@@ -1,99 +1,110 @@
-// src/components/Header.jsx
-import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import "./header.css";
-import logo from "../../assets/logo_negro.png";
-import buscarIcon from "../../assets/buscar.png";
-import notificationIcon from "../../assets/notification.png";  // <— tu icono
-import userIcon from "../../assets/user.png";   
+// src/components/Header/Header.jsx
+
+import React, { useState, useEffect } from "react";
+import { Link, useNavigate, useLocation } from "react-router-dom";
+import { FaBell, FaUserCircle } from "react-icons/fa";
 import { useAuth } from "../../contexts/AuthContext";
 import LogoutModal from "../Modals/LogoutModal";
+
+import logo from "../../assets/logo_negro.png";
+import buscarIcon from "../../assets/buscar.png";
+import "./header.css";
 
 const Header = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
-  const navigate = useNavigate();
   const { token, logout, user } = useAuth();
+  const navigate = useNavigate();
+  const location = useLocation();
 
-  const handleSearchChange = e => setSearchQuery(e.target.value);
-  const handleSearchSubmit = e => {
-    e.preventDefault();
-    navigate(searchQuery.trim() ? `/search?query=${searchQuery}` : "/");
+  // Al cambiar de ruta, si volvemos a Home, limpia el input
+  useEffect(() => {
+    if (location.pathname === "/") {
+      setSearchQuery("");
+    }
+  }, [location.pathname]);
+
+  const handleSearchSubmit = (e) => {
+    e?.preventDefault();
+    const trimmed = searchQuery.trim();
+    navigate(trimmed ? `/search?query=${encodeURIComponent(trimmed)}` : "/");
   };
-  const handleKeyPress = e => e.key === "Enter" && handleSearchSubmit(e);
 
-  const openLogoutModal = () => setIsLogoutModalOpen(true);
-  const confirmLogout   = () => {
+  const handleLogout = () => {
     logout();
     setIsLogoutModalOpen(false);
     navigate("/");
   };
-  const cancelLogout    = () => setIsLogoutModalOpen(false);
 
   return (
     <>
       <header className="header">
-        <div className="logo">
-          <Link to="/"><img src={logo} alt="Logo" className="logo-img" /></Link>
-        </div>
+        <Link to="/" className="logo">
+          <img src={logo} alt="Logo SegundaTec" />
+        </Link>
 
-        <div className="search-bar">
+        <form className="search-bar" onSubmit={handleSearchSubmit}>
           <input
             type="text"
             placeholder="Buscar"
-            className="search-input"
             value={searchQuery}
-            onChange={handleSearchChange}
-            onKeyDown={handleKeyPress}
+            onChange={(e) => setSearchQuery(e.target.value)}
           />
-          <button className="search-btn" onClick={handleSearchSubmit}>
-            <img src={buscarIcon} alt="Buscar" />
+          <button type="submit" className="search-btn" aria-label="Buscar">
+            <img src={buscarIcon} alt="" />
           </button>
-        </div>
+        </form>
 
         <div className="auth-buttons">
           {!token ? (
             <>
-              <Link to="/register">
-                <button className="register-button">Regístrate</button>
+              <Link to="/register" className="button register-button">
+                Regístrate
               </Link>
-              <Link to="/login">
-                <button className="register-button">Inicia sesión</button>
+              <Link to="/login" className="button register-button">
+                Inicia sesión
               </Link>
-              <Link to="/login">
-                <button className="sell-button">Vender</button>
+              <Link to="/login" className="button sell-button">
+                Vender
               </Link>
             </>
           ) : (
             <>
               {user?.role === "admin" && (
                 <div className="admin-dropdown">
-                  <Link to="/admin/users">
-                    <button className="usuarios-button">Usuarios</button>
+                  <Link to="/admin/users" className="button admin-button">
+                    Usuarios
                   </Link>
-                  <Link to="/admin/products">
-                    <button className="productos-button">Productos</button>
+                  <Link to="/admin/products" className="button admin-button">
+                    Productos
                   </Link>
                 </div>
               )}
 
-              <Link to="/user/requests-list">
-                <button className="notifications-button">
-                  <img src={notificationIcon} alt="Notificaciones" className="icon-button" />
-                </button>
+              <Link
+                to="/user/requests-list"
+                className="icon-button notifications-button"
+                aria-label="Notificaciones"
+              >
+                <FaBell />
               </Link>
 
-              <Link to="/user">
-                <button className="profile-button">
-                  <img src={userIcon} alt="Mi perfil" className="icon-button" />
-                </button>
+              <Link
+                to="/user"
+                className="icon-button profile-button"
+                aria-label="Mi perfil"
+              >
+                <FaUserCircle />
               </Link>
 
-              <Link to="/publicar">
-                <button className="sell-button">Vender</button>
+              <Link to="/publicar" className="button sell-button">
+                Vender
               </Link>
 
-              <button className="logout-button" onClick={openLogoutModal}>
+              <button
+                className="button logout-button"
+                onClick={() => setIsLogoutModalOpen(true)}
+              >
                 Cerrar sesión
               </button>
             </>
@@ -102,7 +113,10 @@ const Header = () => {
       </header>
 
       {isLogoutModalOpen && (
-        <LogoutModal onConfirm={confirmLogout} onCancel={cancelLogout} />
+        <LogoutModal
+          onConfirm={handleLogout}
+          onCancel={() => setIsLogoutModalOpen(false)}
+        />
       )}
     </>
   );

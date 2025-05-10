@@ -1,6 +1,6 @@
 // Página principal
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 import Slider from "../components/Slider/Slider";
 import ProductSlider from "../components/ProductSlider/ProductSlider";
 import { getProducts } from "../services/ProductServices";
@@ -9,7 +9,7 @@ import "../styles/home.css";
 const Home = () => {
   const [newProducts, setNewProducts] = useState([]);
   const [popularProducts, setPopularProducts] = useState([]);
-  const navigate = useNavigate();
+  // const navigate = useNavigate(); 
 
   useEffect(() => {
     const fetchNewProducts = async () => {
@@ -34,9 +34,9 @@ const Home = () => {
     fetchPopularProducts();
   }, []);
 
-  const irAFiltros = () => {
-    navigate("/filtrados");
-  };
+  // const irAFiltros = () => {
+  // navigate("/filtrados");
+  // }; 
 
   return (
     <main className="main-container">
@@ -45,10 +45,10 @@ const Home = () => {
         <Slider />
       </section>
 
-      {/* Botón para ir a filtros, bien visible */}
+      {/* Botón para ir a filtros, bien visible 
       <div className="filtros-btn-wrapper">
         <button onClick={irAFiltros} className="go-to-filters-btn">
-          Ver todos los productos
+          Búsqueda avanzada
         </button>
       </div>
 

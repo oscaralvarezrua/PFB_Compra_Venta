@@ -147,7 +147,7 @@
 
 @media (max-width: 480px) {
   .slider-container {
-    height: auto; 
+    height: 180px; 
     width: auto; 
     display: flex;
     scroll-snap-type: x mandatory; 
