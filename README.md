@@ -1,10 +1,10 @@
 # 🚀 Frontend de SegundaTec
 
-Este proyecto es el **frontend** de **SegundaTec**, una plataforma de compra y venta de tecnología de segunda mano. Está desarrollado con **Vite**, **React** y **CSS puro**, y consume los endpoints de la API REST del backend.
+SegundaTec es una plataforma de compra y venta de tecnología de segunda mano. Está desarrollado con **Vite**, **React** y **CSS puro**, y consume los endpoints de la API REST del backend.
 
 ---
 
-## 📦 Tecnologías principales
+# 📦 Tecnologías principales
 
 * **Vite**: Bundler ultrarrápido para desarrollo y producción.
 * **React**: Estructura de la UI basada en componentes.
@@ -46,28 +46,21 @@ FRONTED_compra_venta_tech/
 └── vite.config.js            # Configuración de Vite
 ```
 
----
 
 ## 🔧 Configuración e instalación
 
 1. **Clonar repositorio**
 
-   ```bash
-   git clone <url-del-repo>
+   git clone git@github.com:oscaralvarezrua/PFB_Compra_Venta.git
    cd FRONTED_compra_venta_tech
-   ```
+   
 2. **Instalar dependencias**
 
-   ```bash
    # Instala dependencias del proyecto
    npm install
    # Si aún no las tienes, añade:
    npm install react-router-dom react-icons prop-types
 
-   # o con yarn:
-   yarn install
-   yarn add react-router-dom react-icons prop-types
-   ```
 3. **Configurar variables de entorno**
    Copia `.env.example` a `.env` y modifica:
 
@@ -75,14 +68,8 @@ FRONTED_compra_venta_tech/
    VITE_API_URL=http://localhost:3000/api
    ```
 4. **Iniciar servidor de desarrollo**
-
-   ```bash
    npm run dev
-   # o
-   yarn dev
-   ```
-
----
+  
 
 ## ⚙️ Scripts disponibles
 
@@ -94,21 +81,17 @@ FRONTED_compra_venta_tech/
 | `npm run lint`    | Ejecuta linter (ESLint)                    |
 | `npm run format`  | Formatea el código (Prettier)              |
 
-*Puedes sustituir `npm` por `yarn`.*
-
----
 
 ## 📈 Flujo de trabajo
 
-1. Usuario hace login/registra o navega sin token.
+1. Usuario hace login/registro o navega sin token.
 2. Desde **Home**: carrusel de novedades y más buscados.
-3. Búsqueda global con la **barra** del Header, que limpia el texto al volver a Home.
+3. Búsqueda global con la **barra** del Header.
 4. **Filtros avanzados** en lateral de Categorías o busqueda, con campos de nombre, localidad, rango de precio y orden.
 5. Lista de productos en grid responsive.
 6. Detalle de producto (ruta `/producto/:id`).
 7. AuthContext gestiona token y sesión, modales de logout.
 
----
 
 ## 🌐 Enrutado de páginas
 
@@ -120,7 +103,6 @@ FRONTED_compra_venta_tech/
 * `/user`, `/user/requests-list` – Perfil y notificaciones.
 * `/publicar` – Formulario para publicar producto.
 
----
 
 ## 🤝 Contribuciones y buenas prácticas
 
@@ -130,7 +112,5 @@ FRONTED_compra_venta_tech/
 * **Responsive** con breakpoints 768px y 480px.
 * **Accesibilidad**: labels, aria-labels, foco claro.
 
----
 
 > Desarrollado con ❤️ por el equipo de SegundaTec usando React + Vite + CSS.  ¡Bienvenido! 🎉
-

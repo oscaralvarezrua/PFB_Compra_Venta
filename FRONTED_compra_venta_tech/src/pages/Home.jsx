@@ -53,7 +53,7 @@ const Home = () => {
       </div>
 
       {/* Novedades */}
-      <section className="w-full max-w-7xl mb-10">
+      <section className="section-novedades">
         <h2 className="novedades-title">Novedades</h2>
         <p className="novedades-text">
           En esta sección verás las últimas novedades, los productos más
@@ -64,7 +64,7 @@ const Home = () => {
       </section>
 
       {/* Más buscados */}
-      <section className="w-full max-w-7xl mb-10">
+      <section className="section-buscados">
         <h2 className="buscados-title">Más buscados</h2>
         <p className="buscados-text">
           ¿No sabes qué quieres? Echa un vistazo a los más buscados
