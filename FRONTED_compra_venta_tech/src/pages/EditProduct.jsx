@@ -1,4 +1,3 @@
-// Página de editar servicio o producto ya existente
 import React, { useEffect, useState, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
@@ -6,11 +5,64 @@ import "../styles/EditProduct.css";
 
 const { VITE_API_URL } = import.meta.env;
 
-const EditProduct = () => {
+export default function EditProduct() {
   const { token } = useAuth();
   const { productId } = useParams();
   const navigate = useNavigate();
   const fileInputRef = useRef(null);
+
+  // Lista de ciudades principales de España
+  const cities = [
+    "Álava",
+  "Albacete",
+  "Alicante",
+  "Almería",
+  "Asturias",
+  "Ávila",
+  "Badajoz",
+  "Barcelona",
+  "Burgos",
+  "Cáceres",
+  "Cádiz",
+  "Cantabria",
+  "Castellón",
+  "Ciudad Real",
+  "Córdoba",
+  "Cuenca",
+  "Girona",
+  "Granada",
+  "Guadalajara",
+  "Guipúzcoa",
+  "Huelva",
+  "Huesca",
+  "Islas Baleares",
+  "Jaén",
+  "La Rioja",
+  "León",
+  "Lleida",
+  "Lugo",
+  "Madrid",
+  "Málaga",
+  "Murcia",
+  "Navarra",
+  "Ourense",
+  "Palencia",
+  "Pontevedra",
+  "Las Palmas",
+  "Salamanca",
+  "Santa Cruz de Tenerife",
+  "Segovia",
+  "Sevilla",
+  "Soria",
+  "Tarragona",
+  "Teruel",
+  "Toledo",
+  "Valencia",
+  "Valladolid",
+  "Vizcaya",
+  "Zamora",
+  "Zaragoza"
+];
 
   const [formData, setFormData] = useState({
     name: "",
@@ -26,7 +78,6 @@ const EditProduct = () => {
   const [originalPhoto, setOriginalPhoto] = useState(null);
   const [submitMessage, setSubmitMessage] = useState("");
 
-  // Cargar datos actuales del producto
   useEffect(() => {
     const fetchProduct = async () => {
       try {
@@ -89,7 +140,6 @@ const EditProduct = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const body = new FormData();
-
     Object.entries(formData).forEach(([key, val]) => {
       if (val) body.append(key, val);
     });
@@ -97,23 +147,20 @@ const EditProduct = () => {
     try {
       const res = await fetch(`${VITE_API_URL}/products/${productId}`, {
         method: "PUT",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+        headers: { Authorization: `Bearer ${token}` },
         body,
       });
-      if (res.ok) {
-        await fetch(`${VITE_API_URL}/products/${productId}/no-accept`, {
-          method: "PUT",
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-          body,
-        });
+      if (!res.ok) {
+        const err = await res.json();
+        throw new Error(err.message);
       }
 
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.message);
+      // Marcar como no aceptado tras actualizar
+      await fetch(`${VITE_API_URL}/products/${productId}/no-accept`, {
+        method: "PUT",
+        headers: { Authorization: `Bearer ${token}` },
+        body,
+      });
 
       setSubmitMessage("¡Producto actualizado correctamente! ✅");
       setPreview(null);
@@ -125,8 +172,7 @@ const EditProduct = () => {
 
   return (
     <section className="publish-wrapper">
-      <h2 className="page-title">Editar artículo</h2>
-
+      <h2 className="page-title">Editar producto</h2>
       <form
         onSubmit={handleSubmit}
         encType="multipart/form-data"
@@ -158,14 +204,22 @@ const EditProduct = () => {
               min="0"
               required
             />
-            <input
-              type="text"
+
+            {/* Desplegable de ciudades */}
+            <select
               name="locality"
-              placeholder="Localidad"
               value={formData.locality}
               onChange={handleChange}
               required
-            />
+            >
+              <option value="">Selecciona una ciudad</option>
+              {cities.map((city) => (
+                <option key={city} value={city}>
+                  {city}
+                </option>
+              ))}
+            </select>
+
             <select
               name="category_id"
               value={formData.category_id}
@@ -212,7 +266,9 @@ const EditProduct = () => {
         )}
 
         <div className="publish-buttons">
-          <button type="submit">Guardar cambios</button>
+          <button type="submit" className="publish-button">
+            Guardar cambios
+          </button>
           <button
             type="button"
             onClick={() => navigate("/user/products-list")}
@@ -224,6 +280,4 @@ const EditProduct = () => {
       </form>
     </section>
   );
-};
-
-export default EditProduct;
+}
