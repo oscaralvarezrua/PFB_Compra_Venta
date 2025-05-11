@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import "../styles/SearchFilteredProducts.css";
 import ApiImage from "../components/Post/ApiImage";
+import { useAuth } from "../hooks/useAuth";
 
 const { VITE_API_URL } = import.meta.env;
 
@@ -26,7 +27,7 @@ const ciudades = [
 const SearchFilteredProducts = () => {
   const location = useLocation();
   const navigate = useNavigate();
-
+  const { token } = useAuth();
   const [filters, setFilters] = useState({
     name: "",
     locality: "",
@@ -69,7 +70,13 @@ const SearchFilteredProducts = () => {
 
       try {
         const res = await fetch(
-          `${VITE_API_URL}/products/search${location.search}`
+          `${VITE_API_URL}/products/search${location.search}`,
+          {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
         );
         const data = await res.json();
 

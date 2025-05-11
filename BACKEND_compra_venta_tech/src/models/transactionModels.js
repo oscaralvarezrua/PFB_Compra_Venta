@@ -26,7 +26,10 @@ async function getTransaction(buyerId, productId) {
   try {
     const pool = await getPool();
 
-    const [result] = await pool.query(`SELECT * FROM transaction WHERE user_id = ? AND product_id = ? AND status = "pending"`, [buyerId, productId]);
+    const [result] = await pool.query(
+      `SELECT * FROM transaction WHERE user_id = ? AND product_id = ? AND status = "pending"`,
+      [buyerId, productId]
+    );
 
     return result[0];
   } catch (e) {
@@ -124,7 +127,10 @@ async function getSellerID(productId) {
   try {
     const pool = await getPool();
 
-    const [result] = await pool.query(`SELECT p.user_id FROM product p WHERE p.id = ? `, [productId]);
+    const [result] = await pool.query(
+      `SELECT p.user_id FROM product p WHERE p.id = ? `,
+      [productId]
+    );
 
     return result[0].user_id;
   } catch (e) {
@@ -137,9 +143,15 @@ async function setTransactionStateModel(transID, status) {
   try {
     const pool = await getPool();
 
-    const [result] = await pool.query("UPDATE transaction SET status = ? WHERE id = ?", [status, transID]);
+    const [result] = await pool.query(
+      "UPDATE transaction SET status = ? WHERE id = ?",
+      [status, transID]
+    );
     if (status === "accepted") {
-      const [productId] = await pool.query("SELECT product_id FROM transaction WHERE id = ?", [transID]);
+      const [productId] = await pool.query(
+        "SELECT product_id FROM transaction WHERE id = ?",
+        [transID]
+      );
 
       setProductAsSoldModel(productId[0].product_id);
     }
@@ -153,7 +165,10 @@ async function setTransactionStateModel(transID, status) {
 async function setReviewModel(transID, rating, comment) {
   try {
     const pool = await getPool();
-    const [result] = await pool.query("UPDATE transaction SET ratings = ?, comment = ? WHERE id = ?", [rating, comment, transID]);
+    const [result] = await pool.query(
+      "UPDATE transaction SET ratings = ?, comment = ? WHERE id = ?",
+      [rating, comment, transID]
+    );
 
     return result;
   } catch (e) {
@@ -166,8 +181,19 @@ async function isAvailable(product_id) {
   try {
     const pool = await getPool();
 
-    const [result] = await pool.query("SELECT is_available FROM product WHERE id = ?", [product_id]);
-    return result[0];
+    const [available] = await pool.query(
+      "SELECT is_available FROM product WHERE id = ?",
+      [product_id]
+    );
+    const [accepted] = await pool.query(
+      "SELECT is_accepted FROM product WHERE id = ?",
+      [product_id]
+    );
+
+    const is_available = available[0]?.is_available;
+    const is_accepted = accepted[0]?.is_accepted;
+
+    return is_available === 1 && is_accepted === 1;
   } catch (e) {
     console.error("Error al encontrar producto: ", e);
     throw generateError("Error al encontrar producto", 404);
@@ -201,4 +227,15 @@ async function getTransactionDetails(transactionId) {
   }
 }
 
-export { createTransaction, getTransaction, getSellerEmail, getSalesTransactionsModel, getSellerID, setTransactionStateModel, isAvailable, getBuyTransactionsModel, setReviewModel, getTransactionDetails };
+export {
+  createTransaction,
+  getTransaction,
+  getSellerEmail,
+  getSalesTransactionsModel,
+  getSellerID,
+  setTransactionStateModel,
+  isAvailable,
+  getBuyTransactionsModel,
+  setReviewModel,
+  getTransactionDetails,
+};

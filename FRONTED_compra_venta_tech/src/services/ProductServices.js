@@ -1,8 +1,12 @@
 const API_URL = import.meta.env.VITE_API_URL;
 
 // Trae productos ordenados
-export async function getProducts(order = "recent") {
-  const res = await fetch(`${API_URL}/products/search?order_by=${order}`);
+export async function getProducts(token, order = "recent") {
+  const res = await fetch(`${API_URL}/products/search?order_by=${order}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
   const body = await res.json();
   if (!res.ok) throw new Error(body.message);
   return body.data;

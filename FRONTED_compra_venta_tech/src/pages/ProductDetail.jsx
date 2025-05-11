@@ -47,9 +47,9 @@ const ProductDetail = () => {
         },
         body: JSON.stringify({ productId: id, productName: name }),
       });
-      if (res.status === 409)
-        throw new Error("Ya has solicitado la compra de este producto.");
+
       const body = await res.json();
+
       if (!res.ok) throw new Error(body.message || "Error en la compra");
       setSubmitMessage("¡Solicitud de compra iniciada correctamente! ✅");
       setTimeout(() => navigate("/user/buys-list"), 2000);
@@ -95,26 +95,31 @@ const ProductDetail = () => {
           <div className="visits-under-image">
             <img
               src="/src/assets/eye.png"
-              alt="Visitas" className="visits-icon" />
+              alt="Visitas"
+              className="visits-icon"
+            />
             <span className="visits-count">{product.visits}</span>
           </div>
         </div>
 
         {/* Product info */}
         <div className="product-detail-info">
-         <div className="product-top-info">
+          <div className="product-top-info">
             <p className="price">€ {priceNum.toFixed(2)}</p>
           </div>
 
           <h2 className="pd-title">{product.name}</h2>
           <p className="description">{product.description}</p>
           <p className="locality">📍 {product.locality}</p>
-          <p className="category"> 📂{" "}
-          <Link
-          to={`/filtrados?category_id=${product.category_id}`}
-          className="category-link">
-          {product.category_name}
-          </Link>
+          <p className="category">
+            {" "}
+            📂{" "}
+            <Link
+              to={`/filtrados?category_id=${product.category_id}`}
+              className="category-link"
+            >
+              {product.category_name}
+            </Link>
           </p>
           <button
             className="contact-btn"

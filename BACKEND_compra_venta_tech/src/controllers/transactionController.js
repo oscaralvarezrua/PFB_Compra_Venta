@@ -24,7 +24,7 @@ export async function initTransactionController(req, res, next) {
     //verificamos si ya existe una transacción abierta
     const verifyTransaction = await getTransaction(buyerId, productId);
     const sellerID = await getSellerID(productId);
-    const { is_available } = await isAvailable(productId);
+    const is_available = await isAvailable(productId);
 
     if (verifyTransaction) {
       return res.status(409).json({
@@ -40,7 +40,6 @@ export async function initTransactionController(req, res, next) {
         message: "No puedes comprar tu propio producto",
       });
     }
-    console.log(is_available);
 
     if (!is_available) {
       return res.status(409).json({

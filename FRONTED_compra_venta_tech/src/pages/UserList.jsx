@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import ApiImage from "../components/Post/ApiImage";
+import "../styles/UserList.css";
 
 const { VITE_API_URL, VITE_USER_ICON } = import.meta.env;
 
@@ -36,9 +37,9 @@ const UserList = () => {
   };
 
   return (
-    <div>
-      <h2>Usuarios</h2>
-      <ul>
+    <div className="users-page">
+      <h2 className="users-title">Usuarios</h2>
+      <ul className="users-list">
         {users.map((user) => (
           <li
             key={user.id}
@@ -49,8 +50,17 @@ const UserList = () => {
               alt={user.username}
               style={{ width: 50, height: 50, borderRadius: "50%" }}
             />
-            {user.username} - {user.email}
-            <button onClick={() => handleDelete(user.id)}>Eliminar</button>
+            <div className="user-meta">
+              <span className="user-name">{user.username}</span>
+              <span className="user-email">{user.email}</span>
+            </div>
+
+            <button
+              onClick={() => handleDelete(user.id)}
+              className="btn delete-user"
+            >
+              Eliminar
+            </button>
           </li>
         ))}
       </ul>
