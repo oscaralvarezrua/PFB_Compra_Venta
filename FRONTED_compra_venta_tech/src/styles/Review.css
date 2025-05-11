@@ -46,12 +46,11 @@
 }
 .feedback-card button {
   display: block;
-  width: 100%;
   padding: 0.8rem;
   background: #e7c61b;
   color: #111;
   border: none;
-  border-radius: 6px;
+  border-radius: 30px;
   font-size: 1rem;
   cursor: pointer;
   transition: filter 0.2s;
@@ -61,5 +60,7 @@
   cursor: default;
 }
 .feedback-card button:not(:disabled):hover {
-  filter: brightness(0.9);
+  background-color: black;
+  border-color: #e7c61b;
+  color: #e7c61b;
 }
