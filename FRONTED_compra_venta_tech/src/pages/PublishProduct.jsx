@@ -1,4 +1,5 @@
-// Página de Publicación de Artículos
+// src/components/PublishProduct.jsx
+
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
@@ -6,10 +7,63 @@ import "../styles/PublishProduct.css";
 
 const { VITE_API_URL } = import.meta.env;
 
-const PublishProduct = () => {
+export default function PublishProduct() {
   const { token } = useAuth();
   const navigate = useNavigate();
   const fileInputRef = useRef(null);
+
+  // Array con todas las provincias de España
+  const provinciasEspaña = [
+    "Álava",
+    "Albacete",
+    "Alicante",
+    "Almería",
+    "Asturias",
+    "Ávila",
+    "Badajoz",
+    "Barcelona",
+    "Burgos",
+    "Cáceres",
+    "Cádiz",
+    "Cantabria",
+    "Castellón",
+    "Ciudad Real",
+    "Córdoba",
+    "Cuenca",
+    "Girona",
+    "Granada",
+    "Guadalajara",
+    "Guipúzcoa",
+    "Huelva",
+    "Huesca",
+    "Islas Baleares",
+    "Jaén",
+    "La Rioja",
+    "León",
+    "Lleida",
+    "Lugo",
+    "Madrid",
+    "Málaga",
+    "Murcia",
+    "Navarra",
+    "Ourense",
+    "Palencia",
+    "Pontevedra",
+    "Las Palmas",
+    "Salamanca",
+    "Santa Cruz de Tenerife",
+    "Segovia",
+    "Sevilla",
+    "Soria",
+    "Tarragona",
+    "Teruel",
+    "Toledo",
+    "Valencia",
+    "Valladolid",
+    "Vizcaya",
+    "Zamora",
+    "Zaragoza"
+  ];
 
   const [formData, setFormData] = useState({
     name: "",
@@ -127,14 +181,22 @@ const PublishProduct = () => {
               onChange={handleChange}
               required
             />
-            <input
-              type="text"
+
+            {/* Desplegable de provincias */}
+            <select
               name="locality"
-              placeholder="Localidad"
               value={formData.locality}
               onChange={handleChange}
               required
-            />
+            >
+              <option value="">Selecciona una provincia</option>
+              {provinciasEspaña.map((prov) => (
+                <option key={prov} value={prov}>
+                  {prov}
+                </option>
+              ))}
+            </select>
+
             <select
               name="category_id"
               value={formData.category_id}
@@ -177,7 +239,7 @@ const PublishProduct = () => {
       </form>
 
       <div className="publish-buttons">
-        <button type="submit" form="publish-form">
+        <button type="submit" form="publish-form" className="publish-button">
           Publicar artículo
         </button>
         <button
@@ -190,6 +252,4 @@ const PublishProduct = () => {
       </div>
     </section>
   );
-};
-
-export default PublishProduct;
+}
