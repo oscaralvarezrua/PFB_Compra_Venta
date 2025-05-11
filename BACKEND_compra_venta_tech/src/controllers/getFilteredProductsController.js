@@ -17,6 +17,7 @@ export async function getFilteredProductsController(req, res, next) {
     if (req.user?.role === "admin") {
       isAdmin = true;
     }
+    console.log("checkeamos admin " + isAdmin);
 
     const products = await getFilteredProducts(filters, isAdmin);
 

@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams, Link } from "react-router-dom";
 import "../styles/CategoryProducts.css";
 import ApiImage from "../components/Post/ApiImage";
+import { useAuth } from "../hooks/useAuth";
 
 const { VITE_API_URL } = import.meta.env;
 
@@ -12,6 +13,7 @@ export default function CategoryProducts() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [feedback, setFeedback] = useState({ message: "", type: "" });
+  const { token } = useAuth();
 
   // Obtener ids de la query string o del parámetro
   const ids = new URLSearchParams(location.search).get("ids");
@@ -57,7 +59,11 @@ export default function CategoryProducts() {
     });
     console.log(url);
 
-    fetch(url)
+    fetch(url, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
       .then((res) => res.json())
       .then((data) => {
         setProducts(data.data || []);
@@ -79,7 +85,7 @@ export default function CategoryProducts() {
         });
         setLoading(false);
       });
-  }, [location.search, id, ids]);
+  }, [location.search, id, ids, token]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -117,12 +123,12 @@ export default function CategoryProducts() {
     navigate("/");
   };
 
-  async function goToDetail(id) {
+  async function increaseVisit(id) {
     try {
       await fetch(VITE_API_URL + "/products/" + id + "/addvisit", {
         method: "PUT",
       });
-      navigate(`/producto/${id}`);
+      //navigate(`/producto/${id}`);
     } catch (error) {
       console.error("Error al incrementar las visitas:", error);
     }
@@ -207,29 +213,26 @@ export default function CategoryProducts() {
           {products.length === 0 ? (
             <p>No hay productos que coincidan con los filtros.</p>
           ) : (
-            <div className="results-container">
-              <ul className="product-list">
-                {products.map((prod) => (
-                  <li
-                    key={prod.id}
-                    className="product-item"
-                    onClick={() => goToDetail(prod.id)}
-                  >
-                    <div className="product-preview">
-                      <div className="product-img-wrapper">
-                        <ApiImage name={prod.photo} alt={prod.name} />
-                      </div>
-                      <div className="product-text">
-                        <h3>{prod.name}</h3>
-                        <p>{prod.description}</p>
-                        <p>
-                          {prod.price} € - {prod.locality}
-                        </p>
-                      </div>
-                    </div>
-                  </li>
-                ))}
-              </ul>
+            <div className="results-grid">
+              {products.map((product) => (
+                <Link
+                  onClick={() => increaseVisit(product.id)}
+                  to={`/producto/${product.id}`}
+                  key={product.id}
+                  className="product-link"
+                >
+                  <div className="product-card">
+                    <ApiImage
+                      name={product.photo}
+                      alt={product.name}
+                      className="product-image"
+                    />
+                    <h3>{product.name}</h3>
+                    <p className="product-price">{product.price} €</p>
+                    <p className="product-location">{product.locality}</p>
+                  </div>
+                </Link>
+              ))}
             </div>
           )}
         </>

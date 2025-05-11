@@ -1,100 +1,50 @@
-.user-list-page {
-  max-width: 900px;
-  margin: 40px auto;
-  padding: 20px;
-  background-color: #fff;
-  border: 2px solid #e7c61b;
-  border-radius: 15px;
-  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+.users-page {
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 0 1rem;
 }
 
-.user-list-page h2 {
-  text-align: center;
-  font-size: 1.8rem;
-  margin-bottom: 30px;
+.users-title {
+  font-size: 1.75rem;
+  margin-bottom: 1rem;
   color: #222;
 }
 
-.user-list-page ul {
+.users-list {
   list-style: none;
   padding: 0;
   margin: 0;
-}
-
-.user-list-page li {
-  border-bottom: 1px solid #eee;
-}
-
-.user-list-page li:last-child {
-  border-bottom: none;
-}
-
-.user-list-page li a {
   display: flex;
-  align-items: center;
-  gap: 16px;
-  padding: 16px;
-  text-decoration: none;
-  color: inherit;
-  transition: background-color 0.2s ease;
+  flex-direction: column;
+  gap: 0.75rem;
 }
 
-.user-list-page li a:hover {
-  background-color: #f9f9f9;
+.user-meta {
+  display: flex;
+  flex-direction: column;
 }
 
-.user-list-page li a:focus {
-  outline: 2px solid #e7c61b;
-  background-color: #fef8d5;
+.user-name {
+  font-weight: 600;
+  color: #111;
 }
 
-.user-list-page img {
-  width: 60px;
-  height: 60px;
-  object-fit: cover;
-  border-radius: 50%;
-  border: 2px solid #ccc;
-}
-
-.user-list-page h3 {
-  margin: 0;
-  font-size: 1.1rem;
-  color: #333;
-}
-
-.user-list-page p {
-  margin: 4px 0;
+.user-email {
   font-size: 0.9rem;
   color: #555;
 }
 
-.user-list-msg {
-  text-align: center;
-  margin-top: 20px;
-  font-weight: bold;
-  color: #666;
+.btn.delete-user {
+  background-color: #f56262;
+  color: white;
+  border: none;
+  padding: 0.4rem 0.8rem;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
 }
 
-/* Responsive: mobile first adjustments */
-@media screen and (max-width: 600px) {
-  .user-list-page {
-    margin: 20px 10px;
-    padding: 16px;
-  }
-
-  .user-list-page h2 {
-    font-size: 1.5rem;
-  }
-
-  .user-list-page li a {
-    flex-direction: column;
-    align-items: flex-start;
-    padding: 12px;
-  }
-
-  .user-list-page img {
-    width: 50px;
-    height: 50px;
-    margin-bottom: 10px;
-  }
+.btn.delete-user:hover {
+  background-color: #e04e4e;
 }
