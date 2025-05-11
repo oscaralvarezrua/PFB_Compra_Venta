@@ -15,7 +15,6 @@ export default function RequestsList() {
 
   if (loading) return <p>Cargando productos…</p>;
 
-  //filtramos todos los estados de los productos
   const productsOnSale = productsList?.filter(
     (prod) => prod.is_available && prod.is_accepted
   );
@@ -77,7 +76,7 @@ export default function RequestsList() {
               >
                 <div className="request-actions">
                   <button
-                    className="accept-button"
+                    className="edit-btn"
                     type="button"
                     onClick={() => {
                       navigate("/edit/" + prod.id);
@@ -87,7 +86,7 @@ export default function RequestsList() {
                   </button>
 
                   <button
-                    className="reject-button"
+                    className="remove-btn"
                     type="button"
                     onClick={() => {
                       navigate("/user/confirm-delete/" + prod.id);

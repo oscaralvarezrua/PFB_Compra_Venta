@@ -19,7 +19,9 @@ const ProductSlider = ({ products }) => {
 
   const handleClickProduct = async (id) => {
     try {
-      await fetch(`${VITE_API_URL}/products/${id}/addvisit`, { method: "PUT" });
+      await fetch(`${VITE_API_URL}/products/${id}/addvisit`, {
+        method: "PUT",
+      });
     } catch (e) {
       console.error("Error incrementando visitas:", e);
     }
@@ -27,22 +29,29 @@ const ProductSlider = ({ products }) => {
 
   return (
     <div className="product-slider-wrapper">
-      <button className="slider-arrow arrow-left" onClick={() => scroll("left")}>
+      <button
+        className="slider-arrow arrow-left"
+        onClick={() => scroll("left")}
+      >
         ◀
       </button>
 
       <div className="product-slider" ref={sliderRef}>
         {products.map((p) => (
           <div key={p.id} className="product-slider-item">
-            <Link to={`/producto/${p.id}`} onClick={() => handleClickProduct(p.id)}>
+            {/* RUTA ABSOLUTA */}
+            <Link
+              to={`/producto/${p.id}`}
+              onClick={() => handleClickProduct(p.id)}
+            >
               <ApiImage
                 name={p.photo}
                 alt={p.name}
                 className="slider-img"
                 style={{
                   width: "100%",
-                  height: "auto",         // elimina cualquier altura fija
-                  objectFit: "contain",   // muestra la imagen completa
+                  height: "auto",
+                  objectFit: "contain",
                 }}
               />
             </Link>
@@ -51,7 +60,10 @@ const ProductSlider = ({ products }) => {
         ))}
       </div>
 
-      <button className="slider-arrow arrow-right" onClick={() => scroll("right")}>
+      <button
+        className="slider-arrow arrow-right"
+        onClick={() => scroll("right")}
+      >
         ▶
       </button>
     </div>
@@ -59,4 +71,3 @@ const ProductSlider = ({ products }) => {
 };
 
 export default ProductSlider;
-

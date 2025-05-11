@@ -91,8 +91,8 @@ export default function BuysList() {
                 <div className="request-actions">
                   {buy.ratings === null ? (
                     <Link to={"/user/review/" + buy.transaction_id}>
-                      <button className="btn delete" type="button">
-                        Dejar una valoración
+                      <button className="btn-rating" type="button">
+                        Deja tu valoración
                       </button>
                     </Link>
                   ) : (
