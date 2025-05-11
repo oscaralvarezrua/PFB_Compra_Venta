@@ -1,4 +1,4 @@
-// Página de Filtros y Ordenaciones de productos
+// src/components/SearchFilteredProducts.jsx
 import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import "../styles/SearchFilteredProducts.css";
@@ -8,26 +8,62 @@ import { useAuth } from "../hooks/useAuth";
 const { VITE_API_URL } = import.meta.env;
 
 const ciudades = [
-  "Madrid",
+  "Álava",
+  "Albacete",
+  "Alicante",
+  "Almería",
+  "Asturias",
+  "Ávila",
+  "Badajoz",
   "Barcelona",
-  "Valencia",
-  "Sevilla",
-  "Zaragoza",
+  "Burgos",
+  "Cáceres",
+  "Cádiz",
+  "Cantabria",
+  "Castellón",
+  "Ciudad Real",
+  "Córdoba",
+  "Cuenca",
+  "Girona",
+  "Granada",
+  "Guadalajara",
+  "Guipúzcoa",
+  "Huelva",
+  "Huesca",
+  "Islas Baleares",
+  "Jaén",
+  "La Rioja",
+  "León",
+  "Lleida",
+  "Lugo",
+  "Madrid",
   "Málaga",
   "Murcia",
+  "Navarra",
+  "Ourense",
+  "Palencia",
+  "Pontevedra",
+  "Las Palmas",
   "Salamanca",
-  "Bilbao",
-  "Alicante",
-  "Granada",
-  "Vigo",
-  "Oviedo",
+  "Santa Cruz de Tenerife",
+  "Segovia",
+  "Sevilla",
+  "Soria",
+  "Tarragona",
+  "Teruel",
   "Toledo",
+  "Valencia",
+  "Valladolid",
+  "Vizcaya",
+  "Zamora",
+  "Zaragoza"
 ];
 
 const SearchFilteredProducts = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const { token } = useAuth();
+
   const [filters, setFilters] = useState({
     name: "",
     locality: "",
@@ -37,7 +73,6 @@ const SearchFilteredProducts = () => {
     order_by: "",
     order_direction: "asc",
   });
-
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(false);
   const [feedback, setFeedback] = useState({ message: "", type: "" });
@@ -73,15 +108,11 @@ const SearchFilteredProducts = () => {
           `${VITE_API_URL}/products/search${location.search}`,
           {
             method: "GET",
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
+            headers: { Authorization: `Bearer ${token}` },
           }
         );
         const data = await res.json();
-
-        if (!res.ok)
-          throw new Error(data.message || "Error al obtener productos");
+        if (!res.ok) throw new Error(data.message || "Error al obtener productos");
 
         if (data.data.length === 0) {
           setProducts([]);
@@ -93,8 +124,8 @@ const SearchFilteredProducts = () => {
           setProducts(data.data);
           setFeedback({ message: "", type: "" });
         }
-      } catch (error) {
-        console.error("Error al obtener productos filtrados:", error);
+      } catch (err) {
+        console.error(err);
         setFeedback({
           message: "Error al conectar con el servidor. Inténtalo más tarde.",
           type: "error",
@@ -105,21 +136,19 @@ const SearchFilteredProducts = () => {
     };
 
     fetchProducts();
-  }, [location.search]);
+  }, [location.search, token]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFilters((prev) => ({ ...prev, [name]: value }));
+    setFilters(prev => ({ ...prev, [name]: value }));
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     const params = new URLSearchParams();
-
-    Object.entries(filters).forEach(([key, value]) => {
-      if (value) params.append(key, value);
+    Object.entries(filters).forEach(([key, val]) => {
+      if (val) params.append(key, val);
     });
-
     navigate(`/filtrados?${params.toString()}`);
   };
 
@@ -138,16 +167,14 @@ const SearchFilteredProducts = () => {
     navigate("/");
   };
 
-  async function goToDetail(id) {
+  const goToDetail = async (id) => {
     try {
-      await fetch(VITE_API_URL + "/products/" + id + "/addvisit", {
-        method: "PUT",
-      });
+      await fetch(`${VITE_API_URL}/products/${id}/addvisit`, { method: "PUT" });
       navigate(`/producto/${id}`);
-    } catch (error) {
-      console.error("Error al incrementar las visitas:", error);
+    } catch (err) {
+      console.error(err);
     }
-  }
+  };
 
   if (loading) return <p>Cargando productos...</p>;
 
@@ -170,7 +197,7 @@ const SearchFilteredProducts = () => {
             name="locality"
             placeholder="Escribe tu ciudad"
             value={filters.locality}
-            onChange={(e) => {
+            onChange={e => {
               handleChange(e);
               setShowSuggestions(true);
             }}
@@ -178,17 +205,17 @@ const SearchFilteredProducts = () => {
             onBlur={() => setTimeout(() => setShowSuggestions(false), 100)}
             autoComplete="off"
           />
-          {showSuggestions && filters.locality && (
+          {showSuggestions && (
             <ul className="suggestions">
               {ciudades
-                .filter((city) =>
+                .filter(city =>
                   city.toLowerCase().includes(filters.locality.toLowerCase())
                 )
-                .map((city) => (
+                .map(city => (
                   <li
                     key={city}
                     onClick={() => {
-                      setFilters({ ...filters, locality: city });
+                      setFilters(prev => ({ ...prev, locality: city }));
                       setShowSuggestions(false);
                     }}
                   >
@@ -217,11 +244,7 @@ const SearchFilteredProducts = () => {
           onChange={handleChange}
         />
 
-        <select
-          name="order_by"
-          value={filters.order_by}
-          onChange={handleChange}
-        >
+        <select name="order_by" value={filters.order_by} onChange={handleChange}>
           <option value="">Ordenar por...</option>
           <option value="name">Nombre</option>
           <option value="price">Precio</option>
@@ -258,7 +281,7 @@ const SearchFilteredProducts = () => {
           ) : (
             <div className="results-container">
               <ul className="product-list">
-                {products.map((prod) => (
+                {products.map(prod => (
                   <li
                     key={prod.id}
                     className="product-item"
