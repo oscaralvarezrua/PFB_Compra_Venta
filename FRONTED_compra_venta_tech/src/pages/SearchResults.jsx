@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { useLocation, Link } from "react-router-dom";
-import { getProducts } from "../services/ProductServices";
 import ApiImage from "../components/Post/ApiImage";
 import "../styles/SearchResults.css";
 import { useAuth } from "../hooks/useAuth";
@@ -25,13 +24,20 @@ const SearchResults = () => {
       setError(null);
 
       try {
-        const products = await getProducts(token);
-        const filteredResults = products.filter(
-          (product) =>
-            product.name.toLowerCase().includes(query.toLowerCase()) ||
-            product.description.toLowerCase().includes(query.toLowerCase())
-        );
-        setResults(filteredResults);
+        let url = `${VITE_API_URL}/products/search?query=${query}`;
+
+        const res = await fetch(url, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        const data = await res.json();
+        //setResults(data);
+        if (data.data.length === 0) {
+          setResults([]);
+        } else {
+          setResults(data.data);
+        }
       } catch (error) {
         console.error("Error al buscar productos:", error);
         setError("Error al cargar los resultados de búsqueda");

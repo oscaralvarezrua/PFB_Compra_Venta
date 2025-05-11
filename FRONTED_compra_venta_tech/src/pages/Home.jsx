@@ -5,16 +5,18 @@ import Slider from "../components/Slider/Slider";
 import ProductSlider from "../components/ProductSlider/ProductSlider";
 import { getProducts } from "../services/ProductServices";
 import "../styles/home.css";
+import { useAuth } from "../hooks/useAuth";
 
 const Home = () => {
   const [newProducts, setNewProducts] = useState([]);
   const [popularProducts, setPopularProducts] = useState([]);
-  // const navigate = useNavigate(); 
+  const { token } = useAuth();
+  // const navigate = useNavigate();
 
   useEffect(() => {
     const fetchNewProducts = async () => {
       try {
-        const products = await getProducts("created_at");
+        const products = await getProducts(token, "created_at");
         setNewProducts(products);
       } catch (error) {
         console.error("Error cargando productos recientes", error);
@@ -23,7 +25,7 @@ const Home = () => {
 
     const fetchPopularProducts = async () => {
       try {
-        const products = await getProducts("visits");
+        const products = await getProducts(token, "visits");
         setPopularProducts(products);
       } catch (error) {
         console.error("Error cargando productos populares", error);
@@ -36,7 +38,7 @@ const Home = () => {
 
   // const irAFiltros = () => {
   // navigate("/filtrados");
-  // }; 
+  // };
 
   return (
     <main className="main-container">
