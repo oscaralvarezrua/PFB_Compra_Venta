@@ -1,4 +1,3 @@
-// src/App.jsx
 import React, { useContext } from "react";
 import { Route, Routes, useLocation, Navigate } from "react-router-dom";
 import Header from "./components/Header/Header";
@@ -42,14 +41,15 @@ function App() {
   const { user } = useContext(AuthContext);
   const location = useLocation();
 
+  // Rutas donde ocultar header/menu
   const hideLayoutPaths = [
     "/register",
     "/login",
     "/changepassword",
     "/forgot-password",
   ];
-
   const showLayout = !hideLayoutPaths.includes(location.pathname);
+  // Ocultar el Menu cuando estamos en /user/*
   const hideMenu = location.pathname.startsWith("/user");
   const showMenu = !hideMenu;
 
@@ -68,7 +68,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
 
-          {/* Home: redirige al dashboard si es admin */}
+          {/* Home (admin redirige a dashboard) */}
           <Route
             path="/"
             element={
@@ -80,33 +80,36 @@ function App() {
             }
           />
 
-          {/* Rutas públicas */}
+          {/* Otras rutas públicas */}
           <Route path="/search" element={<SearchResults />} />
           <Route path="/filtrados" element={<SearchFilteredProducts />} />
           <Route path="/changepassword" element={<ChangePassword />} />
-          <Route
-            path="/validate/:validationCode"
-            element={<UserValidation />}
-          />
+          <Route path="/validate/:validationCode" element={<UserValidation />} />
+
+          {/* === ESTA RUTA DEBE VENIR ANTES DE /user/* === */}
           <Route path="/producto/:productId" element={<ProductDetail />} />
+
           <Route path="/usuarios/:id" element={<UserProfile />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/recover/:recoveryCode" element={<RecoverPassword />} />
           <Route path="/categoria/:id" element={<CategoryProducts />} />
           <Route path="/categoria" element={<CategoryProducts />} />
 
-          {/* Rutas usuarios loguedaos */}
+          {/* Rutas de usuario (protected) */}
           <Route
             path="/publicar"
-            element={user ? <PublishProduct /> : <Register />}
+            element={user ? <PublishProduct /> : <Navigate to="/register" />}
           />
-          <Route path="/user/*" element={user ? <UserMenu /> : <Register />} />
+          <Route
+            path="/user/*"
+            element={user ? <UserMenu /> : <Navigate to="/register" />}
+          />
           <Route
             path="/edit/:productId"
-            element={user ? <EditProduct /> : <Register />}
+            element={user ? <EditProduct /> : <Navigate to="/register" />}
           />
 
-          {/* Rutas informativas */}
+          {/* Footer pages */}
           <Route path="/quienes-somos" element={<AboutUs />} />
           <Route path="/como-funciona" element={<HowItWorks />} />
           <Route path="/centro-de-ayuda" element={<HelpCenter />} />
@@ -114,10 +117,10 @@ function App() {
           <Route path="/politica-de-privacidad" element={<PrivacyPolicy />} />
           <Route path="/politica-de-cookies" element={<CookiePolicy />} />
 
-          {/* Rutas admin protegidas */}
+          {/* Admin routes */}
           <Route
             path="/usuarios"
-            element={user?.role === "admin" ? <UserList /> : <Login />}
+            element={user?.role === "admin" ? <UserList /> : <Navigate to="/login" />}
           />
           <Route path="/admin/dashboard" element={<AdminDashboard />} />
           <Route

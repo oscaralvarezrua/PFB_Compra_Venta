@@ -123,13 +123,13 @@ export default function RequestsList() {
             <div className="request-actions">
               <button
                 onClick={() => handleclickAccept(request.transaction_id)}
-                className="accept-button"
+                className="ok-btn"
               >
                 Aceptar
               </button>
               <button
                 onClick={() => handleClickReject(request.transaction_id)}
-                className="reject-button"
+                className="reject-btn"
               >
                 Rechazar
               </button>

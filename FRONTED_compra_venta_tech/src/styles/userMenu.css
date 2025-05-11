@@ -8,9 +8,9 @@
 aside.sidebar {
   display: block;
   position: relative;
-  height: auto !important;
+  height: auto;
   align-self: stretch;
-  border-right: none !important;
+  border-right: none;
 }
 .content-profile {
   flex: 1;
