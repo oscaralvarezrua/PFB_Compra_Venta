@@ -20,7 +20,6 @@ aside.sidebar {
 .sidebar ul {
   list-style: none;
   margin: 0;
-
   display: block;
 }
 
@@ -40,7 +39,6 @@ aside.sidebar {
   width: 2rem;
   height: 2rem;
 }
-
 .menu-link:hover,
 .menu-link.active {
   background: rgba(231, 198, 27, 0.1);
@@ -62,15 +60,15 @@ aside.sidebar {
   object-fit: cover;
 }
 
-.menu-rating {
-  display: flex;
-  flex-direction: column;
+.menu-rating .rating {
+  margin-bottom: 0.25rem;
 }
 
-.rating {
-  display: flex;
-  align-items: center;
-  padding-top: 0.5rem;
+.rating-count {
+  display: block;
+  font-size: 0.85rem;
+  color: #605f5f;
+  margin-bottom: 0.5rem;
 }
 
 .menu-date {
@@ -86,7 +84,6 @@ aside.sidebar {
   box-sizing: border-box;
 }
 
-/* ─── Header móvil (oculto >480px) ─── */
 .mobile-header {
   display: none;
 }
@@ -99,7 +96,7 @@ aside.sidebar {
   cursor: pointer;
 }
 
-/* ─── Responsive <480px ─── */
+/* Responsive */
 @media (max-width: 480px) {
   .user-menu {
     display: flex !important;
@@ -108,7 +105,6 @@ aside.sidebar {
 
   .mobile-header {
     display: flex !important;
-
     top: 0;
     left: 0;
     width: 100%;
@@ -129,7 +125,7 @@ aside.sidebar {
   .mobile-nav {
     display: flex;
     justify-content: flex-end;
-    gap: 0.5rem;
+    gap: 0.8rem;
     margin: 0;
   }
   .sidebar {
@@ -150,12 +146,11 @@ aside.sidebar {
   }
 
   .content-profile {
-    margin-left: 0 !important;
-    margin-top: 3.5rem !important;
-    padding: 1rem 0.5rem !important;
+    margin-left: 0;
+    margin-top: 1rem;
+    padding: 1rem 0.5rem;
   }
 }
-
 .sidebar .menu-link {
   height: 100px;
   align-items: center;

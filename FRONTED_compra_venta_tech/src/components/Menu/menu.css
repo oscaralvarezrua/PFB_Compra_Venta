@@ -4,7 +4,6 @@
   box-sizing: border-box;
 }
 
-/* Estilos generales */
 .menu-container {
   position: relative;
   background-color: black;
@@ -103,20 +102,27 @@
   background-color: #f0f0f0;
 }
 
-/* Media Query para pantallas móviles */
+.menu-container .categories-list .category {
+  color: #fafbfb !important;
+}
+
+.menu-container .categories-list .category:hover {
+  color: #e7c61b !important;
+}
+
+/* Responsive */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-/* Estilos generales */
 .menu-container {
   position: relative;
   background-color: black;
   color: white;
   font-family: "Inter", sans-serif;
-  padding: 10px 20px; /* Reduzco un poco el padding horizontal general */
+  padding: 10px 20px;
   width: 100%;
   box-sizing: border-box;
   margin-bottom: 0;
@@ -124,7 +130,7 @@
 
 .menu-header {
   display: flex;
-  justify-content: space-between; /* Mantiene el espacio entre elementos */
+  justify-content: space-between; 
   align-items: center;
   width: 100%;
 }
@@ -165,7 +171,6 @@
   color: #e7c61b;
 }
 
-/* Estilo del menú desplegable */
 .all-categories {
   background-color: #fafbfb;
   padding: 20px;
