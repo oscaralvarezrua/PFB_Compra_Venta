@@ -2,9 +2,8 @@
 import React from "react";
 import { Route, Routes, NavLink } from "react-router-dom";
 import "../styles/userMenu.css";
-
 import BuysList from "./BuysList";
-//import SalesList from "./SalesList";
+// import SalesList from "./SalesList";
 import ProductsList from "./ProductsList";
 import RequestList from "./RequestsList";
 import UserDataAndChangePass from "./UserDataAndChangePass";
@@ -15,6 +14,7 @@ import Rating from "../components/Rating/Rating";
 import UserProfileView from "./UserProfileView";
 import ConfirmDeleteProd from "./ConfirmDeleteProd";
 import Review from "./Review";
+
 const { VITE_USER_ICON } = import.meta.env;
 
 export default function UserMenu() {
@@ -23,25 +23,25 @@ export default function UserMenu() {
 
   return (
     <div className="user-menu">
-      {/* Mobile header: only shown ≤480px */}
+      {/* Mobile header */}
       <header className="mobile-header">
         <nav className="mobile-nav">
-          <NavLink to="/user" end className="mobile-link">
+          <NavLink to="/user" end className="mobile-link perfil-link">
             Perfil
           </NavLink>
-          <NavLink to="/user/buys-list" className="mobile-link">
+          <NavLink to="/user/buys-list" className="mobile-link compras-link">
             Compras
           </NavLink>
-          <NavLink to="/user/products-list" className="mobile-link">
+          <NavLink to="/user/products-list" className="mobile-link productos-link">
             Productos
           </NavLink>
-          <NavLink to="/user/requests-list" className="mobile-link">
+          <NavLink to="/user/requests-list" className="mobile-link solicitudes-link">
             Solicitudes
           </NavLink>
         </nav>
       </header>
 
-      {/* Sidebar: hidden in mobile, shown >480px */}
+      {/* Sidebar */}
       <aside className="sidebar">
         <ul>
           <li>
@@ -49,23 +49,25 @@ export default function UserMenu() {
               to="/user"
               end
               className={({ isActive }) =>
-                isActive ? "menu-link active" : "menu-link"
+                isActive
+                  ? "menu-link active perfil-link"
+                  : "menu-link perfil-link"
               }
             >
               <div className="current-avatar-menu">
                 <ApiImage
-                  name={userData?.avatar ? userData?.avatar : VITE_USER_ICON}
+                  name={userData?.avatar ?? VITE_USER_ICON}
                   alt=""
                   className="profile-image-menu"
                 />
               </div>
               <div className="menu-rating">
                 <strong>{userData?.username}</strong>
-                <Rating
-                  className="rating"
-                  value={averageUserRating}
-                  count={numberOfRatings}
-                />
+                <Rating className="rating" value={averageUserRating} />
+                <span className="rating-count">
+                  {numberOfRatings} valoracion
+                  {numberOfRatings !== 1 ? "es" : ""}
+                </span>
                 <span className="menu-date">
                   En SegundaTec desde{" "}
                   {new Date(userData?.created_at).getFullYear()}
@@ -77,7 +79,9 @@ export default function UserMenu() {
             <NavLink
               to="/user/buys-list"
               className={({ isActive }) =>
-                isActive ? "menu-link active" : "menu-link"
+                isActive
+                  ? "menu-link active compras-link"
+                  : "menu-link compras-link"
               }
             >
               <img
@@ -92,7 +96,9 @@ export default function UserMenu() {
             <NavLink
               to="/user/products-list"
               className={({ isActive }) =>
-                isActive ? "menu-link active" : "menu-link"
+                isActive
+                  ? "menu-link active productos-link"
+                  : "menu-link productos-link"
               }
             >
               <img
@@ -107,7 +113,9 @@ export default function UserMenu() {
             <NavLink
               to="/user/requests-list"
               className={({ isActive }) =>
-                isActive ? "menu-link active" : "menu-link"
+                isActive
+                  ? "menu-link active solicitudes-link"
+                  : "menu-link solicitudes-link"
               }
             >
               <img
@@ -121,7 +129,7 @@ export default function UserMenu() {
         </ul>
       </aside>
 
-      {/* Main content area */}
+      {/* Main content */}
       <main className="content-profile">
         <Routes>
           <Route index element={<UserProfileView />} />

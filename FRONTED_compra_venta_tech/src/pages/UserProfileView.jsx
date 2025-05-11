@@ -42,7 +42,7 @@ const UserProfileView = () => {
       const formData = new FormData();
       formData.append("username", username);
       formData.append("biography", biography);
-      formData.append("phone", phone); // <-- Añade esto siempre
+      formData.append("phone", phone);
       if (avatarFile) {
         formData.append("avatar", avatarFile);
       }
@@ -58,7 +58,7 @@ const UserProfileView = () => {
       const data = await res.json();
       if (!res.ok) throw new Error(data.message);
 
-      alert("Perfil guardado correctamente");
+      alert("Perfil actualizado correctamente");
     } catch (err) {
       alert(err.message || "Error al guardar el perfil");
     }
@@ -90,109 +90,183 @@ const UserProfileView = () => {
       const data = await res.json();
       if (!res.ok) throw new Error(data.message);
 
-      alert("Datos de cuenta guardados correctamente");
+      alert("Datos de cuenta actualizados correctamente");
     } catch (err) {
       alert(err.message || "Error al guardar los datos de cuenta");
     }
   };
 
   const handleDeleteAccount = () => {
-    if (!window.confirm("¿Seguro que quieres eliminar tu cuenta?")) return;
+    if (!window.confirm("¿Estás completamente seguro de que deseas eliminar tu cuenta? Esta acción es irreversible y todos tus datos se perderán permanentemente.")) {
+      return;
+    }
     // Lógica para eliminar cuenta
     window.location.href = "/";
   };
 
-  if (loading) return <div className="loading">Cargando perfil...</div>;
-  if (error) return <div className="error">Error al cargar el perfil: {error}</div>;
-  if (!userData) return <div className="error">No se encontraron datos de usuario.</div>;
+  if (loading) return <div className="loading-spinner">Cargando perfil...</div>;
+  if (error) return <div className="error-message">Error al cargar el perfil: {error}</div>;
+  if (!userData) return <div className="error-message">No se encontraron datos de usuario.</div>;
 
   return (
-    <div className="edit-profile-container">
-      <h1>Mi perfil</h1>
+    <div className="profile-wrapper">
+      <div className="edit-profile-container">
+        <h1 className="page-title">Mi Perfil</h1>
 
-      {/* Tabs para elegir sección */}
-      <div className="tabs">
-        <button className={activeTab === "perfil" ? "tab active" : "tab"} onClick={() => setActiveTab("perfil")}>
-          Perfil
-        </button>
-        <button className={activeTab === "cuenta" ? "tab active" : "tab"} onClick={() => setActiveTab("cuenta")}>
-          Mi cuenta
-        </button>
-      </div>
+        {/* Tabs */}
+        <div className="tabs">
+          <button 
+            className={`tab ${activeTab === "perfil" ? "active" : ""}`} 
+            onClick={() => setActiveTab("perfil")}
+            aria-selected={activeTab === "perfil"}
+          >
+            Perfil
+          </button>
+          <button 
+            className={`tab ${activeTab === "cuenta" ? "active" : ""}`} 
+            onClick={() => setActiveTab("cuenta")}
+            aria-selected={activeTab === "cuenta"}
+          >
+            Cuenta
+          </button>
+        </div>
 
-      <div className="tab-content">
-        {activeTab === "perfil" && (
-          <>
-            <section className="card image-card">
-              <div className="card-header">Imagen de perfil</div>
-              <div className="card-body image-body">
-                <div className="avatar">{selectedImage ? <img src={selectedImage} alt="Avatar previsualizado" /> : <ApiImage name={userData?.avatar ? userData?.avatar : VITE_USER_ICON} alt="Avatar" />}</div>
-                <div className="actions">
-                  <input id="avatarInput" type="file" accept=".jpg" style={{ display: "none" }} onChange={handleImageChange} />
-                  <button className="btn change-photo" onClick={() => document.getElementById("avatarInput").click()}>
-                    Cambiar foto
-                  </button>
-                  <p className="note">Aceptamos .jpg y mínimo 400×400px</p>
+        <div className="tab-content">
+          {activeTab === "perfil" && (
+            <>
+              {/* Imagen de Perfil */}
+              <div className="card profile-image-card">
+                <div className="card-header">Foto de Perfil</div>
+                <div className="card-body image-body">
+                  <div className="avatar-container">
+                    <div className="avatar">
+                      {selectedImage ? (
+                        <img src={selectedImage} alt="Avatar previsualizado" />
+                      ) : (
+                        <ApiImage 
+                          name={userData?.avatar ? userData.avatar : VITE_USER_ICON} 
+                          alt="Avatar del usuario" 
+                        />
+                      )}
+                    </div>
+                    <p className="note">Recomendado: 400×400 px, formato JPG</p>
+                  </div>
+                  <div className="image-actions">
+                    <input 
+                      id="avatarInput" 
+                      type="file" 
+                      accept="image/jpeg,image/jpg" 
+                      className="file-input"
+                      onChange={handleImageChange}
+                    />
+                    <label htmlFor="avatarInput" className="btn change-photo">
+                      Cambiar foto
+                    </label>
+                  </div>
                 </div>
               </div>
-            </section>
 
-            <section className="card info-card">
-              <div className="card-header">Información pública</div>
-              <div className="card-body">
-                <div className="form-group">
-                  <label>Nombre de usuario</label>
-                  <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} />
-                </div>
-                <div className="form-group">
-                  <label>Biografía</label>
-                  <textarea value={biography} onChange={(e) => setBiography(e.target.value)} maxLength="500" />
+              {/* Información Pública */}
+              <div className="card public-info-card">
+                <div className="card-header">Información Pública</div>
+                <div className="card-body">
+                  <div className="form-grid">
+                    <div className="form-group">
+                      <label htmlFor="username">Nombre de usuario</label>
+                      <input
+                        id="username"
+                        type="text"
+                        value={username}
+                        onChange={(e) => setUsername(e.target.value)}
+                        placeholder="Tu nombre de usuario"
+                      />
+                    </div>
+                    <div className="form-group">
+                      <label htmlFor="biography">Biografía</label>
+                      <textarea
+                        id="biography"
+                        value={biography}
+                        onChange={(e) => setBiography(e.target.value)}
+                        maxLength="500"
+                        placeholder="Cuéntanos sobre ti"
+                        rows="4"
+                      />
+                      <div className="char-counter">{biography.length}/500</div>
+                    </div>
+                  </div>
                 </div>
               </div>
-            </section>
 
-            <div className="actions-footer">
-              <button className="btn save-btn" onClick={handleSaveProfile}>
-                Guardar
-              </button>
-            </div>
-          </>
-        )}
+              <div className="actions-footer">
+                <button className="btn save-btn" onClick={handleSaveProfile}>
+                  Guardar cambios
+                </button>
+              </div>
+            </>
+          )}
 
-        {activeTab === "cuenta" && (
-          <>
-            <section className="card account-card">
-              <div className="card-header">Información de cuenta</div>
-              <div className="card-body">
-                <div className="form-group">
-                  <label>Email</label>
-                  <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
-                </div>
-                <div className="form-group">
-                  <label>Nueva contraseña</label>
-                  <input type="password" placeholder="********" value={password} onChange={(e) => setPassword(e.target.value)} />
-                </div>
-                <div className="form-group">
-                  <label>Repetir contraseña</label>
-                  <input type="password" placeholder="********" value={repeatPassword} onChange={(e) => setRepeatPassword(e.target.value)} />
-                </div>
-                <div className="form-group">
-                  <label>Teléfono</label>
-                  <input type="tel" value={phone} onChange={(e) => setPhone(e.target.value)} />
+          {activeTab === "cuenta" && (
+            <>
+              {/* Información */}
+              <div className="card account-info-card">
+                <div className="card-header">Configuración de la Cuenta</div>
+                <div className="card-body">
+                  <div className="form-grid">
+                    <div className="form-group">
+                      <label htmlFor="email">Correo electrónico</label>
+                      <input
+                        id="email"
+                        type="email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        placeholder="tu@email.com"
+                      />
+                    </div>
+                    <div className="form-group">
+                      <label htmlFor="phone">Teléfono</label>
+                      <input
+                        id="phone"
+                        type="tel"
+                        value={phone}
+                        onChange={(e) => setPhone(e.target.value)}
+                        placeholder="+1234567890"
+                      />
+                    </div>
+                    <div className="form-group">
+                      <label htmlFor="password">Nueva contraseña</label>
+                      <input
+                        id="password"
+                        type="password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        placeholder="••••••••"
+                      />
+                    </div>
+                    <div className="form-group">
+                      <label htmlFor="repeatPassword">Confirmar contraseña</label>
+                      <input
+                        id="repeatPassword"
+                        type="password"
+                        value={repeatPassword}
+                        onChange={(e) => setRepeatPassword(e.target.value)}
+                        placeholder="••••••••"
+                      />
+                    </div>
+                  </div>
                 </div>
               </div>
-            </section>
 
-            <div className="actions-footer">
-              <button className="btn save-btn" onClick={handleSaveAccount}>
-                Guardar cambios
-              </button>
-              <p className="delete-account-text" onClick={handleDeleteAccount}>
-                Eliminar cuenta
-              </p>
-            </div>
-          </>
-        )}
+              <div className="actions-footer">
+                <button className="btn save-btn" onClick={handleSaveAccount}>
+                  Actualizar cuenta
+                </button>
+                <div className="delete-account-link" onClick={handleDeleteAccount}>
+                  Eliminar cuenta 
+                </div>
+              </div>
+            </>
+          )}
+        </div>
       </div>
     </div>
   );
